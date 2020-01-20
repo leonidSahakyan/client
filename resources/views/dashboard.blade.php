@@ -86,7 +86,7 @@
 <div class="modal fade" id="exampleModalLong">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            
+
         </div>
     </div>
 </div>
@@ -95,7 +95,7 @@
 <div class="modal fade" id="agentPopup">
 <div class="modal-dialog">
     <div class="modal-content">
-        
+
     </div>
 </div>
 </div>
@@ -109,7 +109,7 @@
 
         $( document ).on( "click", ".agent-popup-trigger", function() {
             var id = $(this).data('id');
-            $($(this).data("target")+' .modal-content').load("{{ route('get-agent') }}", {id:id});   
+            $($(this).data("target")+' .modal-content').load("{{ route('get-agent') }}", {id:id});
         });
 
         $("#exampleModalLong").on("hidden.bs.modal", function(){
@@ -124,14 +124,14 @@
             ajax: {
                 url: "{{ route('clients-data') }}",
                 type: 'GET',
-                "data": function (data) {   
+                "data": function (data) {
                     var ajaxParams = {};
                     data['sort_field'] = data.columns[data.order[0].column].name;
                     data['sort_dir'] =  data.order[0].dir;
 
                     delete data.columns;
                     delete data.order;
-                    
+
                     data['filter_status'] = $('#filter_status').val();
 
                     $.each(ajaxParams, function (key, value) {
@@ -144,7 +144,7 @@
             serverSide: true,
             processing: false,
             columns: [
-                    { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true, 
+                    { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,
                         render: function ( data, type, row, meta) {
                         if(row.renewal_date && row.renewal_date != "0000-00-00"){
                             return row.renewal_date;
@@ -163,26 +163,26 @@
                     { "data": "admin_fee", "name":'clients.admin_fee', "orderable": true },
                     { "data": "mortgage_amount", "name":'clients.mortgage_amount', "orderable": true },
                     { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": true },
-                    { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel", 
+                    { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
                         return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="'+row.id+'"><i class="fa fa-pencil""></i></a>';
                     }},
-                    { "data": "status", "name":'clients.status', "orderable": true, 
+                    { "data": "status", "name":'clients.status', "orderable": true,
                         render: function ( data, type, row, meta) {
                         var html = '<select data-id="'+row.id+'" class="custom-select change-status">';
-                        
+
                         var active = '';
 
                         if(row.status == 1)active = "selected='selected'";
                         html += "<option value='1' "+active+" >Active</option>";
-                        
+
                         active = '';
                         if(row.status == 2)active = "selected='selected'";
                         html += "<option value='2' "+active+" >Completed</option>";
 
                         html += '</select>';
-                        
-                        return html;                   
+
+                        return html;
                     }},
             ],
             "lengthMenu": [
@@ -195,7 +195,7 @@
         $("#filter_status").on('change', function() {
             table.ajax.reload();
         });
-        
+
         $( document ).on( "change", "#select-agent", function() {
             var agent_id = $(this).val();
             if(agent_id == "-1"){
@@ -204,7 +204,7 @@
                 $('#agent_container').hide();
             }
         });
-        
+
         $( document ).on( "change", "#custom_fee_switcher", function() {
             var customFee = $(this).prop('checked');
             if(customFee){
@@ -215,7 +215,7 @@
                 $('.popup-secondary').removeClass('d-block').addClass('d-none');
             }
         });
-        
+
         $( document ).on( "change", "#select-type", function() {
             var type = $(this).val();
             if(type == 0){
@@ -229,7 +229,7 @@
                 $('#lender_container').hide();
             }
         });
-        
+
         $( document ).on( "change", "#select-lender", function() {
             var lender_id = $(this).val();
             if(lender_id == "-1"){
@@ -261,9 +261,9 @@
                 success: function(response){
                     $('#dataTable').DataTable().ajax.reload();
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                    
-                } 
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                }
             });
         });
         ////
@@ -271,7 +271,7 @@
 
     function saveClient(){
         var data = $('.modal-body .save-client').serialize();
-        
+
         Loading.add($('#saveClientBtn'));
         $('.error_container').html('');
 		$.ajax({
@@ -289,15 +289,15 @@
                     $('#exampleModalLong').modal('toggle');
 	            }
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 Loading.remove($('#saveClientBtn'));
-            } 
+            }
 	    });
     }
-    
+
     function saveAgent(){
         var data = $('.modal-body .save-agent').serialize();
-        
+
         Loading.add($('#saveAgentBtn'));
         $('.error_container').html('');
 		$.ajax({
@@ -315,9 +315,9 @@
                     $('#agentPopup').modal('toggle');
 	            }
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 Loading.remove($('#saveAgentBtn'));
-            } 
+            }
 	    });
 	}
 </script>

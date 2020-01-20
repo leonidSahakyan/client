@@ -23,7 +23,7 @@
                         <option {{ $client && $client->type == 2 ? 'selected="selected"' : "" }} value="2">Lawyer</option>
                     </select>
                 </div>
-                <div id="lender_container">
+                <div id="lender_container" style="display:{{ ($client && $client->type === 1)?'block':'none'  }}">
                     <div class="form-group">
                         <label class="col-form-label">Lender</label>
                         <select class="custom-select form-control" name="lender_id" id="select-lender">
@@ -35,7 +35,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div id="lender_container_new" class="green-bg">
+                    <div id="lender_container_new" class="main-form-content">
                         <div class="form-group">
                             <label for="example-lender-name-input" class="col-form-label">Name</label>
                             <input class="form-control" name="lender_name"  type="text" id="example-lender-name-input" placeholder="Name">
@@ -50,11 +50,11 @@
                         </div>
                     </div>
                 </div>
-                <div id="lawyer_container">
+                <div id="lawyer_container" style="display:{{ ($client && $client->type === 2)?'block':'none'  }}">
                     <div class="form-group">
                         <label class="col-form-label">Lawyer</label>
                         <select class="custom-select form-control" name="lawyer_id" id="select-lawyer">
-                            <option selected="selected" disabled="disabled">Select lender</option>
+                            <option selected="selected" disabled="disabled">Select lawyer</option>
                             <option value="-1">Create New</option>
                             @foreach ($agents as $agent)
                             @if ($agent->type != 3) @continue @endif
@@ -62,7 +62,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div id="lawyer_container_new" class="green-bg">
+                    <div id="lawyer_container_new" class="main-form-content">
                         <div class="form-group">
                             <label for="example-lawyer-name-input" class="col-form-label">Name</label>
                             <input class="form-control" name="lawyer_name"  type="text" id="example-lawyer-name-input" placeholder="Name">
@@ -110,11 +110,11 @@
                 </div>
                 <div class="form-group">
                     <label for="example-date-input" class="col-form-label">DOB</label>
-                    <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date" value="2018-03-05" id="example-date-input">
+                    <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date"  id="example-date-input">
                 </div>
                 <div class="form-group">
                     <label for="example-date-input" class="col-form-label">Closing date</label>
-                    <input class="form-control" name="closing_date" value="{{ $client ? $client->closing_date : "" }}" type="date" value="2018-03-05" id="example-date-input">
+                    <input class="form-control" name="closing_date" value="{{ $client ? $client->closing_date : "" }}" type="date"  id="example-date-input">
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">Refferal</label>
@@ -127,7 +127,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div id="agent_container" class="green-bg">
+                <div id="agent_container" class="main-form-content">
                     <div class="form-group">
                         <label for="example-agent-name-input" class="col-form-label">Name</label>
                         <input class="form-control" name="agent_name"  type="text" id="example-agent-name-input" placeholder="Name">

@@ -8,10 +8,10 @@
     Version: 1.0
 
 ----------------------------------------------
-    
+
     CSS INDEX
     ===================
-  
+
     1. Core Css
     2. Dashboard One
         2.1 Sidebar Menu
@@ -2929,4 +2929,13 @@ a.loading:before, span.loading:before, button.loading:before, a.loading:hover:be
 }
 .custom-fee-swicher h5{
     margin-right: 10px;
+}
+
+/*----------------- Main changes --------------*/
+
+.main-form-content{
+    background-color: rgb(229, 229, 229);
+    padding: 15px;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px -2px rgb(173, 173, 173);
 }
