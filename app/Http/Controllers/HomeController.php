@@ -77,8 +77,7 @@ class HomeController extends Controller
 
     public function saveClient(Request $request){
         $data = $request->all();
-//        dump($data);
-//        die;
+
         $clientId = $data['client_id'];
 
         $validations = array(
@@ -248,6 +247,9 @@ class HomeController extends Controller
         }
         $client->custom_fee = $custom_fee_switcher;
 
+        $client->rate = $data['rate'];
+        $client->amount = $data['amount'];
+
         $client->save();
 
         return json_encode(array('status' => 1));
@@ -275,9 +277,7 @@ class HomeController extends Controller
             $request->input('sort_field'),
             $request->input('sort_dir')
         );
-        $data = json_encode(array('data' => $items['data'], "recordsFiltered"=>$items['count'], 'recordsTotal' => $items['count']));
-
-        return $data;
+        return json_encode(array('data' => $items['data'], "recordsFiltered"=>$items['count'], 'recordsTotal' => $items['count']));
     }
 
     public function getUser(Request $request){

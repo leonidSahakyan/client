@@ -1,5 +1,4 @@
-
-(function($) {
+(function ($) {
     "use strict";
 
     /*================================
@@ -7,9 +6,11 @@
     ==================================*/
 
     var preloader = $('#preloader');
-    $(window).on('load', function() {
-        setTimeout(function() {
-            preloader.fadeOut('slow', function() { $(this).remove(); });
+    $(window).on('load', function () {
+        setTimeout(function () {
+            preloader.fadeOut('slow', function () {
+                $(this).remove();
+            });
         }, 300)
     });
 
@@ -19,14 +20,14 @@
     if (window.innerWidth <= 1364) {
         $('.page-container').addClass('sbar_collapsed');
     }
-    $('.nav-btn').on('click', function() {
+    $('.nav-btn').on('click', function () {
         $('.page-container').toggleClass('sbar_collapsed');
     });
 
     /*================================
     Start Footer resizer
     ==================================*/
-    var e = function() {
+    var e = function () {
         var e = (window.innerHeight > 0 ? window.innerHeight : this.screen.height) - 5;
         (e -= 67) < 1 && (e = 1), e > 67 && $(".main-content").css("min-height", e + "px")
     };
@@ -59,7 +60,7 @@
     /*================================
     stickey Header
     ==================================*/
-    $(window).on('scroll', function() {
+    $(window).on('scroll', function () {
         var scroll = $(window).scrollTop(),
             mainHeader = $('#sticky-header'),
             mainHeaderHeight = mainHeader.innerHeight();
@@ -78,12 +79,12 @@
     $('[data-toggle="popover"]').popover()
 
     /*------------- Start form Validation -------------*/
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -124,10 +125,10 @@
     /*================================
     login form
     ==================================*/
-    $('.form-gp input').on('focus', function() {
+    $('.form-gp input').on('focus', function () {
         $(this).parent('.form-gp').addClass('focused');
     });
-    $('.form-gp input').on('focusout', function() {
+    $('.form-gp input').on('focusout', function () {
         if ($(this).val().length === 0) {
             $(this).parent('.form-gp').removeClass('focused');
         }
@@ -136,7 +137,7 @@
     /*================================
     slider-area background setting
     ==================================*/
-    $('.settings-btn, .offset-close').on('click', function() {
+    $('.settings-btn, .offset-close').on('click', function () {
         $('.offset-area').toggleClass('show_hide');
         $('.settings-btn').toggleClass('active');
     });
@@ -173,6 +174,7 @@
             }
         });
     }
+
     slider_area();
 
     /*================================
@@ -181,7 +183,7 @@
 
     if ($('#full-view').length) {
 
-        var requestFullscreen = function(ele) {
+        var requestFullscreen = function (ele) {
             if (ele.requestFullscreen) {
                 ele.requestFullscreen();
             } else if (ele.webkitRequestFullscreen) {
@@ -195,7 +197,7 @@
             }
         };
 
-        var exitFullscreen = function() {
+        var exitFullscreen = function () {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
@@ -212,30 +214,98 @@
         var fsDocButton = document.getElementById('full-view');
         var fsExitDocButton = document.getElementById('full-view-exit');
 
-        fsDocButton.addEventListener('click', function(e) {
+        fsDocButton.addEventListener('click', function (e) {
             e.preventDefault();
             requestFullscreen(document.documentElement);
             $('body').addClass('expanded');
         });
 
-        fsExitDocButton.addEventListener('click', function(e) {
+        fsExitDocButton.addEventListener('click', function (e) {
             e.preventDefault();
             exitFullscreen();
             $('body').removeClass('expanded');
         });
     }
 
+
 })(jQuery);
 
-(function(){
+(function () {
     var Loading = function Loading() {
         this.el = false;
-        this.add = function(el) {
+        this.add = function (el) {
             el.addClass('loading');
         }
-        this.remove = function(el) {
+        this.remove = function (el) {
             el.removeClass('loading');
         }
     };
-  window.Loading = new Loading();
+    window.Loading = new Loading();
 })(window);
+
+function openCalculatorModal() {
+
+    var calculatorTable = document.getElementById('table');
+    calculatorTable.innerHTML = '';
+
+    let previousBalance = document.getElementById('amount').value;
+    let currentRate = document.getElementById('rate').value;
+    let currentTerm = document.getElementById('term').value;
+    let values = {};
+
+    if (previousBalance === '' || currentRate === '' || currentTerm === ''){
+        calculatorTable.innerHTML = '';
+        return true;
+    }
+
+    values.tbccAmount = parseFloat(previousBalance);
+    values.tbccPercent = parseFloat(currentRate);
+    values.tbccTerms = parseFloat(currentTerm);
+    values.tbccType = document.getElementById('repaymentType').value * 1;
+
+    if (values.tbccType === 1) {
+        let previousBalance = values.tbccAmount;
+        let paymentTotal = (values.tbccAmount * (values.tbccPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.tbccPercent / 100) / 12), values.tbccTerms))));
+        let totalPaymentBalance = 0;
+        let totalPaymentPercent = 0;
+
+        for (let i = 1; i <= values.tbccTerms; i++) {
+            let paymentPercent = ((previousBalance * (values.tbccPercent / 100)) / 12);
+            let paymentBalance = (paymentTotal - paymentPercent);
+
+            previousBalance = (previousBalance - paymentBalance);
+            if (previousBalance < 0) {
+                previousBalance = 0;
+            }
+
+            totalPaymentBalance = totalPaymentBalance + paymentBalance;
+            totalPaymentPercent = totalPaymentPercent + paymentPercent;
+            let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
+            calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
+        }
+    } else {
+        if (values.tbccType === 2) {
+            let previousBalance = values.tbccAmount;
+            let paymentBalance = values.tbccAmount / values.tbccTerms;
+            let totalPaymentBalance = 0;
+            let totalPaymentPercent = 0;
+            for (let i = 1; i <= values.tbccTerms; i++) {
+                let paymentPercent = previousBalance * ((values.tbccPercent / 100) / 12);
+                let paymentTotal = paymentPercent + paymentBalance;
+                previousBalance = previousBalance - paymentBalance;
+
+                totalPaymentBalance = totalPaymentBalance + paymentBalance;
+                totalPaymentPercent = totalPaymentPercent + paymentPercent;
+
+                let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
+                calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
+            }
+        }
+    }
+    document.getElementById('main-modal-content').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('table').innerHTML = '';
+    document.getElementById('main-modal-content').style.display = 'none';
+}

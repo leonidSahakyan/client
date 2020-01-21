@@ -99,6 +99,37 @@
     </div>
 </div>
 </div>
+
+<section class="main-modal" id="main-modal-content" style="display: none;">
+    <div class="main-modal-content">
+        <div class="main-credit-modal-content">
+            <button class="main-modal__close" href="#" onclick="closeModal()"><i class="fa fa-times"></i></button>
+            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule</h3>
+                <div class="main-table-body">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Credit Balance After Next Payment</th>
+                            <th>Paid Interests</th>
+                            <th>Repayment of the Credit Sum</th>
+                            <th>Monthly Contribution (Interest + Credit)</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table-body second-body">
+                    <table>
+
+                        <tbody id="table">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="main-table-footer" style="margin-right: 8px;"></div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- basic modal end -->
 <script>
     $( document ).ready(function() {
@@ -320,5 +351,6 @@
             }
 	    });
 	}
+
 </script>
 @endsection

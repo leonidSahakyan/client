@@ -2939,3 +2939,148 @@ a.loading:before, span.loading:before, button.loading:before, a.loading:hover:be
     border-radius: 2px;
     box-shadow: 0 2px 6px -2px rgb(173, 173, 173);
 }
+
+.active-body .main-modal {
+    overflow: hidden;
+}
+
+.main-modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background: rgba(83, 105, 157, 0.7);
+    z-index: 9999;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+.main-modal .main-modal-content {
+    max-width: 850px;
+    height: 100%;
+    visibility: visible;
+    opacity: 1;
+    position: relative;
+    margin: 0 auto;
+    padding: 25px;
+    transition: opacity 0.4s;
+    z-index: 9999999;
+}
+.main-modal .main-modal-content .main-credit-modal-content {
+    height: 100%;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__close {
+    position: absolute;
+    z-index: 5;
+    width: 46px;
+    height: 46px;
+    top: 4px;
+    right: 3px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    line-height: 0;
+    background-color: #eff3fe;
+    border-radius: 50%;
+    color: #5d667e;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body {
+    overflow: hidden;
+    padding: 30px 60px;
+    position: relative;
+    background: #fff;
+    border-radius: 3px;
+    text-align: left;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-moda-table__title {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-family: HelveticaRegular, Arial, Garuda, sans-serif;
+    font-size: 28px;
+    line-height: 30px;
+}
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .second-body {
+    overflow-y: auto;
+    margin: 2px -56px 0;
+    padding: 0 60px;
+    flex: 1;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table{
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+}
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody tr {
+    display: flex;
+    border-top: none;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody tr td:first-child {
+    padding: 11px 0;
+    text-align: left;
+    width: auto;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody {
+    display: block;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody tr {
+    display: flex;
+    border-top: none;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody tr td:first-child {
+    padding: 11px 0;
+    text-align: left;
+    width: auto;
+}
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table tbody tr td {
+    padding: 11px 0 11px 3px;
+    width: 24%;
+    text-align: right;
+    font-size: 15px;
+    line-height: 17px;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table {
+    font-family: HelveticaRegular, Arial, Garuda, sans-serif;
+    display: block;
+    margin: -2px 0 0;
+}
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table thead {
+    position: relative;
+    display: block;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table thead tr {
+    border: none;
+    display: flex;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table thead th:first-child {
+    width: 0;
+}
+
+.main-modal .main-modal-content .main-credit-modal-content .main-modal__body .main-table-body table thead th {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 1px 0 10px 2px;
+    text-align: right;
+    width: 24%;
+}
+
+
+
+
