@@ -258,19 +258,17 @@ function openCalculatorModal() {
         return true;
     }
 
-    values.tbccAmount = parseFloat(previousBalance);
-    values.tbccPercent = parseFloat(currentRate);
-    values.tbccTerms = parseFloat(currentTerm);
-    values.tbccType = document.getElementById('repaymentType').value * 1;
+    values.jthAmount = parseInt(previousBalance);
+    values.jthPercent = parseFloat(currentRate);
+    values.jthTerms = parseInt(currentTerm);
+    values.jthType = document.getElementById('repaymentType').value * 1;
 
-    if (values.tbccType === 1) {
-        let previousBalance = values.tbccAmount;
-        let paymentTotal = (values.tbccAmount * (values.tbccPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.tbccPercent / 100) / 12), values.tbccTerms))));
-        let totalPaymentBalance = 0;
-        let totalPaymentPercent = 0;
+    if (values.jthType === 1) {
+        let previousBalance = values.jthAmount;
+        let paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), values.jthTerms))));
 
-        for (let i = 1; i <= values.tbccTerms; i++) {
-            let paymentPercent = ((previousBalance * (values.tbccPercent / 100)) / 12);
+        for (let i = 1; i <= values.jthTerms; i++) {
+            let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
             let paymentBalance = (paymentTotal - paymentPercent);
 
             previousBalance = (previousBalance - paymentBalance);
@@ -278,24 +276,19 @@ function openCalculatorModal() {
                 previousBalance = 0;
             }
 
-            totalPaymentBalance = totalPaymentBalance + paymentBalance;
-            totalPaymentPercent = totalPaymentPercent + paymentPercent;
             let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
             calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
         }
     } else {
-        if (values.tbccType === 2) {
-            let previousBalance = values.tbccAmount;
-            let paymentBalance = values.tbccAmount / values.tbccTerms;
-            let totalPaymentBalance = 0;
-            let totalPaymentPercent = 0;
-            for (let i = 1; i <= values.tbccTerms; i++) {
-                let paymentPercent = previousBalance * ((values.tbccPercent / 100) / 12);
+        if (values.jthType === 2) {
+
+            let previousBalance = values.jthAmount;
+            let paymentBalance = values.jthAmount / values.jthTerms;
+
+            for (let i = 1; i <= values.jthTerms; i++) {
+                let paymentPercent = previousBalance * ((values.jthPercent / 100) / 12);
                 let paymentTotal = paymentPercent + paymentBalance;
                 previousBalance = previousBalance - paymentBalance;
-
-                totalPaymentBalance = totalPaymentBalance + paymentBalance;
-                totalPaymentPercent = totalPaymentPercent + paymentPercent;
 
                 let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
                 calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');

@@ -249,6 +249,7 @@ class HomeController extends Controller
 
         $client->rate = $data['rate'];
         $client->amount = $data['amount'];
+        $client->description = $data['description'];
 
         $client->save();
 
@@ -355,7 +356,6 @@ class HomeController extends Controller
         $clientId = $data['client_id'];
 
         $validations = array(
-            'term' => 'integer|nullable',
             'name' => 'required|string',
             'email' => 'required|string',
             'phone' => 'required|string',
@@ -377,17 +377,14 @@ class HomeController extends Controller
             return json_encode(array('status' => 0,'errors'=>$html));
         }
 
-        $client->term = $data['term'];
-        $renewal_date = $this->getRenwalDate($client->closing_date,$data['term']);
-        $client->renewal_date = $renewal_date ? $renewal_date : null;
-        $client->save();
-
         $agent->name = $data['name'];
         $agent->phone = $data['phone'];
         $agent->email = $data['email'];
         $agent->save();
 
-        return json_encode(array('status' => 1));
+        return response()->json([
+            'status' => 1,
+        ]);
     }
 
     public function changeStatus(Request $request){

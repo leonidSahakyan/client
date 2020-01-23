@@ -3081,6 +3081,28 @@ a.loading:before, span.loading:before, button.loading:before, a.loading:hover:be
     width: 24%;
 }
 
+fieldset.scheduler-border {
+    border: 1px solid #ddd !important;
+    padding: 0 15px 15px 15px !important;
+    background-color: #eceff1;
+}
 
+legend.scheduler-border {
+    font-size: 19px !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+    background-color: #cfd8dc;
+}
+
+textarea#description {
+    height: auto !important;
+}
+
+.save-client .form-group{
+    height: auto !important;
+}
 
 
