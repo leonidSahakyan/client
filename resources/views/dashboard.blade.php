@@ -40,7 +40,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-3 d-flex justify-content-between">
-                                    <button type="button" class="btn btn-success getClient" data-remote="{{ route('get-client') }}" data-toggle="modal" data-target="#exampleModalLong">Add Client</button>
+                                    <button type="button" class="btn btn-success getClient btn-sm" data-remote="{{ route('get-client') }}" data-toggle="modal" data-target="#exampleModalLong">Add Client</button>
 
                                     <select id="filter_status" class="custom-select" style="width: auto;">
                                         <option value="-1" selected="selected">Select status</option>
@@ -247,20 +247,6 @@
             }
         });
 
-        $( document ).on( "change", "#select-type", function() {
-            var type = $(this).val();
-            if(type == 0){
-                $('#lender_container').hide();
-                $('#lawyer_container').hide();
-            }else if(type == 1){
-                $('#lender_container').show();
-                $('#lawyer_container').hide();
-            }else if(type == 2){
-                $('#lawyer_container').show();
-                $('#lender_container').hide();
-            }
-        });
-
         $( document ).on( "change", "#select-lender", function() {
             var lender_id = $(this).val();
             if(lender_id == "-1"){
@@ -312,10 +298,11 @@
 	        dataType: 'json',
 	        success: function(response){
                 Loading.remove($('#saveClientBtn'));
-	            if(response.status == 0){
+	            if(response.status === 0){
                     $('.error_container').html(response.errors);
+                   document.getElementById('exampleModalLong').scrollTo(0,0);
 	            }
-	            if(response.status == 1){
+	            if(response.status === 1){
                     $('#dataTable').DataTable().ajax.reload();
                     $('#exampleModalLong').modal('toggle');
 	            }

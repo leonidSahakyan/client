@@ -3,7 +3,7 @@
     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
 </div>
 <div class="modal-body">
-    <form class="save-client" action="JavaScript:void(0);">
+    <form class="save-client" action="JavaScript:void(0);" autocomplete="off">
         <label class='error_container'></label>
         <div class="s-sw-title custom-fee-swicher">
             <h5>Custom fee</h5>
@@ -15,7 +15,6 @@
         </div>
         <input type="hidden" name="client_id" value='{{ $client ? $client->id : 0 }}'/>
         <div class="row">
-
             <div class="{{ $client && $client->custom_fee == 1 ? 'col-4' : 'col-6' }} popup-main">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Personal information</legend>
@@ -36,6 +35,20 @@
                                id="example-tel-input" placeholder="123-456-789">
                     </div>
                     <div class="form-group">
+                        <label for="mailing_address">Mailing address</label>
+                        <input type="text" id="mailing_address" class="form-control" name="mailing_address" value="{{ $client? $client->mailing_address:"" }}">
+                    </div>
+                    <div class=" form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sameMailingAddress" onchange=" setMailingAddress(this)">
+                            <label class="form-check-label" for="sameMailingAddress">Same a Mailing Address</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="property_security" class="col-form-label">Property Security</label>
+                        <input type="text" class="form-control" id="property_security" name="property_security" value="{{ $client? $client->property_security:"" }}">
+                    </div>
+                    <div class="form-group">
                         <label for="example-address-input" class="col-form-label">Address</label>
                         <input class="form-control" type="text" name="address"
                                value="{{ $client ? $client->address : "" }}"
@@ -51,25 +64,32 @@
                         <textarea name="description" id="description" class="form-control"
                                   rows="5">{{ ($client && $client->description) ? $client->description :'' }}</textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="co_signor" class="col-form-label">Add co-signor</label>
+                        <div class="select-2-content">
+                            <select class="js-co_signor form-control" id="co_signor" multiple="multiple"
+                                    name="co_signor[]">
+                                @if( $client &&  $client->co_signor)
+                                    @foreach(json_decode($client->co_signor,true) as $key => $val)
+                                        <option value="{{ $val }}" selected="selected">{{ $val }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="legal_pid">Legal PID</label>
+                        <input type="text" class="form-control" id="legal_pid" name="legal_pid" value="{{ $client ? $client->legal_pid:'' }}">
+                    </div>
                 </fieldset>
             </div>
 
             <div class="{{ $client && $client->custom_fee == 1 ? 'col-4' : 'col-6' }} popup-main">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Description</legend>
-                    <div class="form-group">
-                        <label class="col-form-label">Type</label>
-                        <select name="type" class="custom-select form-control" id="select-type">
-                            <option selected="selected" disabled="disabled" value="0">Select type</option>
-                            <option {{ $client && $client->type == 1 ? 'selected="selected"' : "" }} value="1">Lender
-                            </option>
-                            <option {{ $client && $client->type == 2 ? 'selected="selected"' : "" }} value="2">Lawyer
-                            </option>
-                        </select>
-                    </div>
-                    <div id="lender_container" style="display:{{ ($client && $client->type === 1)?'block':'none'  }}">
+                    <div id="lender_container" class="d-block">
                         <div class="form-group">
-                            <label class="col-form-label">Lender</label>
+                            <label class="col-form-label" for="select-lender">Lender</label>
                             <select class="custom-select form-control" name="lender_id" id="select-lender">
                                 <option selected="selected" disabled="disabled">Select lender</option>
                                 <option value="-1">Create New</option>
@@ -102,10 +122,10 @@
                             </div>
                         </div>
                     </div>
-                    <div id="lawyer_container" style="display:{{ ($client && $client->type === 2)?'block':'none'  }}">
+                    <div id="lawyer_container" class="d-block">
                         <div class="form-group">
-                            <label class="col-form-label">Lawyer</label>
-                            <select class="custom-select form-control" name="lawyer_id" id="select-lawyer">
+                            <label for="select-lawyer" class="col-form-label">Lawyer</label>
+                            <select  class="custom-select form-control" name="lawyer_id" id="select-lawyer">
                                 <option selected="selected" disabled="disabled">Select lawyer</option>
                                 <option value="-1">Create New</option>
                                 @foreach ($agents as $agent)
@@ -153,7 +173,6 @@
                             </option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label for="example-date-input" class="col-form-label">Closing date</label>
                         <input class="form-control" name="closing_date"
@@ -161,7 +180,12 @@
                                type="date" id="example-date-input">
                     </div>
                     <div class="form-group">
-                        <label class="select-agent">Referral</label>
+                        <label for="term" class="col-form-label">Term</label>
+                        <input class="form-control" min="0" type="number" name="term"
+                               value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
+                    </div>
+                    <div class="form-group">
+                        <label for="select-agent" class="select-agent">Referral</label>
                         <select class="custom-select form-control" name="agent_id" id="select-agent">
                             <option selected="selected" disabled="disabled">Select agent</option>
                             <option value="-1">Create New</option>
@@ -198,9 +222,19 @@
                                id="amount" placeholder="Amount">
                     </div>
                     <div class="form-group">
-                        <label for="term" class="col-form-label">Term (Months in integer)</label>
-                        <input class="form-control" min="0" type="number" name="term"
-                               value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
+                        <label for="creditTime" class="col-form-label">Term  (Months in integer)</label>
+                        <input class="form-control" min="0" type="number" name="credit_time"
+                               value='{{ $client ? $client->credit_time : "" }}' id="creditTime" placeholder="Term">
+                    </div>
+                    <div class="form-group">
+                        <label for="amortization">Amortization (Months in integer)</label>
+                        <input type="number" name="" id="amortization" class="form-control" min="1">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="interestOnly" value="">
+                            <label class="form-check-label" for="interestOnly">Interest Only</label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="rate" class="col-form-label">Rate</label>
@@ -224,139 +258,80 @@
 
             <div class="col-4 {{ $client && $client->custom_fee == 1 ? '' : 'd-none' }} popup-secondary">
                 <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">Description</legend>
-                <div class="row">
-                    <!-- Mortgage -->
-                    <div class="form-group col-7">
-                        <label for="mortgage_fee" class="col-form-label">Mortgage</label>
-                        <input class="form-control" type="number" name="mortgage_fee"
-                               value="{{ $fees['mortgage']['fee'] }}" id="mortgage_fee" placeholder="mortgage fee">
+                    <legend class="scheduler-border">Fees/Cost of Credit</legend>
+                    <div class="row">
+                        <!-- Mortgage -->
+                        <div class="form-group col">
+                            <label for="mortgage_fee" class="col-form-label">iMortgage</label>
+                            <input class="form-control" type="number" name="mortgage_fee"
+                                   value="{{ $fees['mortgage']['fee'] }}" id="mortgage_fee" placeholder="mortgage fee">
+                        </div>
                     </div>
-                    <div class="form-group col-5">
-                        <label for="mortgage-fee-type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="mortgage_fee_type" id="mortgage_fee_type">
-                            <option
-                                {{ $fees['mortgage']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['mortgage']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
+                    <div class="row">
+                        <!-- Broker -->
+                        <div class="form-group col">
+                            <label for="broker_fee" class="col-form-label">Broker</label>
+                            <input class="form-control" type="number" name="broker_fee"
+                                   value="{{ $fees['broker']['fee'] }}"
+                                   id="broker_fee" placeholder="broker fee">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <!-- Broker -->
-                    <div class="form-group col-7">
-                        <label for="broker_fee" class="col-form-label">Broker</label>
-                        <input class="form-control" type="number" name="broker_fee" value="{{ $fees['broker']['fee'] }}"
-                               id="broker_fee" placeholder="broker fee">
+                    <div class="row">
+                        <!-- Lender -->
+                        <div class="form-group col">
+                            <label for="lender_fee" class="col-form-label">Lender</label>
+                            <input class="form-control" type="number" name="lender_fee"
+                                   value="{{ $fees['lender']['fee'] }}"
+                                   id="lender_fee" placeholder="lender fee">
+                        </div>
                     </div>
-                    <div class="form-group col-5">
-                        <label for="broker_fee_type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="broker_fee_type" id="broker_fee_type">
-                            <option {{ $fees['broker']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['broker']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
+                    <!------ ------>
+                    <div class="row">
+                        <!-- Admin -->
+                        <div class="form-group col">
+                            <label for="admin_fee" class="col-form-label">Admin</label>
+                            <input class="form-control" type="number" name="admin_fee"
+                                   value="{{ $fees['admin']['fee'] }}"
+                                   id="admin_fee" placeholder="admin fee">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <!-- Lender -->
-                    <div class="form-group col-7">
-                        <label for="lender_fee" class="col-form-label">Lender</label>
-                        <input class="form-control" type="number" name="lender_fee" value="{{ $fees['lender']['fee'] }}"
-                               id="lender_fee" placeholder="lender fee">
+                    <div class="row">
+                        <!-- Lawyer -->
+                        <div class="form-group col">
+                            <label for="lawyer_fee" class="col-form-label">Lawyer</label>
+                            <input class="form-control" type="number" name="lawyer_fee"
+                                   value="{{ $fees['lawyer']['fee'] }}"
+                                   id="lawyer_fee" placeholder="lawyer fee">
+                        </div>
                     </div>
-                    <div class="form-group col-5">
-                        <label for="lender_fee_type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="lender_fee_type" id="lender_fee_type">
-                            <option {{ $fees['lender']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['lender']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
+                    <div class="row">
+                        <!-- Appraisal -->
+                        <div class="form-group col">
+                            <label for="appraisal_fee" class="col-form-label">Appraisal</label>
+                            <input class="form-control" type="number" name="appraisal_fee"
+                                   value="{{ $fees['appraisal']['fee'] }}" id="appraisal_fee"
+                                   placeholder="appraisal fee">
+                        </div>
                     </div>
-                </div>
-                <!------ ------>
-                <div class="row">
-                    <!-- Admin -->
-                    <div class="form-group col-7">
-                        <label for="admin_fee" class="col-form-label">Admin</label>
-                        <input class="form-control" type="number" name="admin_fee" value="{{ $fees['admin']['fee'] }}"
-                               id="admin_fee" placeholder="admin fee">
-                    </div>
-                    <div class="form-group col-5">
-                        <label for="admin-fee-type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="admin_fee_type" id="admin_fee_type">
-                            <option {{ $fees['admin']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['admin']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- Lawyer -->
-                    <div class="form-group col-7">
-                        <label for="lawyer_fee" class="col-form-label">Lawyer</label>
-                        <input class="form-control" type="number" name="lawyer_fee" value="{{ $fees['lawyer']['fee'] }}"
-                               id="lawyer_fee" placeholder="lawyer fee">
-                    </div>
-                    <div class="form-group col-5">
-                        <label for="lawyer_fee_type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="lawyer_fee_type" id="lawyer_fee_type">
-                            <option {{ $fees['lawyer']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['lawyer']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- Appraisal -->
-                    <div class="form-group col-7">
-                        <label for="appraisal_fee" class="col-form-label">Appraisal</label>
-                        <input class="form-control" type="number" name="appraisal_fee"
-                               value="{{ $fees['appraisal']['fee'] }}" id="appraisal_fee" placeholder="appraisal fee">
-                    </div>
-                    <div class="form-group col-5">
-                        <label for="appraisal_fee_type" class=" col-form-label">Type</label>
-                        <select class="form-control custom-select" name="appraisal_fee_type" id="appraisal_fee_type">
-                            <option
-                                {{ $fees['appraisal']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">
-                                Fixed
-                            </option>
-                            <option
-                                {{ $fees['appraisal']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">
-                                Percent
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <!------ ------>
+                    <!------ ------>
                 </fieldset>
             </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
     <button type="button" id='saveClientBtn' onclick="saveClient();"
-            class="btn btn-success">{{ $client ? "Save" : "Add" }}</button>
+            class="btn btn-success btn-sm">{{ $client ? "Save" : "Add" }}
+    </button>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".js-co_signor").select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
+        })
+    });
+</script>
 

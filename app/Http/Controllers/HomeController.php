@@ -27,6 +27,7 @@ class HomeController extends Controller
     }
 
     // Client part start
+
     /**
      * Show the application dashboard.
      *
@@ -34,16 +35,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard', array('activeMenu'=>'clients'));
+        return view('dashboard', array('activeMenu' => 'clients'));
     }
 
-    public function clientsData(Request $request){
+    public function clientsData(Request $request)
+    {
 
         $model = new Clients();
 
         $filter['status'] = $request->input('filter_status');
 
-        if(isset($request->input('search')['value']) && $request->input('search')['value'] != ''){
+        if (isset($request->input('search')['value']) && $request->input('search')['value'] != '') {
             $filter['search'] = $request->input('search')['value'];
         }
 
@@ -54,37 +56,42 @@ class HomeController extends Controller
             $request->input('sort_field'),
             $request->input('sort_dir')
         );
-        $data = json_encode(array('data' => $items['data'], "recordsFiltered"=>$items['count'], 'recordsTotal' => $items['count']));
+        $data = json_encode(array('data' => $items['data'], "recordsFiltered" => $items['count'], 'recordsTotal' => $items['count']));
 
         return $data;
     }
 
-    public function getClient(Request $request){
-        $id = $request->input('client_id',false);
-        $client = $id && $id != 'false'  ? Clients::find($id) : false;
+    public function getClient(Request $request)
+    {
+        $id = $request->input('client_id', false);
+        $client = $id && $id != 'false' ? Clients::find($id) : false;
 
-        if($client && $client->custom_fee == 1){
+        if ($client && $client->custom_fee == 1) {
             $fees = unserialize($client->settings);
-        }else{
-            $fee = Settings::where('key','fee')->first();
+        } else {
+            $fee = Settings::where('key', 'fee')->first();
             $fees = unserialize($fee->value);
         }
 
         $agents = Agents::all();
 
-        return view('client_popup', array('client'=>$client,'fees'=>$fees,'agents'=>$agents));
+        return view('client_popup', array('client' => $client, 'fees' => $fees, 'agents' => $agents));
     }
 
-    public function saveClient(Request $request){
+    public function saveClient(Request $request)
+    {
         $data = $request->all();
 
         $clientId = $data['client_id'];
 
         $validations = array(
-            'type' => 'required|in:1,2',
             'status' => 'required|in:1,2,3',
             'term' => 'integer|nullable',
             'name' => 'required|string',
+            'mailing_address' => 'required',
+            'property_security' => 'required',
+            'co_signor' => 'required|array|min:1',
+            'legal_pid' => 'required',
             'email' => 'required|string',
             'phone' => 'required|string',
             'address' => 'required|string',
@@ -101,68 +108,46 @@ class HomeController extends Controller
             'lawyer_phone' => 'required|string',
             'lawyer_email' => 'required|string',
             'mortgage_fee' => 'numeric|required',
-            'mortgage_fee_type' => 'required|in:fixed,percent',
             'broker_fee' => 'numeric|required',
-            'broker_fee_type' => 'required|in:fixed,percent',
             'lender_fee' => 'numeric|required',
-            'lender_fee_type' => 'required|in:fixed,percent',
             'admin_fee' => 'numeric|required',
-            'admin_fee_type' => 'required|in:fixed,percent',
             'lawyer_fee' => 'numeric|required',
-            'lawyer_fee_type' => 'required|in:fixed,percent',
             'appraisal_fee' => 'numeric|required',
-            'appraisal_fee_type' => 'required|in:fixed,percent',
         );
 
         $custom_fee_switcher = 0;
-        if(isset($data['custom_fee_switcher'])){
+        if (isset($data['custom_fee_switcher'])) {
             $custom_fee_switcher = 1;
-        }else{
+        } else {
             unset($validations['mortgage_fee']);
-            unset($validations['mortgage_fee_type']);
             unset($validations['broker_fee']);
-            unset($validations['broker_fee_type']);
             unset($validations['lender_fee']);
-            unset($validations['lender_fee_type']);
             unset($validations['admin_fee']);
-            unset($validations['admin_fee_type']);
             unset($validations['lawyer_fee']);
-            unset($validations['lawyer_fee_type']);
             unset($validations['appraisal_fee']);
-            unset($validations['appraisal_fee_type']);
         }
 
-        if($data['agent_id'] != '-1'){
+        if ($data['agent_id'] != '-1') {
             unset($validations['agent_name']);
             unset($validations['agent_phone']);
             unset($validations['agent_email']);
         }
 
-        if($data['type'] == '1'){
-            unset($validations['lawyer_name']);
-            unset($validations['lawyer_phone']);
-            unset($validations['lawyer_email']);
-            if ($data['lender_id'] !== '-1'){
-                unset($validations['lender_name']);
-                unset($validations['lender_phone']);
-                unset($validations['lender_email']);
-            }
-        }
-
-        if($data['type'] == '2'){
+        if ($data['lender_id'] !== '-1') {
             unset($validations['lender_name']);
             unset($validations['lender_phone']);
             unset($validations['lender_email']);
-            if ($data['lawyer_id'] !== '-1'){
-                unset($validations['lawyer_name']);
-                unset($validations['lawyer_phone']);
-                unset($validations['lawyer_email']);
-            }
         }
 
-        if($clientId && $clientId != 0){
+        if ($data['lawyer_id'] !== '-1') {
+            unset($validations['lawyer_name']);
+            unset($validations['lawyer_phone']);
+            unset($validations['lawyer_email']);
+        }
+
+        if ($clientId && $clientId != 0) {
             $client = Clients::find($clientId);
-        }else{
+        } else {
             $client = new Clients();
         }
 
@@ -171,15 +156,16 @@ class HomeController extends Controller
         if ($validator->fails()) {
             $html = "<div>";
 
-            foreach($validator->errors()->all() as $error)
-            {
+            foreach ($validator->errors()->all() as $error) {
                 $html .= "<span>" . $error . "</span>";
             }
             $html .= "</div>";
-            return json_encode(array('status' => 0,'errors'=>$html));
+            return response()->json([
+                'status' => 0,
+                'errors' => $html
+            ]);
         }
 
-        $client->type = $data['type'];
         $client->term = $data['term'];
         $client->name = $data['name'];
         $client->email = $data['email'];
@@ -189,58 +175,54 @@ class HomeController extends Controller
         $client->address = $data['address'];
         $client->status = $data['status'];
 
-        $renewal_date = $this->getRenwalDate($client->closing_date,$data['term']);
+        $renewal_date = $this->getRenwalDate($client->closing_date, $data['term']);
         $client->renewal_date = $renewal_date ? $renewal_date : null;
 
-        if($data['agent_id'] == '-1'){
+        if ($data['agent_id'] == '-1') {
             $newAgent = Agents::create(['name' => $data['agent_name'],
-                                        'phone' => $data['agent_phone'],
-                                        'email' => $data['agent_email'],
-                                        'type' => $this->AGENT_TYPE
+                'phone' => $data['agent_phone'],
+                'email' => $data['agent_email'],
+                'type' => $this->AGENT_TYPE
             ]);
 
             $client->agent_id = $newAgent->id;
-        }else{
+        } else {
             $client->agent_id = $data['agent_id'];
         }
 
         // add lender
-        if($data['type'] == 1){
-            if( $data['lender_id'] == '-1'){
-                $newAgent = Agents::create(['name' => $data['lender_name'],
-                                            'phone' => $data['lender_phone'],
-                                            'email' => $data['lender_email'],
-                                            'type' => 2]);
+        if ($data['lender_id'] == '-1') {
+            $newAgent = Agents::create(['name' => $data['lender_name'],
+                'phone' => $data['lender_phone'],
+                'email' => $data['lender_email'],
+                'type' => 2]);
 
-                $client->lender_id = $newAgent->id;
-            }else{
-                $client->lender_id = $data['lender_id'];
-            }
+            $client->lender_id = $newAgent->id;
+        } else {
+            $client->lender_id = $data['lender_id'];
         }
+
         // add lawyer
-        if($data['type'] == 2){
+        if ($data['lawyer_id'] == '-1') {
+            $newAgent = Agents::create(['name' => $data['lawyer_name'],
+                'phone' => $data['lawyer_phone'],
+                'email' => $data['lawyer_email'],
+                'type' => $this->LAWYER_TYPE,
+            ]);
 
-            if( $data['lawyer_id'] == '-1'){
-                $newAgent = Agents::create(['name' => $data['lawyer_name'],
-                                            'phone' => $data['lawyer_phone'],
-                                            'email' => $data['lawyer_email'],
-                                            'type' => $this->LAWYER_TYPE,
-                ]);
-
-                $client->lawyer_id = $newAgent->id;
-            }else{
-                $client->lawyer_id = $data['lawyer_id'];
-            }
+            $client->lawyer_id = $newAgent->id;
+        } else {
+            $client->lawyer_id = $data['lawyer_id'];
         }
 
-        if($custom_fee_switcher == 1){
+        if ($custom_fee_switcher == 1) {
             $settings = array();
-            $settings['mortgage'] = array('fee'=>$data['mortgage_fee'],'type'=>$data['mortgage_fee_type']);
-            $settings['broker'] = array('fee'=>$data['broker_fee'],'type'=>$data['broker_fee_type']);
-            $settings['lender'] = array('fee'=>$data['lender_fee'],'type'=>$data['lender_fee_type']);
-            $settings['admin'] = array('fee'=>$data['admin_fee'],'type'=>$data['admin_fee_type']);
-            $settings['lawyer'] = array('fee'=>$data['lawyer_fee'],'type'=>$data['lawyer_fee_type']);
-            $settings['appraisal'] = array('fee'=>$data['appraisal_fee'],'type'=>$data['appraisal_fee_type']);
+            $settings['mortgage'] = array('fee' => $data['mortgage_fee']);
+            $settings['broker'] = array('fee' => $data['broker_fee']);
+            $settings['lender'] = array('fee' => $data['lender_fee']);
+            $settings['admin'] = array('fee' => $data['admin_fee']);
+            $settings['lawyer'] = array('fee' => $data['lawyer_fee']);
+            $settings['appraisal'] = array('fee' => $data['appraisal_fee']);
 
             $settings = serialize($settings);
             $client->settings = $settings;
@@ -250,24 +232,32 @@ class HomeController extends Controller
         $client->rate = $data['rate'];
         $client->amount = $data['amount'];
         $client->description = $data['description'];
+        $client->co_signor = json_encode($data['co_signor'], JSON_FORCE_OBJECT);
+        $client->legal_pid = $data['legal_pid'];
+        $client->mailing_address = $data['mailing_address'];
+        $client->property_security = $data['property_security'];
+        $client->credit_time = $data['credit_time'];
 
         $client->save();
 
-        return json_encode(array('status' => 1));
+        return response()->json([
+            'status' => 1,
+        ]);
     }
 
     // User part
     public function users()
     {
-        return view('users', array('activeMenu'=>'users'));
+        return view('users', array('activeMenu' => 'users'));
     }
 
-    public function usersData(Request $request){
+    public function usersData(Request $request)
+    {
 
         $model = new User();
 
         $filter = false;
-        if(isset($request->input('search')['value']) && $request->input('search')['value'] != ''){
+        if (isset($request->input('search')['value']) && $request->input('search')['value'] != '') {
             $filter['search'] = $request->input('search')['value'];
         }
 
@@ -278,16 +268,18 @@ class HomeController extends Controller
             $request->input('sort_field'),
             $request->input('sort_dir')
         );
-        return json_encode(array('data' => $items['data'], "recordsFiltered"=>$items['count'], 'recordsTotal' => $items['count']));
+        return json_encode(array('data' => $items['data'], "recordsFiltered" => $items['count'], 'recordsTotal' => $items['count']));
     }
 
-    public function getUser(Request $request){
-        $userId = $request->input('user_id',false);
-        $user = $userId && $userId != 'false'  ? User::find($userId) : false;
-        return view('user_popup', array('user'=>$user));
+    public function getUser(Request $request)
+    {
+        $userId = $request->input('user_id', false);
+        $user = $userId && $userId != 'false' ? User::find($userId) : false;
+        return view('user_popup', array('user' => $user));
     }
 
-    public function saveUser(Request $request){
+    public function saveUser(Request $request)
+    {
         $data = $request->all();
 
         $userId = $data['user_id'];
@@ -296,21 +288,21 @@ class HomeController extends Controller
             'name' => 'required|string',
             'address' => 'required|string',
             'phone' => 'required|string',
-            'email' => ['required',Rule::unique('users')->ignore($userId)],
+            'email' => ['required', Rule::unique('users')->ignore($userId)],
             'password' => 'required|confirmed'
         );
 
         $password = $data['password'];
 
         $setPassword = true;
-        if($userId && $userId != 0){
+        if ($userId && $userId != 0) {
             $user = User::find($userId);
 
-            if(strlen($password) < 1){
+            if (strlen($password) < 1) {
                 $setPassword = false;
                 unset($validations['password']);
             }
-        }else{
+        } else {
             $user = new User();
 
         }
@@ -320,19 +312,18 @@ class HomeController extends Controller
         if ($validator->fails()) {
             $html = "<div>";
 
-            foreach($validator->errors()->all() as $error)
-            {
+            foreach ($validator->errors()->all() as $error) {
                 $html .= "<span>" . $error . "</span>";
             }
             $html .= "</div>";
-            return json_encode(array('status' => 0,'errors'=>$html));
+            return json_encode(array('status' => 0, 'errors' => $html));
         }
 
         $user->name = $data['name'];
         $user->phone = $data['phone'];
         $user->email = $data['email'];
         $user->address = $data['address'];
-        if($setPassword){
+        if ($setPassword) {
             $user->password = bcrypt($data['password']);
         }
         $user->save();
@@ -341,16 +332,18 @@ class HomeController extends Controller
     }
 
     // Get-agent
-    public function getAgent(Request $request){
-        $id = $request->input('id',false);
+    public function getAgent(Request $request)
+    {
+        $id = $request->input('id', false);
 
         $client = Clients::find($id);
         $agent = Agents::find($client->agent_id);
 
-        return view('agent_popup', array('client'=>$client,'agent'=>$agent));
+        return view('agent_popup', array('client' => $client, 'agent' => $agent));
     }
 
-    public function saveAgent(Request $request){
+    public function saveAgent(Request $request)
+    {
         $data = $request->all();
 
         $clientId = $data['client_id'];
@@ -369,12 +362,11 @@ class HomeController extends Controller
         if ($validator->fails()) {
             $html = "<div>";
 
-            foreach($validator->errors()->all() as $error)
-            {
+            foreach ($validator->errors()->all() as $error) {
                 $html .= "<span>" . $error . "</span>";
             }
             $html .= "</div>";
-            return json_encode(array('status' => 0,'errors'=>$html));
+            return json_encode(array('status' => 0, 'errors' => $html));
         }
 
         $agent->name = $data['name'];
@@ -387,7 +379,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function changeStatus(Request $request){
+    public function changeStatus(Request $request)
+    {
         $data = $request->all();
 
         $clientId = $data['clientId'];
@@ -399,23 +392,26 @@ class HomeController extends Controller
 
         return json_encode(array('status' => 1));
     }
-    public function getRenwalDate($closingDate,$term){
+
+    public function getRenwalDate($closingDate, $term)
+    {
         $term++;
-        $newDate = date('Y-m', strtotime("+".$term." months", strtotime($closingDate)));
-        if($newDate)return $newDate."-01";
+        $newDate = date('Y-m', strtotime("+" . $term . " months", strtotime($closingDate)));
+        if ($newDate) return $newDate . "-01";
         return false;
     }
 
     // Mortgages part
     public function mortgages()
     {
-        $fee = Settings::where('key','fee')->first();
+        $fee = Settings::where('key', 'fee')->first();
         $fees = unserialize($fee->value);
 
-        return view('mortgages', array('fees' => $fees,'activeMenu'=>'mortgages'));
+        return view('mortgages', array('fees' => $fees, 'activeMenu' => 'mortgages'));
     }
 
-    public function saveSettings(Request $request){
+    public function saveSettings(Request $request)
+    {
         $data = $request->all();
 
         $validations = array(
@@ -439,25 +435,24 @@ class HomeController extends Controller
         if ($validator->fails()) {
             $html = "<div>";
 
-            foreach($validator->errors()->all() as $error)
-            {
+            foreach ($validator->errors()->all() as $error) {
                 $html .= "<span>" . $error . "</span>";
             }
             $html .= "</div>";
-            return json_encode(array('status' => 0,'errors'=>$html));
+            return json_encode(array('status' => 0, 'errors' => $html));
         }
 
 
         $settings = array();
-        $settings['mortgage'] = array('fee'=>$data['mortgage_fee'],'type'=>$data['mortgage_fee_type']);
-        $settings['broker'] = array('fee'=>$data['broker_fee'],'type'=>$data['broker_fee_type']);
-        $settings['lender'] = array('fee'=>$data['lender_fee'],'type'=>$data['lender_fee_type']);
-        $settings['admin'] = array('fee'=>$data['admin_fee'],'type'=>$data['admin_fee_type']);
-        $settings['lawyer'] = array('fee'=>$data['lawyer_fee'],'type'=>$data['lawyer_fee_type']);
-        $settings['appraisal'] = array('fee'=>$data['appraisal_fee'],'type'=>$data['appraisal_fee_type']);
+        $settings['mortgage'] = array('fee' => $data['mortgage_fee'], 'type' => $data['mortgage_fee_type']);
+        $settings['broker'] = array('fee' => $data['broker_fee'], 'type' => $data['broker_fee_type']);
+        $settings['lender'] = array('fee' => $data['lender_fee'], 'type' => $data['lender_fee_type']);
+        $settings['admin'] = array('fee' => $data['admin_fee'], 'type' => $data['admin_fee_type']);
+        $settings['lawyer'] = array('fee' => $data['lawyer_fee'], 'type' => $data['lawyer_fee_type']);
+        $settings['appraisal'] = array('fee' => $data['appraisal_fee'], 'type' => $data['appraisal_fee_type']);
 
         $settings = serialize($settings);
-        $fee = Settings::where('key','fee')->first();
+        $fee = Settings::where('key', 'fee')->first();
         $fee->value = $settings;
         $fee->save();
 

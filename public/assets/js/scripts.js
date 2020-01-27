@@ -250,7 +250,7 @@ function openCalculatorModal() {
 
     let previousBalance = document.getElementById('amount').value;
     let currentRate = document.getElementById('rate').value;
-    let currentTerm = document.getElementById('term').value;
+    let currentTerm = document.getElementById('creditTime').value;
     let values = {};
 
     if (previousBalance === '' || currentRate === '' || currentTerm === ''){
@@ -301,4 +301,14 @@ function openCalculatorModal() {
 function closeModal() {
     document.getElementById('table').innerHTML = '';
     document.getElementById('main-modal-content').style.display = 'none';
+}
+
+function setMailingAddress(This) {
+    const mailingAddress = document.getElementById('mailing_address');
+    const propertySecurity = document.getElementById('property_security');
+    if (This.checked){
+        propertySecurity.value=mailingAddress.value;
+    }else{
+        propertySecurity.value = '';
+    }
 }
