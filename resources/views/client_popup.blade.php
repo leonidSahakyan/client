@@ -327,7 +327,9 @@
 <div class="modal-footer">
 {{--    <a href="{{ route('export_word') }}" class="btn btn-info btn-sm">Export Word</a>--}}
     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-    <a href="{{ route('show-client',['id'=>$client->id]) }}" class="btn btn-info btn-sm">Show</a>
+    @if($client)
+        <a href="{{ route('show-client',['id'=>$client->id]) }}" class="btn btn-info btn-sm">Show</a>
+    @endif
     <button type="button" id='saveClientBtn' onclick="saveClient();"
             class="btn btn-success btn-sm">{{ $client ? "Save" : "Add" }}
     </button>

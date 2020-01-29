@@ -215,8 +215,6 @@ class HomeController extends Controller
         } else {
             $client->lawyer_id = $data['lawyer_id'];
         }
-        dump($custom_fee_switcher);
-        die;
 
         if ($custom_fee_switcher == 1) {
             $settings = array();
