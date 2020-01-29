@@ -201,9 +201,12 @@
                     { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": true },
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
+                        let url = "{{ route('show-client',':id') }}";
+                            url = url.replace(':id',row.id);
+
                         return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="'+row.id+'"><i class="fa fa-pencil"></i></a>'
                                 +
-                                '<a href="/client/'+row.id+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
+                                '<a href="'+url+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
                             ;
                     }},
                     { "data": "status", "name":'clients.status', "orderable": true,
