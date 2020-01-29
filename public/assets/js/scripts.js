@@ -244,8 +244,12 @@
 })(window);
 
 function openCalculatorModal() {
+    const amortize = 1,
+          anuity = 2;
+    const amortization = document.getElementById('amortization');
+    const interestOnly = document.getElementById('interestOnly');
+    const calculatorTable = document.getElementById('table');
 
-    var calculatorTable = document.getElementById('table');
     calculatorTable.innerHTML = '';
 
     let previousBalance = document.getElementById('amount').value;
@@ -255,19 +259,20 @@ function openCalculatorModal() {
 
     if (previousBalance === '' || currentRate === '' || currentTerm === ''){
         calculatorTable.innerHTML = '';
-        return true;
+        return false;
     }
 
     values.jthAmount = parseInt(previousBalance);
     values.jthPercent = parseFloat(currentRate);
-    values.jthTerms = parseInt(currentTerm);
-    values.jthType = document.getElementById('repaymentType').value * 1;
+    values.jthTerms = (interestOnly.checked)?parseInt(amortization.value):parseInt(currentTerm);
+    values.jthType = (interestOnly.checked)?anuity:amortize;
 
     if (values.jthType === 1) {
         let previousBalance = values.jthAmount;
         let paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), values.jthTerms))));
 
         for (let i = 1; i <= values.jthTerms; i++) {
+
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
             let paymentBalance = (paymentTotal - paymentPercent);
 
@@ -276,7 +281,18 @@ function openCalculatorModal() {
                 previousBalance = 0;
             }
 
-            let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
+            let currentPreviousBalance = numberFormat(previousBalance),
+                currentPaymentPercent  = numberFormat(paymentPercent),
+                currentPaymentBalance  = numberFormat(paymentBalance),
+                currentPaymentTotal    = numberFormat(paymentTotal);
+
+            let appendRow = "<tr>" +
+                "<td>" + i + "</td>" +
+                "<td>" + currentPaymentPercent + "</td>" +
+                "<td>" + currentPaymentBalance + "</td>" +
+                "<td>" + currentPaymentTotal + "</td>" +
+                "<td>" + currentPreviousBalance + "</td>" +
+                "</tr>";
             calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
         }
     } else {
@@ -287,15 +303,34 @@ function openCalculatorModal() {
 
             for (let i = 1; i <= values.jthTerms; i++) {
                 let paymentPercent = previousBalance * ((values.jthPercent / 100) / 12);
-                let paymentTotal = paymentPercent + paymentBalance;
-                previousBalance = previousBalance - paymentBalance;
+                let paymentTotal   = paymentPercent + paymentBalance;
+                previousBalance    = previousBalance - paymentBalance;
 
-                let appendRow = "<tr><td>" + i + "</td><td>" + previousBalance.toFixed(2) + "</td><td>" + paymentPercent.toFixed(2) + "</td><td>" + paymentBalance.toFixed(2) + "</td><td>" + paymentTotal.toFixed(2) + "</td></tr>";
+                let currentPreviousBalance = numberFormat(previousBalance),
+                    currentPaymentPercent  = numberFormat(paymentPercent),
+                    currentPaymentBalance  = numberFormat(paymentBalance),
+                    currentPaymentTotal    = numberFormat(paymentTotal);
+
+                let appendRow = "<tr>" +
+                    "<td>" + i + "</td>" +
+                    "<td>" + currentPaymentPercent + "</td>" +
+                    "<td>" + currentPaymentBalance + "</td>" +
+                    "<td>" + currentPaymentTotal + "</td>" +
+                    "<td>" + currentPreviousBalance + "</td>" +
+                    "</tr>";
                 calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
             }
         }
     }
     document.getElementById('main-modal-content').style.display = 'block';
+}
+
+function numberFormat(_number) {
+    return  new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    }).format(Math.round(_number))
 }
 
 function closeModal() {

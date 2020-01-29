@@ -7,6 +7,7 @@ use App\Settings;
 use App\Agents;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Validation\Rule;
 
@@ -214,6 +215,8 @@ class HomeController extends Controller
         } else {
             $client->lawyer_id = $data['lawyer_id'];
         }
+        dump($custom_fee_switcher);
+        die;
 
         if ($custom_fee_switcher == 1) {
             $settings = array();
@@ -231,7 +234,6 @@ class HomeController extends Controller
 
         $client->rate = $data['rate'];
         $client->amount = $data['amount'];
-        $client->description = $data['description'];
         $client->co_signor = json_encode($data['co_signor'], JSON_FORCE_OBJECT);
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
@@ -416,17 +418,11 @@ class HomeController extends Controller
 
         $validations = array(
             'mortgage_fee' => 'numeric|required',
-            'mortgage_fee_type' => 'required|in:fixed,percent',
             'broker_fee' => 'numeric|required',
-            'broker_fee_type' => 'required|in:fixed,percent',
             'lender_fee' => 'numeric|required',
-            'lender_fee_type' => 'required|in:fixed,percent',
             'admin_fee' => 'numeric|required',
-            'admin_fee_type' => 'required|in:fixed,percent',
             'lawyer_fee' => 'numeric|required',
-            'lawyer_fee_type' => 'required|in:fixed,percent',
             'appraisal_fee' => 'numeric|required',
-            'appraisal_fee_type' => 'required|in:fixed,percent',
         );
 
 
@@ -444,19 +440,39 @@ class HomeController extends Controller
 
 
         $settings = array();
-        $settings['mortgage'] = array('fee' => $data['mortgage_fee'], 'type' => $data['mortgage_fee_type']);
-        $settings['broker'] = array('fee' => $data['broker_fee'], 'type' => $data['broker_fee_type']);
-        $settings['lender'] = array('fee' => $data['lender_fee'], 'type' => $data['lender_fee_type']);
-        $settings['admin'] = array('fee' => $data['admin_fee'], 'type' => $data['admin_fee_type']);
-        $settings['lawyer'] = array('fee' => $data['lawyer_fee'], 'type' => $data['lawyer_fee_type']);
-        $settings['appraisal'] = array('fee' => $data['appraisal_fee'], 'type' => $data['appraisal_fee_type']);
+        $settings['mortgage'] = array('fee' => $data['mortgage_fee']);
+        $settings['broker'] = array('fee' => $data['broker_fee']);
+        $settings['lender'] = array('fee' => $data['lender_fee']);
+        $settings['admin'] = array('fee' => $data['admin_fee']);
+        $settings['lawyer'] = array('fee' => $data['lawyer_fee']);
+        $settings['appraisal'] = array('fee' => $data['appraisal_fee']);
 
         $settings = serialize($settings);
         $fee = Settings::where('key', 'fee')->first();
         $fee->value = $settings;
         $fee->save();
 
-        return json_encode(array('status' => 1));
+        return response()->json([
+            'status' => 1,
+            'message' => 'Update successfully.'
+        ]);
+    }
+
+    function show($id){
+
+        $client = Clients::find($id);
+        $lender = Agents::find($client->lender_id);
+        $lawyer = Agents::find($client->lawyer_id);
+        $agent = Agents::find($client->agent_id);
+
+        $data = [
+            'activeMenu' => 'clients',
+            'client' => $client,
+            'lender' => $lender,
+            'lawyer' => $lawyer,
+            'agent'  => $agent,
+        ];
+        return view('show',$data);
     }
 
 }

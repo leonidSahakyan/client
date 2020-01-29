@@ -18,10 +18,11 @@ class Clients extends Model
                                     'clients.id as id',
                                     'clients.renewal_date',
                                     'clients.closing_date',
-                                    'clients.address',
+                                    'clients.name as client_name',
+                                    'clients.address as address',
                                     'clients.dob',
-                                    'clients.phone',
-                                    'clients.email',
+                                    'clients.phone as phone',
+                                    'clients.email as email',
                                     'clients.rate',
                                     'clients.fee',
                                     'clients.admin_fee',
@@ -39,17 +40,16 @@ class Clients extends Model
 		if($length != '-1'){
 			$query->skip($start)->take($length);
 		}
-        
+
         if ($filter){
             if(isset($filter['search']) && strlen($filter['search']) > 0){
                 $searchQ = $filter['search'];
-                
+
                 $query->where(function ($query) use ($searchQ) {
-                    $query->where('address','LIKE',"%{$searchQ}%")
-                        ->orWhere('phone','LIKE',"%{$searchQ}%")
-                        ->orWhere('email','LIKE',"%{$searchQ}%")
-                        ->orWhere('phone','LIKE',"%{$searchQ}%")
-                        ->orWhere('agent.name','LIKE',"%{$searchQ}%");
+                    $query->where('clients.address','LIKE',"%".$searchQ."%")
+                        ->orWhere('clients.phone','LIKE',"%_".$searchQ."")
+                        ->orWhere('clients.email','LIKE',"%".$searchQ."%")
+                        ->orWhere('clients.name','LIKE',"%".$searchQ."%");
                 });
             }
 
@@ -60,7 +60,7 @@ class Clients extends Model
 		}
         $query->orderBy($sort_field, $sort_dir);
         $data = $query->get();
-        
+
 		foreach ($data as $d) {
             $d->DT_RowId = "row_".$d->DT_RowId;
             $d->rate = $d->rate."$";
@@ -68,9 +68,6 @@ class Clients extends Model
             $d->admin_fee = $d->admin_fee."$";
             $d->current_mortgage = $d->current_mortgage."$";
             $d->mortgage_amount = $d->mortgage_amount."$";
-            $d->agent_name = $d->agent_name."<i data-id=".$d->id." data-toggle='modal' data-target='#agentPopup' class='fa fa-angle-down agent-popup-trigger'></i>";
-
-            // $d->status = $d->status == 1 ? 'Active' : 'Completed';
 		}
 		$count  = DB::select( DB::raw("SELECT FOUND_ROWS() AS recordsTotal;"))[0];
 		$return['data'] = $data;

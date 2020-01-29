@@ -46,85 +46,45 @@
                                 <label class='error_container'></label>
                             </div>
                             <div class="row">
-                                <div class="col-6 row">
+                                <div class="col-md-4">
                                     <!-- Mortgage -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="mortgage_fee" class="col-form-label">Mortgage</label>
                                         <input class="form-control" type="number" name="mortgage_fee" value="{{ $fees['mortgage']['fee'] }}" id="mortgage_fee" placeholder="mortgage fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="mortgage-fee-type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="mortgage_fee_type" id="mortgage_fee_type">
-                                            <option {{ $fees['mortgage']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['mortgage']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                     <!-- Broker -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="broker_fee" class="col-form-label">Broker</label>
                                         <input class="form-control" type="number" name="broker_fee" value="{{ $fees['broker']['fee'] }}" id="broker_fee" placeholder="broker fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="broker_fee_type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="broker_fee_type" id="broker_fee_type">
-                                            <option {{ $fees['broker']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['broker']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                     <!-- Lender -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="lender_fee" class="col-form-label">Lender</label>
                                         <input class="form-control" type="number" name="lender_fee" value="{{ $fees['lender']['fee'] }}" id="lender_fee" placeholder="lender fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="lender_fee_type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="lender_fee_type" id="lender_fee_type">
-                                            <option {{ $fees['lender']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['lender']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                 </div>
-                                <div class="col-6 row">
+                                <div class="col-md-4">
                                     <!-- Admin -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="admin_fee" class="col-form-label">Admin</label>
                                         <input class="form-control" type="number" name="admin_fee" value="{{ $fees['admin']['fee'] }}" id="admin_fee" placeholder="admin fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="admin-fee-type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="admin_fee_type" id="admin_fee_type">
-                                            <option {{ $fees['admin']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['admin']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                     <!-- Lawyer -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="lawyer_fee" class="col-form-label">Lawyer</label>
                                         <input class="form-control" type="number" name="lawyer_fee" value="{{ $fees['lawyer']['fee'] }}" id="lawyer_fee" placeholder="lawyer fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="lawyer_fee_type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="lawyer_fee_type" id="lawyer_fee_type">
-                                            <option {{ $fees['lawyer']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['lawyer']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                     <!-- Appraisal -->
-                                    <div class="form-group col-8">
+                                    <div class="form-group">
                                         <label for="appraisal_fee" class="col-form-label">Appraisal</label>
                                         <input class="form-control" type="number" name="appraisal_fee" value="{{ $fees['appraisal']['fee'] }}" id="appraisal_fee" placeholder="appraisal fee">
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label for="appraisal_fee_type" class=" col-form-label">Type</label>
-                                        <select class="form-control custom-select" name="appraisal_fee_type" id="appraisal_fee_type">
-                                            <option {{ $fees['appraisal']['type'] == 'fixed' ? 'selected="selected"' : "" }} value="fixed">Fixed</option>
-                                            <option {{ $fees['appraisal']['type'] == 'percent' ? 'selected="selected"' : "" }} value="percent">Percent</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="text-right" style="margin-left: auto;">
-                                    <button type="button" id='saveSettingsBtn' onclick="saveSettings();" class="btn btn-success mr72">Save</button>
+                                <div class="col-md-8">
+                                    <div class="text-right" style="margin-left: auto;">
+                                        <button type="button" id='saveSettingsBtn' onclick="saveSettings();" class="btn btn-success">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -140,7 +100,7 @@
 <script>
     function saveSettings(){
         var data = $('.save-settings').serialize();
-        
+
         Loading.add($('#saveSettingsBtn'));
         $('.error_container').html('');
 		$.ajax({
@@ -150,16 +110,17 @@
 	        dataType: 'json',
 	        success: function(response){
                 Loading.remove($('#saveSettingsBtn'));
-	            if(response.status == 0){
+	            if(response.status === 0){
                     $('.error_container').html(response.errors);
 	            }
-	            if(response.status == 1){
+	            if(response.status === 1){
                     //success
+                    console.log(response)
 	            }
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 Loading.remove($('#saveSettingsBtn'));
-            } 
+            }
 	    });
     }
 </script>

@@ -67,7 +67,7 @@
                                                 <th>Admin fee</th>
                                                 <th>Mortgage amount</th>
                                                 <th>Current mortgage</th>
-                                                <th>Edit</th>
+                                                <th>Acton</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -109,11 +109,16 @@
                     <table>
                         <thead>
                         <tr>
+{{--                            <th></th>--}}
+{{--                            <th>Credit Balance After Next Payment</th>--}}
+{{--                            <th>Paid Interests</th>--}}
+{{--                            <th>Repayment of the Credit Sum</th>--}}
+{{--                            <th>Monthly Contribution (Interest + Credit)</th>--}}
                             <th></th>
-                            <th>Credit Balance After Next Payment</th>
-                            <th>Paid Interests</th>
-                            <th>Repayment of the Credit Sum</th>
-                            <th>Monthly Contribution (Interest + Credit)</th>
+                            <th>Interest</th>
+                            <th>Principal</th>
+                            <th>Total Paid</th>
+                            <th>Balance</th>
                         </tr>
                         </thead>
                     </table>
@@ -184,7 +189,7 @@
                         }
                     }},
                     { "data": "closing_date", "name":'clients.closing_date', "orderable": true },
-                    { "data": "agent_name", "name":'agents.name', "orderable": true },
+                    { "data": "client_name", "name":'agents.name', "orderable": true },
                     { "data": "address", "name":'clients.address', "orderable": true },
                     { "data": "dob", "name":'clients.dob', "orderable": true },
                     { "data": "phone", "name":'clients.phone', "orderable": true },
@@ -196,7 +201,10 @@
                     { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": true },
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
-                        return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="'+row.id+'"><i class="fa fa-pencil""></i></a>';
+                        return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="'+row.id+'"><i class="fa fa-pencil"></i></a>'
+                                +
+                                '<a href="/client/'+row.id+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
+                            ;
                     }},
                     { "data": "status", "name":'clients.status', "orderable": true,
                         render: function ( data, type, row, meta) {

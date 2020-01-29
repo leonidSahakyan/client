@@ -6,11 +6,11 @@
     <form class="save-agent" action="JavaScript:void(0);">
         <label class='error_container'></label>
         <input type="hidden" name="client_id" value='{{$client->id}}' />
-        <div class="form-group" style="margin-bottom: 0;">
-            <label class="col-form-label">
-                <h6>Type: {{ $client->type == 1 ? "Lander": "Lawyer" }}</h6>
-            </label>
-        </div>
+{{--        <div class="form-group" style="margin-bottom: 0;">--}}
+{{--            <label class="col-form-label">--}}
+{{--                <h6>Type: {{ $client->type == 1 ? "Lander": "Lawyer" }}</h6>--}}
+{{--            </label>--}}
+{{--        </div>--}}
         <div class="form-group" style="margin-bottom: 0;">
             <label class="col-form-label">
                 <h5>Referral Source</h5>

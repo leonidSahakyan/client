@@ -19,7 +19,7 @@
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Personal information</legend>
                     <div class="form-group">
-                        <label for="example-name-input" class="col-form-label">Name</label>
+                        <label for="example-name-input" class="col-form-label">Full name</label>
                         <input class="form-control" name="name" value="{{ $client ? $client->name : "" }}" type="text"
                                id="example-name-input" placeholder="Name">
                     </div>
@@ -58,11 +58,6 @@
                         <label for="example-date-input1" class="col-form-label">DOB</label>
                         <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date"
                                id="example-date-input2">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Legal description</label>
-                        <textarea name="description" id="description" class="form-control"
-                                  rows="5">{{ ($client && $client->description) ? $client->description :'' }}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="co_signor" class="col-form-label">Add co-signor</label>
@@ -218,16 +213,21 @@
                     </div>
                     <div class="form-group">
                         <label for="amount" class="col-form-label">Amount</label>
-                        <input class="form-control" min="0" name="amount" value='{{ $client ? $client->amount : "" }}'
-                               id="amount" placeholder="Amount">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">$</div>
+                            </div>
+                            <input class="form-control" min="0" name="amount" value='{{ $client ? $client->amount : "" }}'
+                                   id="amount" placeholder="Amount">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="creditTime" class="col-form-label">Term  (Months in integer)</label>
+                        <label for="creditTime" class="col-form-label">Term  (Months)</label>
                         <input class="form-control" min="0" type="number" name="credit_time"
                                value='{{ $client ? $client->credit_time : "" }}' id="creditTime" placeholder="Term">
                     </div>
                     <div class="form-group">
-                        <label for="amortization">Amortization (Months in integer)</label>
+                        <label for="amortization">Amortization (Months)</label>
                         <input type="number" name="" id="amortization" class="form-control" min="1">
                     </div>
                     <div class="form-group">
@@ -238,16 +238,21 @@
                     </div>
                     <div class="form-group">
                         <label for="rate" class="col-form-label">Rate</label>
-                        <input class="form-control" min="0" value="{{ $client ? $client->rate : "" }}" type="number"
-                               name="rate" id="rate" placeholder="Rate">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">%</div>
+                            </div>
+                            <input class="form-control" min="0" value="{{ $client ? $client->rate : "" }}" type="number"
+                                   name="rate" id="rate" placeholder="Rate">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="repaymentType" class="col-form-label">Repayment Type</label>
-                        <select id="repaymentType" class="form-control">
-                            <option value="1">Interest Only</option>
-                            <option value="2">Amortization</option>
-                        </select>
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label for="repaymentType" class="col-form-label">Repayment Type</label>--}}
+{{--                        <select id="repaymentType" class="form-control">--}}
+{{--                            <option value="2">Interest Only</option>--}}
+{{--                            <option value="1">Amortization</option>--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
                     <div class="form-group">
                         <button type="button" class="btn btn-primary btn-sm" onclick="openCalculatorModal()">
                             Calculate
@@ -320,7 +325,9 @@
     </form>
 </div>
 <div class="modal-footer">
+{{--    <a href="{{ route('export_word') }}" class="btn btn-info btn-sm">Export Word</a>--}}
     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+    <a href="{{ route('show-client',['id'=>$client->id]) }}" class="btn btn-info btn-sm">Show</a>
     <button type="button" id='saveClientBtn' onclick="saveClient();"
             class="btn btn-success btn-sm">{{ $client ? "Save" : "Add" }}
     </button>

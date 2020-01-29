@@ -23,6 +23,7 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Client part
 Route::get('/clients', 'HomeController@index')->name('clients');
+Route::get('/client/{id}', 'HomeController@show')->name('show-client');
 Route::get('/clients-data', 'HomeController@clientsData')->name('clients-data');
 Route::post('/get-client', 'HomeController@getClient')->name('get-client');
 Route::get('/save-client', 'HomeController@saveClient')->name('save-client');
