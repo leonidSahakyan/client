@@ -136,7 +136,7 @@
     </div>
 </section>
 <!-- basic modal end -->
-<script>
+<script type="text/javascript">
     $( document ).ready(function() {
         $('body').on('click', '.getClient', function(){
             var client_id = $(this).data('client_id') > 0 ? $(this).data('client_id') : false;

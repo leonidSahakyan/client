@@ -24,6 +24,7 @@
                         <h4 class="page-title pull-left">Dashboard</h4>
                         <ul class="breadcrumbs pull-left">
                             <li><a href="">Home</a></li>
+                            <li><a href="{{ route('clients') }}">Clients</a></li>
                             <li><span>Client -> {{$client->name}}</span></li>
                         </ul>
                     </div>
