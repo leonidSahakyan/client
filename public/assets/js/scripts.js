@@ -264,7 +264,7 @@ function openCalculatorModal() {
 
     values.jthAmount = parseInt(previousBalance);
     values.jthPercent = parseFloat(currentRate);
-    values.jthTerms = (interestOnly.checked)?parseInt(amortization.value):parseInt(currentTerm);
+    values.jthTerms = (interestOnly.checked)?parseInt(currentTerm):parseInt(amortization.value);
     values.jthType = (interestOnly.checked)?anuity:amortize;
 
     if (values.jthType === 1) {

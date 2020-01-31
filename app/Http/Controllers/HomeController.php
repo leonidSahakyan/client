@@ -7,8 +7,7 @@ use App\Settings;
 use App\Agents;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
@@ -83,40 +82,14 @@ class HomeController extends Controller
     {
         $data = $request->all();
 
-        $clientId = $data['client_id'];
+        $clientId = $data['client_id']?? null;
 
         $validations = array(
-            'status' => 'required|in:1,2,3',
-            'term' => 'integer|nullable',
             'name' => 'required|string',
-            'mailing_address' => 'required',
-            'property_security' => 'required',
-            'co_signor' => 'required|array|min:1',
-            'legal_pid' => 'required',
-            'email' => 'required|string',
-            'phone' => 'required|string',
-            'address' => 'required|string',
-            'dob' => 'required|string',
-            'closing_date' => 'required|string',
-            'agent_name' => 'required|string',
-            'agent_phone' => 'required|string',
-            'agent_email' => 'required|string',
-            'custom_fee_switcher' => 'nullable',
-            'lender_name' => 'required|string',
-            'lender_phone' => 'required|string',
-            'lender_email' => 'required|string',
-            'lawyer_name' => 'required|string',
-            'lawyer_phone' => 'required|string',
-            'lawyer_email' => 'required|string',
-            'mortgage_fee' => 'numeric|required',
-            'broker_fee' => 'numeric|required',
-            'lender_fee' => 'numeric|required',
-            'admin_fee' => 'numeric|required',
-            'lawyer_fee' => 'numeric|required',
-            'appraisal_fee' => 'numeric|required',
         );
 
         $custom_fee_switcher = 0;
+
         if (isset($data['custom_fee_switcher'])) {
             $custom_fee_switcher = 1;
         } else {
@@ -128,23 +101,6 @@ class HomeController extends Controller
             unset($validations['appraisal_fee']);
         }
 
-        if ($data['agent_id'] != '-1') {
-            unset($validations['agent_name']);
-            unset($validations['agent_phone']);
-            unset($validations['agent_email']);
-        }
-
-        if ($data['lender_id'] !== '-1') {
-            unset($validations['lender_name']);
-            unset($validations['lender_phone']);
-            unset($validations['lender_email']);
-        }
-
-        if ($data['lawyer_id'] !== '-1') {
-            unset($validations['lawyer_name']);
-            unset($validations['lawyer_phone']);
-            unset($validations['lawyer_email']);
-        }
 
         if ($clientId && $clientId != 0) {
             $client = Clients::find($clientId);
@@ -156,7 +112,6 @@ class HomeController extends Controller
 
         if ($validator->fails()) {
             $html = "<div>";
-
             foreach ($validator->errors()->all() as $error) {
                 $html .= "<span>" . $error . "</span>";
             }
@@ -179,7 +134,11 @@ class HomeController extends Controller
         $renewal_date = $this->getRenwalDate($client->closing_date, $data['term']);
         $client->renewal_date = $renewal_date ? $renewal_date : null;
 
-        if ($data['agent_id'] == '-1') {
+        $agentId = $data['agent_id'] ?? null;
+        $lenderId = $data['lender_id'] ?? null;
+        $lawyerId = $data['lawyer_id'] ?? null;
+
+        if ($agentId === '-1') {
             $newAgent = Agents::create(['name' => $data['agent_name'],
                 'phone' => $data['agent_phone'],
                 'email' => $data['agent_email'],
@@ -188,23 +147,23 @@ class HomeController extends Controller
 
             $client->agent_id = $newAgent->id;
         } else {
-            $client->agent_id = $data['agent_id'];
+            $client->agent_id = $agentId;
         }
 
         // add lender
-        if ($data['lender_id'] == '-1') {
+        if ($lenderId === '-1') {
             $newAgent = Agents::create(['name' => $data['lender_name'],
                 'phone' => $data['lender_phone'],
                 'email' => $data['lender_email'],
-                'type' => 2]);
+                'type' => $this->LENDER_TYPE]);
 
             $client->lender_id = $newAgent->id;
         } else {
-            $client->lender_id = $data['lender_id'];
+            $client->lender_id = $lenderId;
         }
 
         // add lawyer
-        if ($data['lawyer_id'] == '-1') {
+        if ($lawyerId === '-1') {
             $newAgent = Agents::create(['name' => $data['lawyer_name'],
                 'phone' => $data['lawyer_phone'],
                 'email' => $data['lawyer_email'],
@@ -213,7 +172,7 @@ class HomeController extends Controller
 
             $client->lawyer_id = $newAgent->id;
         } else {
-            $client->lawyer_id = $data['lawyer_id'];
+            $client->lawyer_id = $lawyerId;
         }
 
         if ($custom_fee_switcher == 1) {
@@ -232,7 +191,7 @@ class HomeController extends Controller
 
         $client->rate = $data['rate'];
         $client->amount = $data['amount'];
-        $client->co_signor = json_encode($data['co_signor'], JSON_FORCE_OBJECT);
+        $client->co_signor = (isset($data['co_signor']) && count($data['co_signor'])>0)?json_encode($data['co_signor'], JSON_FORCE_OBJECT):null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
         $client->property_security = $data['property_security'];
@@ -456,7 +415,8 @@ class HomeController extends Controller
         ]);
     }
 
-    function show($id){
+    function show($id)
+    {
 
         $client = Clients::find($id);
         $lender = Agents::find($client->lender_id);
@@ -468,9 +428,9 @@ class HomeController extends Controller
             'client' => $client,
             'lender' => $lender,
             'lawyer' => $lawyer,
-            'agent'  => $agent,
+            'agent' => $agent,
         ];
-        return view('show',$data);
+        return view('show', $data);
     }
 
 }
