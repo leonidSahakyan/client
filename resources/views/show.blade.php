@@ -74,10 +74,11 @@
                                         <tr>
                                             <th scope="row">Add co-signor</th>
                                             <td>
-                                                @foreach(json_decode($client->co_signor) as $item)
-                                                    {{ $item }}<br>
-                                                @endforeach()
-
+                                                @if($client->co_signor){
+                                                    @foreach(json_decode($client->co_signor) as $item)
+                                                        {{ $item }}<br>
+                                                    @endforeach
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr>
