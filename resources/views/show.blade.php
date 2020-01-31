@@ -36,7 +36,7 @@
             {{--            @dump($client)--}}
             <div class="row">
                 <div class="col-md-4 mt-5">
-                    <div class="card">
+                    <div class="card ">
                         <div class="card-body">
                             <h4 class="header-title">Client information</h4>
                             <div class="single-table">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 mt-5">
-                    <div class="card">
+                    <div class="card ">
                         <div class="card-body">
                             <h4 class="header-title">Description</h4>
                             <div class="single-table">
@@ -183,7 +183,7 @@
                 </div>
                 @if($client->custom_fee==1 && $fee = unserialize($client->settings))
                     <div class="col-md-4 mt-5">
-                        <div class="card">
+                        <div class="card ">
                             <div class="card-body">
                                 <h4 class="header-title">Fees/Cost of Credit</h4>
                                 <div class="single-table">

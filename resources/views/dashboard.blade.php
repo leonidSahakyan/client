@@ -42,12 +42,38 @@
                                 <div class="mb-3 d-flex justify-content-between">
                                     <button type="button" class="btn btn-success getClient btn-sm" data-remote="{{ route('get-client') }}" data-toggle="modal" data-target="#exampleModalLong">Add Client</button>
 
-                                    <select id="filter_status" class="custom-select" style="width: auto;">
+                                    <select id="filter_by_agent" class="custom-select data_filter w-auto" style="width: auto">
+                                        <option value="" selected>Filter By Agent</option>
+                                        @foreach($agents as $agent)
+                                            @if ($agent->type == 1)
+                                                <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <select id="filter_by_lender" class="custom-select data_filter w-auto" style="width: auto">
+                                        <option value="" selected>Filter By Lender</option>
+                                        @foreach($agents as $agent)
+                                            @if ($agent->type == 2)
+                                                <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <select id="filter_by_lawyer" class="custom-select data_filter" style="width: auto">
+                                        <option value="" selected>Filter By Lawyer</option>
+                                        @foreach($agents as $agent)
+                                            @if ($agent->type == 3)
+                                                <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+
+                                    <select id="filter_status" class="custom-select data_filter"style="width: auto">
                                         <option value="-1" selected="selected">Select status</option>
                                         <option value="1">Active</option>
                                         <option value="2">Completed</option>
                                         <option value="3">Cancelled</option>
                                     </select>
+                                    <a href="{{ route('clients') }}" class="btn btn-info btn-sm resetFilter">Reset filter</a>
                                 </div>
 
                                 <h4 class="header-title">Clients list</h4>
@@ -109,11 +135,6 @@
                     <table>
                         <thead>
                         <tr>
-{{--                            <th></th>--}}
-{{--                            <th>Credit Balance After Next Payment</th>--}}
-{{--                            <th>Paid Interests</th>--}}
-{{--                            <th>Repayment of the Credit Sum</th>--}}
-{{--                            <th>Monthly Contribution (Interest + Credit)</th>--}}
                             <th></th>
                             <th>Interest</th>
                             <th>Principal</th>
@@ -169,6 +190,9 @@
                     delete data.order;
 
                     data['filter_status'] = $('#filter_status').val();
+                    data['agent_id']      = $('#filter_by_agent').val();
+                    data['lender_id']     = $('#filter_by_lender').val();
+                    data['lawyer_id']     = $('#filter_by_lawyer').val();
 
                     $.each(ajaxParams, function (key, value) {
                         data[key] = value;
@@ -234,7 +258,7 @@
         });
 
         // Filter onchange
-        $("#filter_status").on('change', function() {
+        $(".data_filter").on('change', function() {
             table.ajax.reload();
         });
 

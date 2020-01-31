@@ -57,6 +57,12 @@ class Clients extends Model
                 $query->where('status','=',$filter['status']);
             }
 
+            foreach ($filter as $key =>  $val) {
+                if ($key !== 'status' && $val){
+                    $query->where("$key",'=',$val);
+                }
+            }
+
 		}
         $query->orderBy($sort_field, $sort_dir);
         $data = $query->get();

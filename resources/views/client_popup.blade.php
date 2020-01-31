@@ -36,17 +36,20 @@
                     </div>
                     <div class="form-group">
                         <label for="mailing_address">Mailing address</label>
-                        <input type="text" id="mailing_address" class="form-control" name="mailing_address" value="{{ $client? $client->mailing_address:"" }}">
+                        <input type="text" id="mailing_address" class="form-control" name="mailing_address"
+                               value="{{ $client? $client->mailing_address:"" }}">
                     </div>
                     <div class=" form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sameMailingAddress" onchange=" setMailingAddress(this)">
+                            <input class="form-check-input" type="checkbox" id="sameMailingAddress"
+                                   onchange=" setMailingAddress(this)">
                             <label class="form-check-label" for="sameMailingAddress">Same a Mailing Address</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="property_security" class="col-form-label">Property Security</label>
-                        <input type="text" class="form-control" id="property_security" name="property_security" value="{{ $client? $client->property_security:"" }}">
+                        <input type="text" class="form-control" id="property_security" name="property_security"
+                               value="{{ $client? $client->property_security:"" }}">
                     </div>
                     <div class="form-group">
                         <label for="example-address-input" class="col-form-label">Address</label>
@@ -74,7 +77,8 @@
                     </div>
                     <div class="form-group">
                         <label for="legal_pid">Legal PID</label>
-                        <input type="text" class="form-control" id="legal_pid" name="legal_pid" value="{{ $client ? $client->legal_pid:'' }}">
+                        <input type="text" class="form-control" id="legal_pid" name="legal_pid"
+                               value="{{ $client ? $client->legal_pid:'' }}">
                     </div>
                 </fieldset>
             </div>
@@ -89,11 +93,12 @@
                                 <option selected="selected" disabled="disabled">Select lender</option>
                                 <option value="-1">Create New</option>
                                 @foreach ($agents as $agent)
-                                    @if ($agent->type != 2) @continue @endif
-                                    <option
-                                        {{ $client && $client->lender_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
-                                        ({{$agent->phone}})
-                                    </option>
+                                    @if ($agent->type == 2)
+                                        <option
+                                            {{ $client && $client->lender_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
+                                            ({{$agent->phone}})
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -120,15 +125,16 @@
                     <div id="lawyer_container" class="d-block">
                         <div class="form-group">
                             <label for="select-lawyer" class="col-form-label">Lawyer</label>
-                            <select  class="custom-select form-control" name="lawyer_id" id="select-lawyer">
+                            <select class="custom-select form-control" name="lawyer_id" id="select-lawyer">
                                 <option selected="selected" disabled="disabled">Select lawyer</option>
                                 <option value="-1">Create New</option>
                                 @foreach ($agents as $agent)
-                                    @if ($agent->type != 3) @continue @endif
-                                    <option
-                                        {{ $client && $client->lawyer_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
-                                        ({{$agent->phone}})
-                                    </option>
+                                    @if ($agent->type == 3)
+                                        <option
+                                            {{ $client && $client->lawyer_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
+                                            ({{$agent->phone}})
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -185,11 +191,12 @@
                             <option selected="selected" disabled="disabled">Select agent</option>
                             <option value="-1">Create New</option>
                             @foreach ($agents as $agent)
-                                @if ($agent->type != 1) @continue @endif
-                                <option
-                                    {{ $client && $client->agent_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
-                                    ({{$agent->phone}})
-                                </option>
+                                @if ($agent->type == 1)
+                                    <option
+                                        {{ $client && $client->agent_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
+                                        ({{$agent->phone}})
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
 
@@ -217,12 +224,13 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
                             </div>
-                            <input class="form-control" min="0" name="amount" value='{{ $client ? $client->amount : "" }}'
+                            <input class="form-control" min="0" name="amount"
+                                   value='{{ $client ? $client->amount : "" }}'
                                    id="amount" placeholder="Amount">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="creditTime" class="col-form-label">Term  (Months)</label>
+                        <label for="creditTime" class="col-form-label">Term (Months)</label>
                         <input class="form-control" min="0" type="number" name="credit_time"
                                value='{{ $client ? $client->credit_time : "" }}' id="creditTime" placeholder="Term">
                     </div>
@@ -246,13 +254,13 @@
                                    name="rate" id="rate" placeholder="Rate">
                         </div>
                     </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label for="repaymentType" class="col-form-label">Repayment Type</label>--}}
-{{--                        <select id="repaymentType" class="form-control">--}}
-{{--                            <option value="2">Interest Only</option>--}}
-{{--                            <option value="1">Amortization</option>--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="form-group">--}}
+                    {{--                        <label for="repaymentType" class="col-form-label">Repayment Type</label>--}}
+                    {{--                        <select id="repaymentType" class="form-control">--}}
+                    {{--                            <option value="2">Interest Only</option>--}}
+                    {{--                            <option value="1">Amortization</option>--}}
+                    {{--                        </select>--}}
+                    {{--                    </div>--}}
                     <div class="form-group">
                         <button type="button" class="btn btn-primary btn-sm" onclick="openCalculatorModal()">
                             Calculate
@@ -325,7 +333,7 @@
     </form>
 </div>
 <div class="modal-footer">
-{{--    <a href="{{ route('export_word') }}" class="btn btn-info btn-sm">Export Word</a>--}}
+    {{--    <a href="{{ route('export_word') }}" class="btn btn-info btn-sm">Export Word</a>--}}
     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
     @if($client)
         <a href="{{ route('show-client',['id'=>$client->id]) }}" class="btn btn-info btn-sm">Show</a>

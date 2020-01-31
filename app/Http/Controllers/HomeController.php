@@ -35,15 +35,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard', array('activeMenu' => 'clients'));
+        $agents = Agents::all()->sortBy("name");
+
+        return view('dashboard', array(
+            'activeMenu' => 'clients',
+            'agents' => $agents
+        ));
     }
 
     public function clientsData(Request $request)
     {
 
         $model = new Clients();
-
-        $filter['status'] = $request->input('filter_status');
+        $filter['status']    = $request->input('filter_status');
+        $filter['agent_id']  = $request->input('agent_id');
+        $filter['lender_id'] = $request->input('lender_id');
+        $filter['lawyer_id'] = $request->input('lawyer_id');
 
         if (isset($request->input('search')['value']) && $request->input('search')['value'] != '') {
             $filter['search'] = $request->input('search')['value'];
@@ -56,9 +63,13 @@ class HomeController extends Controller
             $request->input('sort_field'),
             $request->input('sort_dir')
         );
-        $data = json_encode(array('data' => $items['data'], "recordsFiltered" => $items['count'], 'recordsTotal' => $items['count']));
 
-        return $data;
+        return response()->json([
+            'data'            => $items['data'],
+            'recordsFiltered' => $items['count'],
+            'recordsTotal'    => $items['count']
+        ]);
+
     }
 
     public function getClient(Request $request)
