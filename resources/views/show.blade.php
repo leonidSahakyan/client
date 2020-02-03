@@ -49,7 +49,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Email</th>
-                                            <td>{{ $client->email }}</td>
+                                            <td><a href="mailto: {{ $client->email }}">{{ $client->email }}</a></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Phone</th>

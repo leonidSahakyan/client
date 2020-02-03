@@ -243,24 +243,21 @@
     window.Loading = new Loading();
 })(window);
 
+
+
 function openCalculatorModal() {
     const amortize = 1,
-          anuity = 2;
-    const amortization = document.getElementById('amortization');
-    const interestOnly = document.getElementById('interestOnly');
-    const calculatorTable = document.getElementById('table');
-
-    calculatorTable.innerHTML = '';
+          anuity = 2,
+          amortization = document.getElementById('amortization'),
+          interestOnly = document.getElementById('interestOnly'),
+          calculatorTable = document.getElementById('table');
 
     let previousBalance = document.getElementById('amount').value;
     let currentRate = document.getElementById('rate').value;
     let currentTerm = document.getElementById('creditTime').value;
     let values = {};
 
-    if (previousBalance === '' || currentRate === '' || currentTerm === ''){
-        calculatorTable.innerHTML = '';
-        return false;
-    }
+    calculatorTable.innerHTML = '';
 
     values.jthAmount = parseInt(previousBalance);
     values.jthPercent = parseFloat(currentRate);

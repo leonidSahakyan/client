@@ -240,7 +240,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="interestOnly" value="">
+                            <input class="form-check-input" type="checkbox" id="interestOnly">
                             <label class="form-check-label" for="interestOnly">Interest Only</label>
                         </div>
                     </div>
@@ -344,11 +344,28 @@
 </div>
 
 <script type="text/javascript">
+
     $(document).ready(function () {
         $(".js-co_signor").select2({
             tags: true,
             tokenSeparators: [',', ' ']
-        })
+        });
+
+        // checkCalculatorAction()
     });
+    // function checkCalculatorAction() {
+    //     let  amortization = document.getElementById('amortization'),
+    //         term = document.getElementById('creditTime'),
+    //         interestOnly = document.getElementById('interestOnly');
+    //     if (interestOnly.checked){
+    //         amortization.setAttribute('readonly','readonly');
+    //         term.removeAttribute('readonly')
+    //     }else {
+    //         amortization.removeAttribute('readonly')
+    //         if (term.value!== ''){
+    //             term.setAttribute('readonly','readonly')
+    //         }
+    //     }
+    // }
 </script>
 

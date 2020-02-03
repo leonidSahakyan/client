@@ -82,18 +82,15 @@
                                         <thead class="text-capitalize">
                                             <tr role="row">
                                                 <th>Renewal Date</th>
-                                                <th>Closing date</th>
+                                                <th>Closing Date</th>
                                                 <th>Name</th>
                                                 <th>Address</th>
-                                                <th>DOB</th>
                                                 <th>Phone</th>
                                                 <th>Email</th>
                                                 <th>Rate</th>
-                                                <th>Fee</th>
-                                                <th>Admin fee</th>
-                                                <th>Mortgage amount</th>
-                                                <th>Current mortgage</th>
-                                                <th>Acton</th>
+                                                <th>Mortgage Amount</th>
+                                                <th>Mortgage Balance</th>
+                                                <th>Actions</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -130,7 +127,7 @@
     <div class="main-modal-content">
         <div class="main-credit-modal-content">
             <button class="main-modal__close" href="#" onclick="closeModal()"><i class="fa fa-times"></i></button>
-            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule</h3>
+            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule <button class="printCalculator"><i class="fa fa-print"></i></button></h3>
                 <div class="main-table-body">
                     <table>
                         <thead>
@@ -138,7 +135,7 @@
                             <th></th>
                             <th>Interest</th>
                             <th>Principal</th>
-                            <th>Total Paid</th>
+                            <th>Payment</th>
                             <th>Balance</th>
                         </tr>
                         </thead>
@@ -205,24 +202,18 @@
             processing: false,
             columns: [
                     { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,
-                        render: function ( data, type, row, meta) {
-                        if(row.renewal_date && row.renewal_date != "0000-00-00"){
-                            return row.renewal_date;
-                        }else{
-                            return '- - -';
-                        }
-                    }},
+                    },
                     { "data": "closing_date", "name":'clients.closing_date', "orderable": true },
-                    { "data": "client_name", "name":'agents.name', "orderable": true },
-                    { "data": "address", "name":'clients.address', "orderable": true },
-                    { "data": "dob", "name":'clients.dob', "orderable": true },
-                    { "data": "phone", "name":'clients.phone', "orderable": true },
-                    { "data": "email", "name":'clients.email', "orderable": true },
-                    { "data": "rate", "name":'clients.rate', "orderable": true },
-                    { "data": "fee", "name":'clients.fee', "orderable": true },
-                    { "data": "admin_fee", "name":'clients.admin_fee', "orderable": true },
-                    { "data": "mortgage_amount", "name":'clients.mortgage_amount', "orderable": true },
-                    { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": true },
+                    { "data": "client_name", "name":'agents.name', "orderable": false },
+                    { "data": "address", "name":'clients.address', "orderable": false },
+                    // { "data": "dob", "name":'clients.dob', "orderable": false },
+                    { "data": "phone", "name":'clients.phone', "orderable": false },
+                    { "data": "email", "name":'clients.email', "orderable": false },
+                    { "data": "rate", "name":'clients.rate', "orderable": false },
+                    // { "data": "fee", "name":'clients.fee', "orderable": false },
+                    // { "data": "admin_fee", "name":'clients.admin_fee', "orderable": false },
+                    { "data": "mortgage_amount", "name":'clients.mortgage_amount', "orderable": false },
+                    { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": false },
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
                         let url = "{{ route('show-client',':id') }}";
@@ -233,7 +224,7 @@
                                 '<a href="'+url+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
                             ;
                     }},
-                    { "data": "status", "name":'clients.status', "orderable": true,
+                    { "data": "status", "name":'clients.status', "orderable": false,
                         render: function ( data, type, row, meta) {
                         var html = '<select data-id="'+row.id+'" class="custom-select change-status">';
 

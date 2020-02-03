@@ -142,8 +142,12 @@ class HomeController extends Controller
         $client->address = $data['address'];
         $client->status = $data['status'];
 
-        $renewal_date = $this->getRenwalDate($client->closing_date, $data['term']);
-        $client->renewal_date = $renewal_date ? $renewal_date : null;
+        $renewal_date = null;
+        if ($data['closing_date']){
+            $renewal_date = $this->getRenwalDate($client->closing_date, $data['term']);
+        }
+
+        $client->renewal_date = $renewal_date;
 
         $agentId = $data['agent_id'] ?? null;
         $lenderId = $data['lender_id'] ?? null;
