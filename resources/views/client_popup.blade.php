@@ -122,6 +122,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="select-agent" class="select-agent">Referral</label>
+                        <select class="custom-select form-control" name="agent_id" id="select-agent">
+                            <option selected="selected" disabled="disabled">Select agent</option>
+                            <option value="-1">Create New</option>
+                            @foreach ($agents as $agent)
+                                @if ($agent->type == 1)
+                                    <option
+                                        {{ $client && $client->agent_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
+                                        ({{$agent->phone}})
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
                     <div id="lawyer_container" class="d-block">
                         <div class="form-group">
                             <label for="select-lawyer" class="col-form-label">Lawyer</label>
@@ -184,22 +199,6 @@
                         <label for="term" class="col-form-label">Term</label>
                         <input class="form-control" min="0" type="number" name="term"
                                value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
-                    </div>
-                    <div class="form-group">
-                        <label for="select-agent" class="select-agent">Referral</label>
-                        <select class="custom-select form-control" name="agent_id" id="select-agent">
-                            <option selected="selected" disabled="disabled">Select agent</option>
-                            <option value="-1">Create New</option>
-                            @foreach ($agents as $agent)
-                                @if ($agent->type == 1)
-                                    <option
-                                        {{ $client && $client->agent_id == $agent->id ? 'selected="selected"' : "" }} value="{{$agent->id}}">{{$agent->name}}
-                                        ({{$agent->phone}})
-                                    </option>
-                                @endif
-                            @endforeach
-                        </select>
-
                     </div>
                     <div id="agent_container" class="main-form-content">
                         <div class="form-group">
@@ -344,28 +343,11 @@
 </div>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
         $(".js-co_signor").select2({
             tags: true,
             tokenSeparators: [',', ' ']
         });
-
-        // checkCalculatorAction()
     });
-    // function checkCalculatorAction() {
-    //     let  amortization = document.getElementById('amortization'),
-    //         term = document.getElementById('creditTime'),
-    //         interestOnly = document.getElementById('interestOnly');
-    //     if (interestOnly.checked){
-    //         amortization.setAttribute('readonly','readonly');
-    //         term.removeAttribute('readonly')
-    //     }else {
-    //         amortization.removeAttribute('readonly')
-    //         if (term.value!== ''){
-    //             term.setAttribute('readonly','readonly')
-    //         }
-    //     }
-    // }
 </script>
 

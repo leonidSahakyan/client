@@ -47,8 +47,8 @@ class HomeController extends Controller
     {
 
         $model = new Clients();
-        $filter['status']    = $request->input('filter_status');
-        $filter['agent_id']  = $request->input('agent_id');
+        $filter['status'] = $request->input('filter_status');
+        $filter['agent_id'] = $request->input('agent_id');
         $filter['lender_id'] = $request->input('lender_id');
         $filter['lawyer_id'] = $request->input('lawyer_id');
 
@@ -65,9 +65,9 @@ class HomeController extends Controller
         );
 
         return response()->json([
-            'data'            => $items['data'],
+            'data' => $items['data'],
             'recordsFiltered' => $items['count'],
-            'recordsTotal'    => $items['count']
+            'recordsTotal' => $items['count']
         ]);
 
     }
@@ -93,7 +93,7 @@ class HomeController extends Controller
     {
         $data = $request->all();
 
-        $clientId = $data['client_id']?? null;
+        $clientId = $data['client_id'] ?? null;
 
         $validations = array(
             'name' => 'required|string',
@@ -142,12 +142,10 @@ class HomeController extends Controller
         $client->address = $data['address'];
         $client->status = $data['status'];
 
-        $renewal_date = null;
-        if ($data['closing_date']){
-            $renewal_date = $this->getRenwalDate($client->closing_date, $data['term']);
+        if ($data['closing_date']) {
+            $client->renewal_date = $this->getRenewalDate($client->closing_date, $data['term']);
+            $client->iad = $this->getRenewalDate($client->closing_date);
         }
-
-        $client->renewal_date = $renewal_date;
 
         $agentId = $data['agent_id'] ?? null;
         $lenderId = $data['lender_id'] ?? null;
@@ -206,7 +204,7 @@ class HomeController extends Controller
 
         $client->rate = $data['rate'];
         $client->amount = $data['amount'];
-        $client->co_signor = (isset($data['co_signor']) && count($data['co_signor'])>0)?json_encode($data['co_signor'], JSON_FORCE_OBJECT):null;
+        $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
         $client->property_security = $data['property_security'];
@@ -367,7 +365,7 @@ class HomeController extends Controller
         return json_encode(array('status' => 1));
     }
 
-    public function getRenwalDate($closingDate, $term)
+    public function getRenewalDate($closingDate, $term = null)
     {
         $term++;
         $newDate = date('Y-m', strtotime("+" . $term . " months", strtotime($closingDate)));

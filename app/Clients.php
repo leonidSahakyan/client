@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class Clients extends Model
 {
@@ -18,6 +18,7 @@ class Clients extends Model
                                     'clients.id as id',
                                     'clients.renewal_date',
                                     'clients.closing_date',
+                                    'clients.iad as ida',
                                     'clients.name as client_name',
                                     'clients.address as address',
                                     'clients.dob',
@@ -69,11 +70,11 @@ class Clients extends Model
 
 		foreach ($data as $d) {
             $d->DT_RowId = "row_".$d->DT_RowId;
-            $d->rate = $d->rate."$";
-            $d->fee = $d->fee."$";
-            $d->admin_fee = $d->admin_fee."$";
-            $d->current_mortgage = $d->current_mortgage."$";
-            $d->mortgage_amount = $d->mortgage_amount."$";
+            $d->rate = ($d->rate)?$d->rate." $":'';
+            $d->fee = ($d->fee)?$d->fee." $":'';
+            $d->admin_fee = ($d->admin_fee)?$d->admin_fee." $":'';
+            $d->current_mortgage = ($d->current_mortgage)?$d->current_mortgage." $":'';
+            $d->mortgage_amount = ($d->mortgage_amount)?$d->mortgage_amount." $":'';
 		}
 		$count  = DB::select( DB::raw("SELECT FOUND_ROWS() AS recordsTotal;"))[0];
 		$return['data'] = $data;

@@ -145,6 +145,10 @@
                                             <td>{{ $client->closing_date }}</td>
                                         </tr>
                                         <tr>
+                                            <th scope="row">IAD</th>
+                                            <td>{{ $client->iad }}</td>
+                                        </tr>
+                                        <tr>
                                             <th scope="row">Term</th>
                                             <td>{{ $client->term }}</td>
                                         </tr>

@@ -41,7 +41,6 @@
                             <div class="card-body">
                                 <div class="mb-3 d-flex justify-content-between">
                                     <button type="button" class="btn btn-success getClient btn-sm" data-remote="{{ route('get-client') }}" data-toggle="modal" data-target="#exampleModalLong">Add Client</button>
-
                                     <select id="filter_by_agent" class="custom-select data_filter w-auto" style="width: auto">
                                         <option value="" selected>Filter By Agent</option>
                                         @foreach($agents as $agent)
@@ -83,6 +82,7 @@
                                             <tr role="row">
                                                 <th>Renewal Date</th>
                                                 <th>Closing Date</th>
+                                                <th>IAD</th>
                                                 <th>Name</th>
                                                 <th>Address</th>
                                                 <th>Phone</th>
@@ -127,7 +127,7 @@
     <div class="main-modal-content">
         <div class="main-credit-modal-content">
             <button class="main-modal__close" href="#" onclick="closeModal()"><i class="fa fa-times"></i></button>
-            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule <button class="printCalculator"><i class="fa fa-print"></i></button></h3>
+            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule <button class="printCalculator" onclick="window.print()"><i class="fa fa-print"></i></button></h3>
                 <div class="main-table-body">
                     <table>
                         <thead>
@@ -201,17 +201,14 @@
             serverSide: true,
             processing: false,
             columns: [
-                    { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,
-                    },
+                    { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,},
                     { "data": "closing_date", "name":'clients.closing_date', "orderable": true },
-                    { "data": "client_name", "name":'agents.name', "orderable": false },
-                    { "data": "address", "name":'clients.address', "orderable": false },
-                    // { "data": "dob", "name":'clients.dob', "orderable": false },
-                    { "data": "phone", "name":'clients.phone', "orderable": false },
-                    { "data": "email", "name":'clients.email', "orderable": false },
-                    { "data": "rate", "name":'clients.rate', "orderable": false },
-                    // { "data": "fee", "name":'clients.fee', "orderable": false },
-                    // { "data": "admin_fee", "name":'clients.admin_fee', "orderable": false },
+                    { "data": "ida",          "name":'clients.ida', "orderable": true },
+                    { "data": "client_name",  "name":'agents.name', "orderable": false },
+                    { "data": "address",      "name":'clients.address', "orderable": false },
+                    { "data": "phone",        "name":'clients.phone', "orderable": false },
+                    { "data": "email",        "name":'clients.email', "orderable": false },
+                    { "data": "rate",         "name":'clients.rate', "orderable": false },
                     { "data": "mortgage_amount", "name":'clients.mortgage_amount', "orderable": false },
                     { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": false },
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",

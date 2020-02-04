@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
 
 class Agents extends Model
 {
@@ -14,4 +13,5 @@ class Agents extends Model
     protected $fillable = [
         'name', 'email', 'phone','type'
     ];
+
 }
