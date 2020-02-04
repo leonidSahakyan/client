@@ -23,6 +23,7 @@
         text-align: right;
         font-size: 15px;
         line-height: 17px;
+        border-bottom: 1px solid #d6d8d9;
     }
     table thead tr th:first-child {
         padding: 11px 0;

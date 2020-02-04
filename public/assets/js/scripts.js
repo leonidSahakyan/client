@@ -327,7 +327,7 @@ function numberFormat(_number) {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0
-    }).format(Math.round(_number))
+    }).format(parseInt(Math.round(_number)))
 }
 
 function closeModal() {
