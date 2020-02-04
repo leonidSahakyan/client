@@ -127,7 +127,16 @@
     <div class="main-modal-content">
         <div class="main-credit-modal-content">
             <button class="main-modal__close" href="#" onclick="closeModal()"><i class="fa fa-times"></i></button>
-            <div class="main-modal__body"><h3 class="main-moda-table__title">Payment Schedule <button class="printCalculator" onclick="window.print()"><i class="fa fa-print"></i></button></h3>
+            <div class="main-modal__body" id="calculator-table">
+                <h3 class="main-moda-table__title">Payment Schedule
+                    <form action="{{ route('export_calculator') }}" target="_blank" method="post">
+                        <input type="hidden" id="table-content" name="content">
+                        @csrf
+                        <button type="button" class="printCalculator" onclick="printPDF(this)">
+                            <i class="fa fa-print"></i>
+                        </button>
+                    </form>
+                </h3>
                 <div class="main-table-body">
                     <table>
                         <thead>
@@ -155,6 +164,25 @@
 </section>
 <!-- basic modal end -->
 <script type="text/javascript">
+    const _token = '<?php echo csrf_token(); ?>';
+    function printPDF(This) {
+        document.getElementById('table-content').value = document.querySelector('div#calculator-table').innerHTML;
+        This.form.submit();
+        {{--let data = {--}}
+        {{--    content: document.querySelector('div#calculator-table').innerHTML,--}}
+        {{--    _token: _token--}}
+        {{--};--}}
+
+        {{--let response = await fetch('{{  route('export_calculator') }}', {--}}
+        {{--    method: 'POST',--}}
+        {{--    headers: {--}}
+        {{--        'Content-Type': 'application/json;charset=utf-8'--}}
+        {{--    },--}}
+        {{--    body: JSON.stringify(data)--}}
+        {{--});--}}
+
+        {{--let result = await response.json();--}}
+    }
     $( document ).ready(function() {
         $('body').on('click', '.getClient', function(){
             var client_id = $(this).data('client_id') > 0 ? $(this).data('client_id') : false;
@@ -196,7 +224,7 @@
                     });
                 },
             },
-            _token: '<?php echo csrf_token(); ?>',
+            _token: _token,
             responsive: true,
             serverSide: true,
             processing: false,

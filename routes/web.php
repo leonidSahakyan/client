@@ -43,5 +43,5 @@ Route::get('/mortgages', 'HomeController@mortgages')->name('mortgages');
 Route::get('/save-settings', 'HomeController@saveSettings')->name('save-settings');
 
 // Export files
-Route::get('/export/word', 'ExportWordController@index')->name('export_word');
+Route::post('/export/calculator/pdf', 'ExportController@calculator')->name('export_calculator');
 
