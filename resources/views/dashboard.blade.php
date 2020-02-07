@@ -165,24 +165,12 @@
 <!-- basic modal end -->
 <script type="text/javascript">
     const _token = '<?php echo csrf_token(); ?>';
+
     function printPDF(This) {
         document.getElementById('table-content').value = document.querySelector('div#calculator-table').innerHTML;
         This.form.submit();
-        {{--let data = {--}}
-        {{--    content: document.querySelector('div#calculator-table').innerHTML,--}}
-        {{--    _token: _token--}}
-        {{--};--}}
-
-        {{--let response = await fetch('{{  route('export_calculator') }}', {--}}
-        {{--    method: 'POST',--}}
-        {{--    headers: {--}}
-        {{--        'Content-Type': 'application/json;charset=utf-8'--}}
-        {{--    },--}}
-        {{--    body: JSON.stringify(data)--}}
-        {{--});--}}
-
-        {{--let result = await response.json();--}}
     }
+
     $( document ).ready(function() {
         $('body').on('click', '.getClient', function(){
             var client_id = $(this).data('client_id') > 0 ? $(this).data('client_id') : false;
@@ -241,12 +229,16 @@
                     { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": false },
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
-                        let url = "{{ route('show-client',':id') }}";
+                        let url = "{{ route('show-client',':id') }}",
+                            exportWord = "{{ route('export_word',':id') }}";
                             url = url.replace(':id',row.id);
+                            exportWord = exportWord.replace(':id',row.id);
 
                         return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="'+row.id+'"><i class="fa fa-pencil"></i></a>'
                                 +
                                 '<a href="'+url+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
+                                +
+                                '<a href="'+exportWord+'" class="btn ml-3"><i class="fa fa-print" aria-hidden="true"></i></a>'
                             ;
                     }},
                     { "data": "status", "name":'clients.status', "orderable": false,
