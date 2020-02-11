@@ -12,6 +12,21 @@ use PhpOffice\PhpWord\Shared\Html;
 
 class ExportController extends Controller
 {
+    public static function calculator($amount, $rate, $term, $amortization_term, $type){
+
+        if ($type === 1){
+            return round( ($amount * ($rate / 100) / 12) / (1 - (1 / (pow((1 + ($rate / 100) / 12), $amortization_term)))),-2);
+        }else{
+            $previousBalance = $amount;
+            $paymentBalance = $amount / $term;
+
+            for ($i = 1; $i <= $term; $i++) {
+                $paymentPercent = ($previousBalance * ($rate / 100) / 12);
+                return round($paymentPercent + $paymentBalance,-2);
+            }
+        }
+    }
+
     public function exportWord(int $id)
     {
         $phpWord = new PhpWord();
@@ -30,10 +45,15 @@ class ExportController extends Controller
         $client = Clients::find($id);
         $settings = unserialize($client->settings);
 
+        $calculator = self::calculator($client->amount, $client->rate, $client->credit_time, $client->amortization_term, $client->payment_type);
+//        dump($settings);
+//        dump( (int)$calculator);
+//        die;
 
         $html =  view('export.word',[
             'client' => $client,
-            'settings' => $settings
+            'settings' => $settings,
+            'monthlyPayment' => (int)$calculator,
         ])->render();
 
             Html::addHtml($section, $html, false, false,
@@ -44,11 +64,9 @@ class ExportController extends Controller
             );
 
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-
-        $fileName = sha1('') . '.docx';
-
-        $phpWord->save(storage_path("$fileName"));
-        return response()->download(storage_path("$fileName"));
+        $fileName = storage_path('/app/public/').sha1('') . '.docx';
+        $phpWord->save($fileName);
+        return response()->download($fileName);
     }
 
     public function calculatorPDF(Request $request)

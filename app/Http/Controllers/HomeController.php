@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class HomeController extends Controller
 {
@@ -209,6 +210,8 @@ class HomeController extends Controller
         $client->mailing_address = $data['mailing_address'];
         $client->property_security = $data['property_security'];
         $client->credit_time = $data['credit_time'];
+        $client->amortization_term = $data['amortization_term'];
+        $client->payment_type = isset($data['payment_type'])?1:2;
 
         $client->save();
 
@@ -428,7 +431,7 @@ class HomeController extends Controller
         ]);
     }
 
-    function show($id)
+    public function show($id)
     {
 
         $client = Clients::find($id);
@@ -444,6 +447,12 @@ class HomeController extends Controller
             'agent' => $agent,
         ];
         return view('show', $data);
+    }
+
+    public function destroyClient(int $id){
+           $client = Clients::find($id);
+           $client->delete();
+           return redirect()->route('clients');
     }
 
 }

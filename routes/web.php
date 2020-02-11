@@ -27,6 +27,7 @@ Route::get('/client/{id}', 'HomeController@show')->name('show-client');
 Route::get('/clients-data', 'HomeController@clientsData')->name('clients-data');
 Route::post('/get-client', 'HomeController@getClient')->name('get-client');
 Route::get('/save-client', 'HomeController@saveClient')->name('save-client');
+Route::get('/destroy-client/{id?}', 'HomeController@destroyClient')->name('client-destroy');
 Route::get('/change-status', 'HomeController@changeStatus')->name('change-status');
 
 Route::post('/get-agent', 'HomeController@getAgent')->name('get-agent');

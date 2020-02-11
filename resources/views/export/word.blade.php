@@ -24,7 +24,7 @@
 </p>
 <p>
     <span style="font-size:11pt; font-family:Calibri,sans-serif">We are please to arrange a Second mortgage for
-        $ <strong>{{ $client->amount }}</strong> per terms and conditions below:
+        $ <strong>{{ number_format((int)$client->amount) }}</strong> per terms and conditions below:
     </span>
 </p>
 <table border="0" style="width: 100%; margin: 0in 0in 0in 0in" cellspacing="0" cellpadding="0">
@@ -63,7 +63,7 @@
             <strong>Amortization Period:</strong>
         </td>
         <td>
-            <strong>Interest only</strong>
+            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>
         </td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@
             <strong>Monthly Payment:</strong>
         </td>
         <td>
-            <span>$ <strong>1200</strong></span>
+            <span>$ <strong>{{ $monthlyPayment }}</strong></span>
         </td>
         <td colspan="2">
             <strong>12 post dated cheques</strong>
@@ -79,21 +79,21 @@
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
-        <td><strong>{{ $client->credit_time }}</strong> months</td>
+        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>
         <td><strong>Estimated Funding Date:</strong></td>
-        <td><strong>Dec 15, 2019 </strong></td>
+        <td><strong>{{ date('F j, Y', strtotime($client->closing_date)) }} </strong></td>
     </tr>
     <tr>
         <td><strong>Administration Fee:</strong></td>
-        <td>$ <strong>{{ $settings['admin']['fee'] }}</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['admin']['fee']) }}</strong></td>
         <td><strong>Lender Fee:</strong></td>
-        <td>$ <strong>{{ $settings['lender']['fee'] }}</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['lender']['fee']) }}</strong></td>
     </tr>
     <tr>
         <td><strong>Broker Fee:</strong></td>
-        <td>$ <strong>{{ $settings['broker']['fee'] }}</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['broker']['fee']) }}</strong></td>
         <td><strong>iMortgage Canada Fee:</strong></td>
-        <td>$ <strong>{{ $settings['mortgage']['fee'] }}</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['mortgage']['fee']) }}</strong></td>
     </tr>
 </table>
 <p><span style="font-size:12pt"><span style="font-family:Calibri,sans-serif">Conditions:</span></span></p>
@@ -156,7 +156,7 @@
             <span style="color: black">Deduct:</span>
         </td>
         <td style="width: 20%;">
-            <strong>$ 150,000</strong>
+            <strong>$ {{ number_format($client->amount) }}</strong>
         </td>
     </tr>
     <tr>
@@ -167,22 +167,23 @@
           <span style="color: black;">       (iv)	iMortgage Canada Fee:</span> <br/>
           <span style="color: black;">       (v)	Estimated Legal Fee and Disbursements:</span> <br/>
           <span style="color: black">              (Title Insurance, Insurance Binder, Discharges etc)</span> <br/>
-<span style="color: black">Total Net Advanced to Borrower:</span> <br/>
+<span style="color: black">Total Net Advanced to {{ $client->name }}:</span> <br/>
 <span style="color: black">Estimated Other Deductions (mortgage payouts, loan payouts etc)</span> <br/>
         </td>
         <td style="width: 20%;">
-            <span style="color: black;">$395</span>   <br/>
-            <span style="color: black;">$4,500</span> <br/>
-            <span style="color: black;">$1,500</span> <br/>
-            <span style="color: black;">$1,500</span> <br/>
-            <span style="color: black;">$2000</span>  <br/>  <br/>
-            <span style="color: black; text-decoration: underline; font-weight: bold">$140,105</span> <br/>
+            <span style="color: black;">$ {{ number_format((int)$settings['admin']['fee']) }}</span>   <br/>
+            <span style="color: black;">$ {{ number_format((int)$settings['lender']['fee']) }}</span> <br/>
+            <span style="color: black;">$ {{ number_format((int)$settings['broker']['fee']) }}</span> <br/>
+            <span style="color: black;">$ {{ number_format((int)$settings['mortgage']['fee']) }}</span> <br/>
+            <span style="color: black;">$ 2000</span>  <br/>  <br/>
+            <span style="color: black; text-decoration: underline; font-weight: bold">$ {{ number_format(((int)$client->amount) - ( (int)$settings['admin']['fee'] + (int)$settings['lender']['fee'] + (int)$settings['broker']['fee'] + (int)$settings['mortgage']['fee'])
+) }}</span> <br/>
             <span style="color: black;">$100,000</span> <br/>
         </td>
     </tr>
     <tr>
         <td style="width: 80%;">
-            <span style="color: black">Payments Already made (or to be made) directly by Borrower:</span> <br/>
+            <span style="color: black">Payments Already made (or to be made) directly by {{ $client->name }}:</span> <br/>
             <span style="color: black;">        (a)	Appraisal/Inspection Fee (approximate): </span> <br/>
             <span style="color: black;">        (b)	Total monthly payments to be made in connection with the mortgage: </span> <br/>
             <span style="color: black;">        (c)	Balance to be paid at maturity date (unless renewed): </span> <br/>
@@ -192,9 +193,9 @@
         </td>
         <td style="width: 20%;">
             <span> </span><br/>
-            <span style="color: black;">+ $ 400</span>   <br/>
-            <span style="color: black;">+ $ 14,4000</span> <br/>
-            <span style="color: black;">+ $ 150,000</span> <br/>
+            <span style="color: black;">+ $ {{ $settings['appraisal']['fee'] }}</span>   <br/>
+            <span style="color: black;">+ $ @if ($client->payment_type == 2){{ (int)$client->amortization_term * (int)$monthlyPayment }}@else{{ (int)$client->credit_time * (int)$monthlyPayment }}@endif</span> <br/>
+            <span style="color: black;">+ $ {{ $client->amount }}</span> <br/>
             <span style="color: black;">= $ 164,800</span> <br/>
             <span style="color: black;">$ 24,695</span>  <br/>
             <span style="color: black; text-decoration: underline">16.46 %</span>

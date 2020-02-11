@@ -107,7 +107,7 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lender email</th>
-                                                <td>{{ $lender->email }}</td>
+                                                <td><a href="mailto: {{ $lender->email }}">{{ $lender->email }}</a></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lender phone</th>
@@ -121,7 +121,7 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lawyer email</th>
-                                                <td>{{ $lawyer->email }}</td>
+                                                <td><a href="mailto: {{ $lawyer->email }}">{{ $lawyer->email }}</a></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lawyer phone</th>
@@ -159,7 +159,7 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Referral email</th>
-                                                <td>{{ $agent->email }}</td>
+                                                <td><a href="mailto: {{ $agent->email }}">{{ $agent->email }}</a></td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Referral phone</th>

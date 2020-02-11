@@ -235,11 +235,11 @@
                     </div>
                     <div class="form-group">
                         <label for="amortization">Amortization (Months)</label>
-                        <input type="number" name="" id="amortization" class="form-control" min="1">
+                        <input type="number" name="amortization_term" id="amortization" class="form-control" min="1" value="{{ $client ? $client->amortization_term :'' }}">
                     </div>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="interestOnly">
+                            <input class="form-check-input" type="checkbox" id="interestOnly" name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
                             <label class="form-check-label" for="interestOnly">Interest Only</label>
                         </div>
                     </div>
@@ -253,13 +253,6 @@
                                    name="rate" id="rate" placeholder="Rate">
                         </div>
                     </div>
-                    {{--                    <div class="form-group">--}}
-                    {{--                        <label for="repaymentType" class="col-form-label">Repayment Type</label>--}}
-                    {{--                        <select id="repaymentType" class="form-control">--}}
-                    {{--                            <option value="2">Interest Only</option>--}}
-                    {{--                            <option value="1">Amortization</option>--}}
-                    {{--                        </select>--}}
-                    {{--                    </div>--}}
                     <div class="form-group">
                         <button type="button" class="btn btn-primary btn-sm" onclick="openCalculatorModal()">
                             Calculate
@@ -346,7 +339,6 @@
     $(document).ready(function () {
         $(".js-co_signor").select2({
             tags: true,
-            tokenSeparators: [',', ' ']
         });
     });
 </script>

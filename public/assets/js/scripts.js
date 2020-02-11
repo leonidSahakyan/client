@@ -302,7 +302,6 @@ function openCalculatorModal() {
                 let paymentPercent = previousBalance * ((values.jthPercent / 100) / 12);
                 let paymentTotal   = paymentPercent + paymentBalance;
                 previousBalance    = previousBalance - paymentBalance;
-
                 let currentPreviousBalance = numberFormat(previousBalance),
                     currentPaymentPercent  = numberFormat(paymentPercent),
                     currentPaymentBalance  = numberFormat(paymentBalance),

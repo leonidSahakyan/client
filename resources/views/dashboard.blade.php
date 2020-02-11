@@ -230,6 +230,7 @@
                     { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
                         let url = "{{ route('show-client',':id') }}",
+                            deleteClient = "{{ route('client-destroy') }}",
                             exportWord = "{{ route('export_word',':id') }}";
                             url = url.replace(':id',row.id);
                             exportWord = exportWord.replace(':id',row.id);
@@ -239,6 +240,8 @@
                                 '<a href="'+url+'" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
                                 +
                                 '<a href="'+exportWord+'" class="btn ml-3"><i class="fa fa-print" aria-hidden="true"></i></a>'
+                                +
+                                '<a href="'+deleteClient+"/"+row.id+'" class="btn ml-3"><i class="fa fa-trash-o" aria-hidden="true"></i></i></a>'
                             ;
                     }},
                     { "data": "status", "name":'clients.status', "orderable": false,
