@@ -63,7 +63,8 @@
             <strong>Amortization Period:</strong>
         </td>
         <td>
-            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>
+            <strong>Amortization</strong>
+{{--            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>--}}
         </td>
     </tr>
     <tr>
@@ -78,7 +79,8 @@
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
-        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>
+        <td><strong>{{ $client->term }}</strong> months</td>
+{{--        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>--}}
         <td><strong>Lender Fee:</strong></td>
         <td>$ <strong>{{ number_format((int)$settings['lender']['fee']) }}</strong></td>
     </tr>
