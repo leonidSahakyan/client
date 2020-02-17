@@ -244,25 +244,27 @@
 })(window);
 
 
-
 function openCalculatorModal() {
     const amortize = 1,
-          anuity = 2,
-          amortization = document.getElementById('amortization'),
-          interestOnly = document.getElementById('interestOnly'),
-          calculatorTable = document.getElementById('table');
+        anuity = 2,
+        amortization = document.getElementById('amortization'),
+        interestOnly = document.getElementById('interestOnly'),
+        calculatorTable = document.getElementById('table');
 
-    let previousBalance = document.getElementById('amount').value;
+    let previousBalance = document.getElementById('amount').value.replace(/ /g, '') * 1;
     let currentRate = document.getElementById('rate').value;
-    let currentTerm = document.getElementById('creditTime').value;
+    let currentTerm = document.getElementById('term').value;
     let values = {};
 
     calculatorTable.innerHTML = '';
 
     values.jthAmount = parseInt(previousBalance);
     values.jthPercent = parseFloat(currentRate);
-    values.jthTerms = (interestOnly.checked)?parseInt(currentTerm):parseInt(amortization.value);
-    values.jthType = (interestOnly.checked)?anuity:amortize;
+    // values.jthTerms = (interestOnly.checked)?parseInt(currentTerm):parseInt(amortization.value);
+    // values.jthType = (interestOnly.checked)?anuity:amortize;
+    values.jthTerms = parseInt(currentTerm);
+    values.jthType = amortize;
+    values.interestPeriond = parseInt(amortization.value);
 
     if (values.jthType === 1) {
         let previousBalance = values.jthAmount;
@@ -272,17 +274,26 @@ function openCalculatorModal() {
 
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
             let paymentBalance = (paymentTotal - paymentPercent);
+            let currentPreviousBalance = null,
+                currentPaymentPercent = null,
+                currentPaymentBalance = null,
+                currentPaymentTotal = null;
+            if (interestOnly.checked && i <= values.interestPeriond) {
+                currentPreviousBalance = numberFormat(previousBalance);
+                currentPaymentPercent  = numberFormat(paymentPercent);
+                currentPaymentBalance  = 0;
+                currentPaymentTotal    = currentPaymentPercent;
+            } else {
+                previousBalance = (previousBalance - paymentBalance);
+                if (previousBalance < 0) {
+                    previousBalance = 0;
+                }
 
-            previousBalance = (previousBalance - paymentBalance);
-            if (previousBalance < 0) {
-                previousBalance = 0;
+                currentPreviousBalance = numberFormat(previousBalance);
+                currentPaymentPercent = numberFormat(paymentPercent);
+                currentPaymentBalance = numberFormat(paymentBalance);
+                currentPaymentTotal = numberFormat(paymentTotal);
             }
-
-            let currentPreviousBalance = numberFormat(previousBalance),
-                currentPaymentPercent  = numberFormat(paymentPercent),
-                currentPaymentBalance  = numberFormat(paymentBalance),
-                currentPaymentTotal    = numberFormat(paymentTotal);
-
             let appendRow = "<tr>" +
                 "<td>" + i + "</td>" +
                 "<td>" + currentPaymentPercent + "</td>" +
@@ -300,12 +311,12 @@ function openCalculatorModal() {
 
             for (let i = 1; i <= values.jthTerms; i++) {
                 let paymentPercent = previousBalance * ((values.jthPercent / 100) / 12);
-                let paymentTotal   = paymentPercent + paymentBalance;
-                previousBalance    = previousBalance - paymentBalance;
+                let paymentTotal = paymentPercent + paymentBalance;
+                previousBalance = previousBalance - paymentBalance;
                 let currentPreviousBalance = numberFormat(previousBalance),
-                    currentPaymentPercent  = numberFormat(paymentPercent),
-                    currentPaymentBalance  = numberFormat(paymentBalance),
-                    currentPaymentTotal    = numberFormat(paymentTotal);
+                    currentPaymentPercent = numberFormat(paymentPercent),
+                    currentPaymentBalance = numberFormat(paymentBalance),
+                    currentPaymentTotal = numberFormat(paymentTotal);
 
                 let appendRow = "<tr>" +
                     "<td>" + i + "</td>" +
@@ -321,8 +332,13 @@ function openCalculatorModal() {
     document.getElementById('main-modal-content').style.display = 'block';
 }
 
+function formatNumber(num) {
+    let number = num.replace(/ /g, '');
+    return number.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 function numberFormat(_number) {
-    return  new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0
@@ -337,9 +353,9 @@ function closeModal() {
 function setMailingAddress(This) {
     const mailingAddress = document.getElementById('mailing_address');
     const propertySecurity = document.getElementById('property_security');
-    if (This.checked){
-        propertySecurity.value=mailingAddress.value;
-    }else{
+    if (This.checked) {
+        propertySecurity.value = mailingAddress.value;
+    } else {
         propertySecurity.value = '';
     }
 }

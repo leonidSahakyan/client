@@ -204,12 +204,11 @@ class HomeController extends Controller
         $client->custom_fee = $custom_fee_switcher;
 
         $client->rate = $data['rate'];
-        $client->amount = $data['amount'];
+        $client->amount = str_replace(' ','', $data['amount']);
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
         $client->property_security = $data['property_security'];
-        $client->credit_time = $data['credit_time'];
         $client->amortization_term = $data['amortization_term'];
         $client->payment_type = isset($data['payment_type'])?1:2;
 

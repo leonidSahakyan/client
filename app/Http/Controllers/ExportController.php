@@ -14,17 +14,17 @@ class ExportController extends Controller
 {
     public static function calculator($amount, $rate, $term, $amortization_term, $type){
 
-        if ($type === 1){
-            return round( ($amount * ($rate / 100) / 12) / (1 - (1 / (pow((1 + ($rate / 100) / 12), $amortization_term)))),-2);
-        }else{
-            $previousBalance = $amount;
-            $paymentBalance = $amount / $term;
-
-            for ($i = 1; $i <= $term; $i++) {
-                $paymentPercent = ($previousBalance * ($rate / 100) / 12);
-                return round($paymentPercent + $paymentBalance,-2);
-            }
-        }
+//        if ($type === 1){
+            return round( ($amount * ($rate / 100) / 12) / (1 - (1 / (pow((1 + ($rate / 100) / 12), $term)))),-2);
+//        }else{
+//            $previousBalance = $amount;
+//            $paymentBalance = $amount / $term;
+//
+//            for ($i = 1; $i <= $term; $i++) {
+//                $paymentPercent = ($previousBalance * ($rate / 100) / 12);
+//                return round($paymentPercent + $paymentBalance,-2);
+//            }
+//        }
     }
 
     public function exportWord(int $id)
@@ -45,7 +45,7 @@ class ExportController extends Controller
         $client = Clients::find($id);
         $settings = unserialize($client->settings);
 
-        $calculator = self::calculator($client->amount, $client->rate, $client->credit_time, $client->amortization_term, $client->payment_type);
+        $calculator = self::calculator($client->amount, $client->rate, $client->term, $client->amortization_term, $client->payment_type);
 //        dump($settings);
 //        dump( (int)$calculator);
 //        die;

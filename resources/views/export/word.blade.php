@@ -73,27 +73,24 @@
         <td>
             <span>$ <strong>{{ $monthlyPayment }}</strong></span>
         </td>
-        <td colspan="2">
-            <strong>12 post dated cheques</strong>
-        </td>
-    </tr>
-    <tr>
-        <td><strong>Mortgage Term:</strong></td>
-        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>
         <td><strong>Estimated Funding Date:</strong></td>
         <td><strong>{{ date('F j, Y', strtotime($client->closing_date)) }} </strong></td>
     </tr>
     <tr>
-        <td><strong>Administration Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['admin']['fee']) }}</strong></td>
+        <td><strong>Mortgage Term:</strong></td>
+        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>
         <td><strong>Lender Fee:</strong></td>
         <td>$ <strong>{{ number_format((int)$settings['lender']['fee']) }}</strong></td>
     </tr>
     <tr>
-        <td><strong>Broker Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['broker']['fee']) }}</strong></td>
+        <td><strong>Administration Fee:</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['admin']['fee']) }}</strong></td>
         <td><strong>iMortgage Canada Fee:</strong></td>
         <td>$ <strong>{{ number_format((int)$settings['mortgage']['fee']) }}</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Broker Fee:</strong></td>
+        <td>$ <strong>{{ number_format((int)$settings['broker']['fee']) }}</strong></td>
     </tr>
 </table>
 <p><span style="font-size:12pt"><span style="font-family:Calibri,sans-serif">Conditions:</span></span></p>
@@ -165,20 +162,16 @@
           <span style="color: black;">       (ii)	Lender Fee:</span> <br/>
           <span style="color: black;">       (iii)	Broker Fee</span> <br/>
           <span style="color: black;">       (iv)	iMortgage Canada Fee:</span> <br/>
-          <span style="color: black;">       (v)	Estimated Legal Fee and Disbursements:</span> <br/>
           <span style="color: black">              (Title Insurance, Insurance Binder, Discharges etc)</span> <br/>
 <span style="color: black">Total Net Advanced to {{ $client->name }}:</span> <br/>
-<span style="color: black">Estimated Other Deductions (mortgage payouts, loan payouts etc)</span> <br/>
         </td>
         <td style="width: 20%;">
             <span style="color: black;">$ {{ number_format((int)$settings['admin']['fee']) }}</span>   <br/>
             <span style="color: black;">$ {{ number_format((int)$settings['lender']['fee']) }}</span> <br/>
             <span style="color: black;">$ {{ number_format((int)$settings['broker']['fee']) }}</span> <br/>
-            <span style="color: black;">$ {{ number_format((int)$settings['mortgage']['fee']) }}</span> <br/>
-            <span style="color: black;">$ 2000</span>  <br/>  <br/>
+            <span style="color: black;">$ {{ number_format((int)$settings['mortgage']['fee']) }}</span> <br/><br/>
             <span style="color: black; text-decoration: underline; font-weight: bold">$ {{ number_format(((int)$client->amount) - ( (int)$settings['admin']['fee'] + (int)$settings['lender']['fee'] + (int)$settings['broker']['fee'] + (int)$settings['mortgage']['fee'])
 ) }}</span> <br/>
-            <span style="color: black;">$100,000</span> <br/>
         </td>
     </tr>
     <tr>

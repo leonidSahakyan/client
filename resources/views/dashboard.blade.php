@@ -198,7 +198,6 @@
                     var ajaxParams = {};
                     data['sort_field'] = data.columns[data.order[0].column].name;
                     data['sort_dir'] =  data.order[0].dir;
-
                     delete data.columns;
                     delete data.order;
 
@@ -219,7 +218,7 @@
             columns: [
                     { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,},
                     { "data": "closing_date", "name":'clients.closing_date', "orderable": true },
-                    { "data": "ida",          "name":'clients.ida', "orderable": true },
+                    { "data": "ida",          "name":'clients.ida', "orderable": false },
                     { "data": "client_name",  "name":'agents.name', "orderable": false },
                     { "data": "address",      "name":'clients.address', "orderable": false },
                     { "data": "phone",        "name":'clients.phone', "orderable": false },

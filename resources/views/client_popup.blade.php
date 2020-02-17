@@ -195,11 +195,7 @@
                                value="{{ $client ? $client->closing_date : "" }}"
                                type="date" id="example-date-input">
                     </div>
-                    <div class="form-group">
-                        <label for="term" class="col-form-label">Term</label>
-                        <input class="form-control" min="0" type="number" name="term"
-                               value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
-                    </div>
+
                     <div id="agent_container" class="main-form-content">
                         <div class="form-group">
                             <label for="example-agent-name-input" class="col-form-label">Name</label>
@@ -218,39 +214,39 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="amount" class="col-form-label">Amount</label>
+                        <label for="amount" class="col-form-label">Loan Amount</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
                             </div>
-                            <input class="form-control" min="0" name="amount"
-                                   value='{{ $client ? $client->amount : "" }}'
+                            <input class="form-control" min="0" name="amount" oninput="this.value = formatNumber(this.value)"
+                                   value='{{ $client ? number_format($client->amount,0, ' ', ' ') : "" }}'
                                    id="amount" placeholder="Amount">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="creditTime" class="col-form-label">Term (Months)</label>
-                        <input class="form-control" min="0" type="number" name="credit_time"
-                               value='{{ $client ? $client->credit_time : "" }}' id="creditTime" placeholder="Term">
+                        <label for="term" class="col-form-label">Term</label>
+                        <input class="form-control" min="0" type="number" name="term"
+                               value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
                     </div>
                     <div class="form-group">
-                        <label for="amortization">Amortization (Months)</label>
-                        <input type="number" name="amortization_term" id="amortization" class="form-control" min="1" value="{{ $client ? $client->amortization_term :'' }}">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="interestOnly" name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
-                            <label class="form-check-label" for="interestOnly">Interest Only</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="rate" class="col-form-label">Rate</label>
+                        <label for="rate" class="col-form-label">Interest Rate</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
                             <input class="form-control" min="0" value="{{ $client ? $client->rate : "" }}" type="number"
                                    name="rate" id="rate" placeholder="Rate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="amortization">Interest Only Period</label>
+                        <input type="number" name="amortization_term" id="amortization" class="form-control" min="1" value="{{ $client ? $client->amortization_term :'' }}">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="interestOnly" name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
+                            <label class="form-check-label" for="interestOnly">Interest Only</label>
                         </div>
                     </div>
                     <div class="form-group">

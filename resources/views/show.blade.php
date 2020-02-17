@@ -148,10 +148,6 @@
                                             <th scope="row">IAD</th>
                                             <td>{{ $client->iad }}</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">Term</th>
-                                            <td>{{ $client->term }}</td>
-                                        </tr>
                                         @if($agent)
                                             <tr>
                                                 <th scope="row">Referral name</th>
@@ -171,8 +167,8 @@
                                             <td>{{ $client->amount }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Term (Months)</th>
-                                            <td>{{ $client->credit_time }}</td>
+                                            <th scope="row">Term</th>
+                                            <td>{{ $client->term }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Rate</th>
