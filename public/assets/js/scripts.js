@@ -352,7 +352,7 @@ function closeModal() {
 
 function setMailingAddress(This) {
     const mailingAddress = document.getElementById('mailing_address');
-    const propertySecurity = document.getElementById('property_security');
+    const propertySecurity = document.getElementById('property_security_1');
     if (This.checked) {
         propertySecurity.value = mailingAddress.value;
     } else {

@@ -3,4 +3,4 @@ php artisan config:clear &&
 php artisan view:cache &&
 php artisan view:clear &&
 php artisan cache:clear
-php artisan serve
+#php artisan serve

@@ -99,27 +99,6 @@ class HomeController extends Controller
         $validations = array(
             'name' => 'required|string',
         );
-
-        $custom_fee_switcher = 0;
-
-        if (isset($data['custom_fee_switcher'])) {
-            $custom_fee_switcher = 1;
-        } else {
-            unset($validations['mortgage_fee']);
-            unset($validations['broker_fee']);
-            unset($validations['lender_fee']);
-            unset($validations['admin_fee']);
-            unset($validations['lawyer_fee']);
-            unset($validations['appraisal_fee']);
-        }
-
-
-        if ($clientId && $clientId != 0) {
-            $client = Clients::find($clientId);
-        } else {
-            $client = new Clients();
-        }
-
         $validator = Validator::make($data, $validations);
 
         if ($validator->fails()) {
@@ -132,6 +111,12 @@ class HomeController extends Controller
                 'status' => 0,
                 'errors' => $html
             ]);
+        }
+
+        if ($clientId && $clientId != 0) {
+            $client = Clients::find($clientId);
+        } else {
+            $client = new Clients();
         }
 
         $client->term = $data['term'];
@@ -148,7 +133,7 @@ class HomeController extends Controller
             $client->iad = $this->getRenewalDate($client->closing_date);
         }
 
-        $agentId = $data['agent_id'] ?? null;
+        $agentId  = $data['agent_id']  ?? null;
         $lenderId = $data['lender_id'] ?? null;
         $lawyerId = $data['lawyer_id'] ?? null;
 
@@ -189,28 +174,27 @@ class HomeController extends Controller
             $client->lawyer_id = $lawyerId;
         }
 
-        if ($custom_fee_switcher == 1) {
-            $settings = array();
-            $settings['mortgage'] = array('fee' => $data['mortgage_fee']);
-            $settings['broker'] = array('fee' => $data['broker_fee']);
-            $settings['lender'] = array('fee' => $data['lender_fee']);
-            $settings['admin'] = array('fee' => $data['admin_fee']);
-            $settings['lawyer'] = array('fee' => $data['lawyer_fee']);
-            $settings['appraisal'] = array('fee' => $data['appraisal_fee']);
+        $settings['mortgage']   = array('fee' => $data['mortgage_fee']);
+        $settings['broker']     = array('fee' => $data['broker_fee']);
+        $settings['lender']     = array('fee' => $data['lender_fee']);
+        $settings['admin']      = array('fee' => $data['admin_fee']);
+        $settings['lawyer']     = array('fee' => $data['lawyer_fee']);
+        $settings['appraisal']  = array('fee' => $data['appraisal_fee']);
 
-            $settings = serialize($settings);
-            $client->settings = $settings;
-        }
-        $client->custom_fee = $custom_fee_switcher;
+        $settings = serialize($settings);
+        $client->settings = $settings;
+
 
         $client->rate = $data['rate'];
-        $client->amount = str_replace(' ','', $data['amount']);
+        $client->amount = str_replace(' ', '', $data['amount']);
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
-        $client->property_security = $data['property_security'];
+//        dump(serialize($data['property_security']));
+//        die;
+        $client->property_security = serialize($data['property_security']);
         $client->amortization_term = $data['amortization_term'];
-        $client->payment_type = isset($data['payment_type'])?1:2;
+        $client->payment_type = isset($data['payment_type']) ? 1 : 2;
 
         $client->save();
 
@@ -448,10 +432,11 @@ class HomeController extends Controller
         return view('show', $data);
     }
 
-    public function destroyClient(int $id){
-           $client = Clients::find($id);
-           $client->delete();
-           return redirect()->route('clients');
+    public function destroyClient(int $id)
+    {
+        $client = Clients::find($id);
+        $client->delete();
+        return redirect()->route('clients');
     }
 
 }

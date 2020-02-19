@@ -5,7 +5,7 @@
         <td style="vertical-align:top; width:1000.0pt; font-size:11pt; font-family:Calibri,sans-serif">
             <strong>  {{ $client->name }}</strong> <br/>
             <strong>  {{ $client->address }}</strong> <br/>
-            <strong>  {{ $client->property_security }}</strong> <br/>
+           @foreach(unserialize($client->property_security) as $val)<strong> {{ $val?$val:'' }}</strong> <br/>@endforeach
         </td>
         <td style="width:400.0pt">
             <p style="text-align: right"><strong><span style="font-size:22.0pt"><span
@@ -43,7 +43,11 @@
             <strong>Property Security:</strong>
         </td>
         <td>
-            <strong>{{ $client->property_security }}</strong>
+            @foreach(unserialize($client->property_security) as $key => $val)
+                @if($val)
+                    <strong>{!! ($key>0)?"<br/>":"" , $val!!} </strong>
+                @endif
+            @endforeach
         </td>
         <td>
             <strong>Legal PID:</strong>

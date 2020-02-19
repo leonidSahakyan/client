@@ -12,10 +12,12 @@ use PhpOffice\PhpWord\Shared\Html;
 
 class ExportController extends Controller
 {
-    public static function calculator($amount, $rate, $term, $amortization_term, $type){
-
+    public static function calculator($amount,$rate,$term){
 //        if ($type === 1){
+        if ($amount && $rate && $term){
             return round( ($amount * ($rate / 100) / 12) / (1 - (1 / (pow((1 + ($rate / 100) / 12), $term)))),-2);
+        }
+        return 0;
 //        }else{
 //            $previousBalance = $amount;
 //            $paymentBalance = $amount / $term;
@@ -46,10 +48,7 @@ class ExportController extends Controller
         $client = Clients::find($id);
         $settings = unserialize($client->settings);
 
-        $calculator = self::calculator($client->amount, $client->rate, $client->term, $client->amortization_term, $client->payment_type);
-//        dump($settings);
-//        dump( (int)$calculator);
-//        die;
+        $calculator = self::calculator($client->amount, $client->rate, $client->term);
 
         $html =  view('export.word',[
             'client' => $client,

@@ -61,7 +61,11 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Property Security</th>
-                                            <td>{{ $client->property_security }}</td>
+                                            <td>
+                                                @foreach(unserialize($client->property_security) as $val)
+                                                    {{ $val.'<br>'?$val:'' }}
+                                                @endforeach
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Address</th>
@@ -181,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                @if($client->custom_fee==1 && $fee = unserialize($client->settings))
+                @if($fee = unserialize($client->settings))
                     <div class="col-md-4 mt-5">
                         <div class="card ">
                             <div class="card-body">
@@ -225,6 +229,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

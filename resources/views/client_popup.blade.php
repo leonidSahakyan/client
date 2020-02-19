@@ -5,17 +5,17 @@
 <div class="modal-body">
     <form class="save-client" action="JavaScript:void(0);" autocomplete="off">
         <label class='error_container'></label>
-        <div class="s-sw-title custom-fee-swicher">
+ {{--       <div class="s-sw-title custom-fee-swicher">
             <h5>Custom fee</h5>
             <div class="s-swtich">
                 <input type="checkbox" name="custom_fee_switcher"
                        {{ $client && $client->custom_fee == 1 ? 'checked="checked"' : "" }} id="custom_fee_switcher">
                 <label for="custom_fee_switcher">Toggle</label>
             </div>
-        </div>
+        </div>--}}
         <input type="hidden" name="client_id" value='{{ $client ? $client->id : 0 }}'/>
         <div class="row">
-            <div class="{{ $client && $client->custom_fee == 1 ? 'col-4' : 'col-6' }} popup-main">
+            <div class="col-4 popup-main">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Personal information</legend>
                     <div class="form-group">
@@ -46,11 +46,22 @@
                             <label class="form-check-label" for="sameMailingAddress">Same a Mailing Address</label>
                         </div>
                     </div>
+                    @for($i=0; $i <=1; $i++)
                     <div class="form-group">
-                        <label for="property_security" class="col-form-label">Property Security</label>
-                        <input type="text" class="form-control" id="property_security" name="property_security"
-                               value="{{ $client? $client->property_security:"" }}">
+                        <label for="property_security_{{$i+1}}" class="col-form-label">Property Security</label>
+                        <input type="text" class="form-control" id="property_security_{{$i+1}}" name="property_security[]"
+                               @if($client && $val = unserialize($client->property_security)[$i])
+                                value="{{ $val }}">
+                               @endif
                     </div>
+                    @endfor
+{{--                    <div class="form-group">--}}
+{{--                        <label for="property_security_2" class="col-form-label">Property Security</label>--}}
+{{--                        <input type="text" class="form-control" id="property_security_2" name="property_security[]"--}}
+{{--                               @if($client && $val = unserialize($client->property_security)[1])--}}
+{{--                               value="{{ $val }}">--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
                     <div class="form-group">
                         <label for="example-address-input" class="col-form-label">Address</label>
                         <input class="form-control" type="text" name="address"
@@ -83,7 +94,7 @@
                 </fieldset>
             </div>
 
-            <div class="{{ $client && $client->custom_fee == 1 ? 'col-4' : 'col-6' }} popup-main">
+            <div class="col-4 popup-main">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Description</legend>
                     <div id="lender_container" class="d-block">
@@ -257,14 +268,14 @@
                 </fieldset>
             </div>
 
-            <div class="col-4 {{ $client && $client->custom_fee == 1 ? '' : 'd-none' }} popup-secondary">
+            <div class="col-4  popup-secondary">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Fees/Cost of Credit</legend>
                     <div class="row">
                         <!-- Mortgage -->
                         <div class="form-group col">
                             <label for="mortgage_fee" class="col-form-label">iMortgage</label>
-                            <input class="form-control" type="number" name="mortgage_fee"
+                            <input class="form-control" type="number" name="mortgage_fee" min="0"
                                    value="{{ $fees['mortgage']['fee'] }}" id="mortgage_fee" placeholder="mortgage fee">
                         </div>
                     </div>
@@ -272,7 +283,7 @@
                         <!-- Broker -->
                         <div class="form-group col">
                             <label for="broker_fee" class="col-form-label">Broker</label>
-                            <input class="form-control" type="number" name="broker_fee"
+                            <input class="form-control" type="number" name="broker_fee" min="0"
                                    value="{{ $fees['broker']['fee'] }}"
                                    id="broker_fee" placeholder="broker fee">
                         </div>
@@ -282,7 +293,7 @@
                         <div class="form-group col">
                             <label for="lender_fee" class="col-form-label">Lender</label>
                             <input class="form-control" type="number" name="lender_fee"
-                                   value="{{ $fees['lender']['fee'] }}"
+                                   value="{{ $fees['lender']['fee'] }}" min="0"
                                    id="lender_fee" placeholder="lender fee">
                         </div>
                     </div>
@@ -292,7 +303,7 @@
                         <div class="form-group col">
                             <label for="admin_fee" class="col-form-label">Admin</label>
                             <input class="form-control" type="number" name="admin_fee"
-                                   value="{{ $fees['admin']['fee'] }}"
+                                   value="{{ $fees['admin']['fee'] }}" min="0"
                                    id="admin_fee" placeholder="admin fee">
                         </div>
                     </div>
@@ -301,7 +312,7 @@
                         <div class="form-group col">
                             <label for="lawyer_fee" class="col-form-label">Lawyer</label>
                             <input class="form-control" type="number" name="lawyer_fee"
-                                   value="{{ $fees['lawyer']['fee'] }}"
+                                   value="{{ $fees['lawyer']['fee'] }}" min="0"
                                    id="lawyer_fee" placeholder="lawyer fee">
                         </div>
                     </div>
@@ -309,7 +320,7 @@
                         <!-- Appraisal -->
                         <div class="form-group col">
                             <label for="appraisal_fee" class="col-form-label">Appraisal</label>
-                            <input class="form-control" type="number" name="appraisal_fee"
+                            <input class="form-control" type="number" name="appraisal_fee" min="0"
                                    value="{{ $fees['appraisal']['fee'] }}" id="appraisal_fee"
                                    placeholder="appraisal fee">
                         </div>
