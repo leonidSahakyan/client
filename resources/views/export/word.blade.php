@@ -155,7 +155,7 @@
             <span style="color: black">Deduct:</span>
         </td>
         <td style="width: 20%;">
-            <strong>$ {{ number_format($client->amount) }}</strong>
+            <strong>$ {{ number_format((int)$client->amount) }}</strong>
         </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@
             <span> </span><br/>
             <span style="color: black;">+ $ {{ $settings['appraisal']['fee'] }}</span>   <br/>
             <span style="color: black;">+ $ @if ($client->payment_type == 2){{ (int)$client->amortization_term * (int)$monthlyPayment }}@else{{ (int)$client->credit_time * (int)$monthlyPayment }}@endif</span> <br/>
-            <span style="color: black;">+ $ {{ $client->amount }}</span> <br/>
+            <span style="color: black;">+ $ {{ number_format((int)$client->amount) }}</span> <br/>
             <span style="color: black;">= $ 164,800</span> <br/>
             <span style="color: black;">$ 24,695</span>  <br/>
             <span style="color: black; text-decoration: underline">16.46 %</span>

@@ -137,6 +137,23 @@
                             @endforeach
                         </select>
                     </div>
+                    <div id="agent_container" class="main-form-content">
+                        <div class="form-group">
+                            <label for="example-agent-name-input" class="col-form-label">Name</label>
+                            <input class="form-control" name="agent_name" type="text" id="example-agent-name-input"
+                                   placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="example-agent-email-input" class="col-form-label">Email</label>
+                            <input class="form-control" type="email" name="agent_email" id="example-agent-email-input"
+                                   placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="example-agent-tel-input" class="col-form-label">Phone</label>
+                            <input class="form-control" type="tel" name="agent_phone" id="example-agent-tel-input"
+                                   placeholder="123-456-789">
+                        </div>
+                    </div>
                     <div id="lawyer_container" class="d-block">
                         <div class="form-group">
                             <label for="select-lawyer" class="col-form-label">Lawyer</label>
@@ -196,23 +213,6 @@
                                type="date" id="example-date-input">
                     </div>
 
-                    <div id="agent_container" class="main-form-content">
-                        <div class="form-group">
-                            <label for="example-agent-name-input" class="col-form-label">Name</label>
-                            <input class="form-control" name="agent_name" type="text" id="example-agent-name-input"
-                                   placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="example-agent-email-input" class="col-form-label">Email</label>
-                            <input class="form-control" type="email" name="agent_email" id="example-agent-email-input"
-                                   placeholder="name@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="example-agent-tel-input" class="col-form-label">Phone</label>
-                            <input class="form-control" type="tel" name="agent_phone" id="example-agent-tel-input"
-                                   placeholder="123-456-789">
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label for="amount" class="col-form-label">Loan Amount</label>
                         <div class="input-group">
@@ -220,7 +220,7 @@
                                 <div class="input-group-text">$</div>
                             </div>
                             <input class="form-control" min="0" name="amount" oninput="this.value = formatNumber(this.value)"
-                                   value='{{ $client ? number_format($client->amount,0, ' ', ' ') : "" }}'
+                                   value='{{ $client ? number_format((int)$client->amount,0, ' ', ' ') : "" }}'
                                    id="amount" placeholder="Amount">
                         </div>
                     </div>

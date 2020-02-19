@@ -70,7 +70,7 @@ class Clients extends Model
 
 		foreach ($data as $d) {
             $d->DT_RowId = "row_".$d->DT_RowId;
-            $d->rate = ($d->rate)?$d->rate." $":'';
+            $d->rate = ($d->rate)?$d->rate." %":'';
             $d->fee = ($d->fee)?$d->fee." $":'';
             $d->admin_fee = ($d->admin_fee)?$d->admin_fee." $":'';
             $d->current_mortgage = ($d->current_mortgage)?$d->current_mortgage." $":'';

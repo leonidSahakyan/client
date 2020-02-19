@@ -27,6 +27,7 @@ class ExportController extends Controller
 //        }
     }
 
+
     public function exportWord(int $id)
     {
         $phpWord = new PhpWord();
