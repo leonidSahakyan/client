@@ -243,33 +243,40 @@
     window.Loading = new Loading();
 })(window);
 
+// Example Monthly Payment
+let amount = 20000,
+    rate = (0.00625),
+    term = 60;
+    result = amount * ((rate * (Math.pow(1 + rate, term))) / ((Math.pow(1 + rate, term)) - 1));
+console.log(result);
 
 function openCalculatorModal() {
     const amortize = 1,
         anuity = 2,
-        amortization = document.getElementById('amortization'),
+        amount = document.getElementById('amount'),
+        amortizationPeriod = document.getElementById('amortization_period'),
+        interestPeriod = document.getElementById('interest_period'),
         interestOnly = document.getElementById('interestOnly'),
         calculatorTable = document.getElementById('table');
 
-    let previousBalance = document.getElementById('amount').value.replace(/ /g, '') * 1;
-    let currentRate = document.getElementById('rate').value;
-    let currentTerm = document.getElementById('term').value;
     let values = {};
 
     calculatorTable.innerHTML = '';
 
+    let previousBalance = Number(amount.value.replace(/ /g, ''));
+    let currentRate = document.getElementById('rate').value;
+    let currentTerm = document.getElementById('term').value;
+
     values.jthAmount = parseInt(previousBalance);
     values.jthPercent = parseFloat(currentRate);
-    // values.jthTerms = (interestOnly.checked)?parseInt(currentTerm):parseInt(amortization.value);
-    // values.jthType = (interestOnly.checked)?anuity:amortize;
-    values.jthTerms = parseInt(currentTerm);
+    values.jthTerms = parseInt(amortizationPeriod.value);
     values.jthType = amortize;
-    values.interestPeriond = parseInt(amortization.value);
+    values.interestPeriond = parseInt(interestPeriod.value);
 
     if (values.jthType === 1) {
         let previousBalance = values.jthAmount;
         let paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), values.jthTerms))));
-
+        console.log(paymentTotal);
         for (let i = 1; i <= values.jthTerms; i++) {
 
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
@@ -280,9 +287,9 @@ function openCalculatorModal() {
                 currentPaymentTotal = null;
             if (interestOnly.checked && i <= values.interestPeriond) {
                 currentPreviousBalance = numberFormat(previousBalance);
-                currentPaymentPercent  = numberFormat(paymentPercent);
-                currentPaymentBalance  = 0;
-                currentPaymentTotal    = currentPaymentPercent;
+                currentPaymentPercent = numberFormat(paymentPercent);
+                currentPaymentBalance = 0;
+                currentPaymentTotal = currentPaymentPercent;
             } else {
                 previousBalance = (previousBalance - paymentBalance);
                 if (previousBalance < 0) {

@@ -73,7 +73,8 @@ class ExportController extends Controller
     {
         $content = $request->get('content');
         $pdf = PDF::loadView('export.calculatorPDF', ['content' => $content]);
-        $pdf->save(storage_path('mortgage_' . date('YmdHis') . '.pdf'));
+        $fileName = storage_path('/app/public/').'mortgage_'.date('YmdHis').'.pdf';
+        $pdf->save($fileName);
         return $pdf->download('mortgage_' . date('YmdHis') . '.pdf');
     }
 }

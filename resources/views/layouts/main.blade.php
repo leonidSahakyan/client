@@ -67,6 +67,7 @@
                     <nav>
                         <ul class="metismenu" id="menu">
                             <li {{ $activeMenu === "clients" ? 'class=active' : "" }} ><a href="{{ route('clients') }}"><i class="fa fa-users"></i> <span>Clients</span></a></li>
+                            <li {{ $activeMenu === "agents" ? 'class=active' : "" }} ><a href="{{ route('agents.index') }}"><i class="fa fa-users"></i> <span>Agents</span></a></li>
                             <li {{ $activeMenu === "users" ? 'class=active' : "" }} ><a href="{{ route('users') }}"><i class="fa fa-users"></i> <span>Users</span></a></li>
                             <li {{ $activeMenu === "mortgages" ? 'class=active' : "" }} ><a href="{{ route('mortgages') }}"><i class="fa fa-users"></i> <span>Mortgages</span></a></li>
                         </ul>

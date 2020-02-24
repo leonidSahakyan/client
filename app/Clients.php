@@ -27,13 +27,10 @@ class Clients extends Model
                                     'clients.rate',
                                     'clients.fee',
                                     'clients.admin_fee',
-                                    'clients.mortgage_amount',
+                                    'clients.amount as mortgage_amount',
                                     'clients.current_mortgage',
                                     'clients.status',
-                                    'clients.term',
-                                    'agents.name as agent_name',
-                                    'agents.email as agent_email',
-                                    'agents.phone as agent_phone',
+                                    'clients.term'
                                     ));
 
         $query->leftJoin('agents', 'clients.agent_id', '=', 'agents.id');

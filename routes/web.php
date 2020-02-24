@@ -47,3 +47,4 @@ Route::get('/save-settings', 'HomeController@saveSettings')->name('save-settings
 Route::post('/export/calculator/pdf', 'ExportController@calculatorPDF')->name('export_calculator');
 Route::get('/export/word/{id}', 'ExportController@exportWord')->name('export_word');
 
+Route::resource('agents', 'AgentsController');

@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 class HomeController extends Controller
 {
-    public $AGENT_TYPE = 1;
+    public $AGENT_TYPE  = 1;
     public $LENDER_TYPE = 2;
     public $LAWYER_TYPE = 3;
 
@@ -119,7 +119,6 @@ class HomeController extends Controller
             $client = new Clients();
         }
 
-        $client->term = $data['term'];
         $client->name = $data['name'];
         $client->email = $data['email'];
         $client->closing_date = $data['closing_date'];
@@ -127,10 +126,10 @@ class HomeController extends Controller
         $client->phone = $data['phone'];
         $client->address = $data['address'];
         $client->status = $data['status'];
+        $client->iad = $data['iad'];
 
         if ($data['closing_date']) {
             $client->renewal_date = $this->getRenewalDate($client->closing_date, $data['term']);
-            $client->iad = $this->getRenewalDate($client->closing_date);
         }
 
         $agentId  = $data['agent_id']  ?? null;
@@ -185,15 +184,17 @@ class HomeController extends Controller
         $client->settings = $settings;
 
 
-        $client->rate = $data['rate'];
-        $client->amount = str_replace(' ', '', $data['amount']);
+
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
-//        dump(serialize($data['property_security']));
-//        die;
         $client->property_security = serialize($data['property_security']);
-        $client->amortization_term = $data['amortization_term'];
+
+        $client->amount = str_replace(' ', '', $data['amount']);
+        $client->term = $data['term'];
+        $client->rate = $data['rate'];
+        $client->amortization_period = $data['amortization_period'];
+        $client->interest_period = $data['interest_period'];
         $client->payment_type = isset($data['payment_type']) ? 1 : 2;
 
         $client->save();

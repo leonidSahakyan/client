@@ -8,10 +8,11 @@ class Agents extends Model
 {
     protected $table = 'agents';
 
-    public $timestamps  = false;
+    protected $primaryKey = 'id';
+
+    public $timestamps  = true;
 
     protected $fillable = [
         'name', 'email', 'phone','type'
     ];
-
 }

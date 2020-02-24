@@ -5,14 +5,14 @@
 <div class="modal-body">
     <form class="save-client" action="JavaScript:void(0);" autocomplete="off">
         <label class='error_container'></label>
- {{--       <div class="s-sw-title custom-fee-swicher">
-            <h5>Custom fee</h5>
-            <div class="s-swtich">
-                <input type="checkbox" name="custom_fee_switcher"
-                       {{ $client && $client->custom_fee == 1 ? 'checked="checked"' : "" }} id="custom_fee_switcher">
-                <label for="custom_fee_switcher">Toggle</label>
-            </div>
-        </div>--}}
+        {{--       <div class="s-sw-title custom-fee-swicher">
+                   <h5>Custom fee</h5>
+                   <div class="s-swtich">
+                       <input type="checkbox" name="custom_fee_switcher"
+                              {{ $client && $client->custom_fee == 1 ? 'checked="checked"' : "" }} id="custom_fee_switcher">
+                       <label for="custom_fee_switcher">Toggle</label>
+                   </div>
+               </div>--}}
         <input type="hidden" name="client_id" value='{{ $client ? $client->id : 0 }}'/>
         <div class="row">
             <div class="col-4 popup-main">
@@ -47,21 +47,15 @@
                         </div>
                     </div>
                     @for($i=0; $i <=1; $i++)
-                    <div class="form-group">
-                        <label for="property_security_{{$i+1}}" class="col-form-label">Property Security</label>
-                        <input type="text" class="form-control" id="property_security_{{$i+1}}" name="property_security[]"
-                               @if($client && $val = unserialize($client->property_security)[$i])
-                                value="{{ $val }}">
-                               @endif
-                    </div>
+                        <div class="form-group">
+                            <label for="property_security_{{$i+1}}" class="col-form-label">Property Security</label>
+                            <input type="text" class="form-control" id="property_security_{{$i+1}}"
+                                   name="property_security[]"
+                                   @if($client && $val = unserialize($client->property_security)[$i])
+                                   value="{{ $val }}">
+                            @endif
+                        </div>
                     @endfor
-{{--                    <div class="form-group">--}}
-{{--                        <label for="property_security_2" class="col-form-label">Property Security</label>--}}
-{{--                        <input type="text" class="form-control" id="property_security_2" name="property_security[]"--}}
-{{--                               @if($client && $val = unserialize($client->property_security)[1])--}}
-{{--                               value="{{ $val }}">--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
                     <div class="form-group">
                         <label for="example-address-input" class="col-form-label">Address</label>
                         <input class="form-control" type="text" name="address"
@@ -225,12 +219,21 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="iad" class="col-form-label">IAD</label>
+                        <input class="form-control" name="iad"
+                               type="date" id="iad"
+                               value="{{ $client ? $client->iad : "" }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
                         <label for="amount" class="col-form-label">Loan Amount</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
                             </div>
-                            <input class="form-control" min="0" name="amount" oninput="this.value = formatNumber(this.value)"
+                            <input class="form-control" min="0" name="amount"
+                                   oninput="this.value = formatNumber(this.value)"
                                    value='{{ $client ? number_format((int)$client->amount,0, ' ', ' ') : "" }}'
                                    id="amount" placeholder="Amount">
                         </div>
@@ -239,6 +242,17 @@
                         <label for="term" class="col-form-label">Term</label>
                         <input class="form-control" min="0" type="number" name="term"
                                value='{{ $client ? $client->term : "" }}' id="term" placeholder="Term">
+                    </div>
+                    <div class="form-group">
+                        <label for="amortization_period" class="col-form-label">Amortization period</label>
+                        <div class="input-group">
+                            <input type="number"
+                                   id="amortization_period"
+                                   class="form-control"
+                                   min="0"
+                                   name="amortization_period"
+                                   value="{{ $client ? $client->amortization_period :'' }}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="rate" class="col-form-label">Interest Rate</label>
@@ -251,12 +265,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="amortization">Interest Only Period</label>
-                        <input type="number" name="amortization_term" id="amortization" class="form-control" min="1" value="{{ $client ? $client->amortization_term :'' }}">
+                        <label for="interest_period">Interest Only Period</label>
+                        <input type="number" name="interest_period" id="interest_period" class="form-control" min="1"
+                               value="{{ $client ? $client->interest_period :'' }}">
+
                     </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label for="monthly_payment">Monthly payment</label>--}}
+{{--                        <input type="number" name="monthly_payment" id="monthly_payment" class="form-control" min="1"--}}
+{{--                               value="{{ $client ? $client->monthly_payment :'' }}">--}}
+
+{{--                    </div>--}}
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="interestOnly" name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
+                            <input class="form-check-input" type="checkbox" id="interestOnly"
+                                   name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
                             <label class="form-check-label" for="interestOnly">Interest Only</label>
                         </div>
                     </div>

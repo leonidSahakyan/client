@@ -8,6 +8,7 @@
     }
     table{
         width: 100%;
+        font-family: HelveticaRegular, Arial, Garuda, sans-serif;
     }
     thead th {
         font-size: 16px;
@@ -15,6 +16,7 @@
         padding: 1px 0 10px 2px;
         text-align: right;
         width: 24%;
+        font-family: HelveticaRegular, Arial, Garuda, sans-serif;
     }
 
     tbody tr td {
@@ -24,16 +26,19 @@
         font-size: 15px;
         line-height: 17px;
         border-bottom: 1px solid #d6d8d9;
+        font-family: HelveticaRegular, Arial, Garuda, sans-serif;
     }
     table thead tr th:first-child {
         padding: 11px 0;
         text-align: left;
         width: auto;
+        font-family: HelveticaRegular, Arial, Garuda, sans-serif;
     }
     table tbody tr td:first-child {
         padding: 11px 0;
         text-align: left;
         width: auto;
+        font-family: HelveticaRegular, Arial, Garuda, sans-serif;
     }
 </style>
 {!! $content !!}
