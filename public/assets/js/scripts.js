@@ -248,14 +248,13 @@ let amount = 20000,
     rate = (0.00625),
     term = 60;
     result = amount * ((rate * (Math.pow(1 + rate, term))) / ((Math.pow(1 + rate, term)) - 1));
-console.log(result);
 
 function openCalculatorModal() {
     const amortize = 1,
         anuity = 2,
         amount = document.getElementById('amount'),
         amortizationPeriod = document.getElementById('amortization_period'),
-        interestPeriod = document.getElementById('interest_period'),
+        interestPeriod = document.getElementById('term'),
         interestOnly = document.getElementById('interestOnly'),
         calculatorTable = document.getElementById('table');
 
@@ -276,7 +275,7 @@ function openCalculatorModal() {
     if (values.jthType === 1) {
         let previousBalance = values.jthAmount;
         let paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), values.jthTerms))));
-        console.log(paymentTotal);
+        console.log(numberFormat(paymentTotal));
         for (let i = 1; i <= values.jthTerms; i++) {
 
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
@@ -337,6 +336,16 @@ function openCalculatorModal() {
         }
     }
     document.getElementById('main-modal-content').style.display = 'block';
+}
+
+function monthlyPayment(params) {
+    for (let [key, value] of Object.entries(params)) {
+        if (value === null){
+            return  ''
+        }
+    }
+    let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), params.amortization_period))));
+    return  numberFormat(paymentTotal);
 }
 
 function formatNumber(num) {

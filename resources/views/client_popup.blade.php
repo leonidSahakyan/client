@@ -217,15 +217,6 @@
                                value="{{ $client ? $client->closing_date : "" }}"
                                type="date" id="example-date-input">
                     </div>
-
-                    <div class="form-group">
-                        <label for="iad" class="col-form-label">IAD</label>
-                        <input class="form-control" name="iad"
-                               type="date" id="iad"
-                               value="{{ $client ? $client->iad : "" }}"
-                        >
-                    </div>
-
                     <div class="form-group">
                         <label for="amount" class="col-form-label">Loan Amount</label>
                         <div class="input-group">
@@ -265,18 +256,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="interest_period">Interest Only Period</label>
-                        <input type="number" name="interest_period" id="interest_period" class="form-control" min="1"
-                               value="{{ $client ? $client->interest_period :'' }}">
-
-                    </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label for="monthly_payment">Monthly payment</label>--}}
-{{--                        <input type="number" name="monthly_payment" id="monthly_payment" class="form-control" min="1"--}}
-{{--                               value="{{ $client ? $client->monthly_payment :'' }}">--}}
-
-{{--                    </div>--}}
-                    <div class="form-group">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="interestOnly"
                                    name="payment_type" {{ ($client && $client->payment_type==1)?'checked':''  }}>
@@ -299,7 +278,7 @@
                         <div class="form-group col">
                             <label for="mortgage_fee" class="col-form-label">iMortgage</label>
                             <input class="form-control" type="number" name="mortgage_fee" min="0"
-                                   value="{{ $fees['mortgage']['fee'] }}" id="mortgage_fee" placeholder="mortgage fee">
+                                   value="{{ $fees ? $fees['mortgage']['fee']: '' }}" id="mortgage_fee" placeholder="mortgage fee">
                         </div>
                     </div>
                     <div class="row">
@@ -307,7 +286,7 @@
                         <div class="form-group col">
                             <label for="broker_fee" class="col-form-label">Broker</label>
                             <input class="form-control" type="number" name="broker_fee" min="0"
-                                   value="{{ $fees['broker']['fee'] }}"
+                                   value="{{ $fees ? $fees['broker']['fee'] : '' }}"
                                    id="broker_fee" placeholder="broker fee">
                         </div>
                     </div>
@@ -316,7 +295,7 @@
                         <div class="form-group col">
                             <label for="lender_fee" class="col-form-label">Lender</label>
                             <input class="form-control" type="number" name="lender_fee"
-                                   value="{{ $fees['lender']['fee'] }}" min="0"
+                                   value="{{ $fees ? $fees['lender']['fee']: '' }}" min="0"
                                    id="lender_fee" placeholder="lender fee">
                         </div>
                     </div>
@@ -326,7 +305,7 @@
                         <div class="form-group col">
                             <label for="admin_fee" class="col-form-label">Admin</label>
                             <input class="form-control" type="number" name="admin_fee"
-                                   value="{{ $fees['admin']['fee'] }}" min="0"
+                                   value="{{ $fees ? $fees['admin']['fee'] : '' }}" min="0"
                                    id="admin_fee" placeholder="admin fee">
                         </div>
                     </div>
@@ -335,7 +314,7 @@
                         <div class="form-group col">
                             <label for="lawyer_fee" class="col-form-label">Lawyer</label>
                             <input class="form-control" type="number" name="lawyer_fee"
-                                   value="{{ $fees['lawyer']['fee'] }}" min="0"
+                                   value="{{ $fees ? $fees['lawyer']['fee'] : '' }}" min="0"
                                    id="lawyer_fee" placeholder="lawyer fee">
                         </div>
                     </div>
@@ -344,7 +323,7 @@
                         <div class="form-group col">
                             <label for="appraisal_fee" class="col-form-label">Appraisal</label>
                             <input class="form-control" type="number" name="appraisal_fee" min="0"
-                                   value="{{ $fees['appraisal']['fee'] }}" id="appraisal_fee"
+                                   value="{{ $fees ? $fees['appraisal']['fee'] : '' }}" id="appraisal_fee"
                                    placeholder="appraisal fee">
                         </div>
                     </div>

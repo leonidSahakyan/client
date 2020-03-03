@@ -77,12 +77,9 @@ class HomeController extends Controller
     {
         $id = $request->input('client_id', false);
         $client = $id && $id != 'false' ? Clients::find($id) : false;
-
-        if ($client && $client->custom_fee == 1) {
+        $fees = null;
+        if ($client) {
             $fees = unserialize($client->settings);
-        } else {
-            $fee = Settings::where('key', 'fee')->first();
-            $fees = unserialize($fee->value);
         }
 
         $agents = Agents::all();
@@ -126,10 +123,10 @@ class HomeController extends Controller
         $client->phone = $data['phone'];
         $client->address = $data['address'];
         $client->status = $data['status'];
-        $client->iad = $data['iad'];
 
         if ($data['closing_date']) {
             $client->renewal_date = $this->getRenewalDate($client->closing_date, $data['term']);
+            $client->iad = $this->getRenewalDate($client->closing_date);
         }
 
         $agentId  = $data['agent_id']  ?? null;
@@ -194,7 +191,6 @@ class HomeController extends Controller
         $client->term = $data['term'];
         $client->rate = $data['rate'];
         $client->amortization_period = $data['amortization_period'];
-        $client->interest_period = $data['interest_period'];
         $client->payment_type = isset($data['payment_type']) ? 1 : 2;
 
         $client->save();

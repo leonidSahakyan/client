@@ -30,7 +30,8 @@ class Clients extends Model
                                     'clients.amount as mortgage_amount',
                                     'clients.current_mortgage',
                                     'clients.status',
-                                    'clients.term'
+                                    'clients.term',
+                                    'clients.amortization_period',
                                     ));
 
         $query->leftJoin('agents', 'clients.agent_id', '=', 'agents.id');

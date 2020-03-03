@@ -84,12 +84,12 @@
                                                 <th>Closing Date</th>
                                                 <th>IAD</th>
                                                 <th>Name</th>
-                                                <th>Address</th>
                                                 <th>Phone</th>
                                                 <th>Email</th>
                                                 <th>Rate</th>
                                                 <th>Mortgage Amount</th>
                                                 <th>Mortgage Balance</th>
+                                                <th>Monthly Payment</th>
                                                 <th>Actions</th>
                                                 <th>Status</th>
                                             </tr>
@@ -216,17 +216,24 @@
             serverSide: true,
             processing: false,
             columns: [
-                    { "data": "renewal_date", "name":'clients.renewal_date', "orderable": true,},
-                    { "data": "closing_date", "name":'clients.closing_date', "orderable": true },
-                    { "data": "ida",          "name":'clients.ida', "orderable": false },
-                    { "data": "client_name",  "name":'agents.name', "orderable": false },
-                    { "data": "address",      "name":'clients.address', "orderable": false },
-                    { "data": "phone",        "name":'clients.phone', "orderable": false },
-                    { "data": "email",        "name":'clients.email', "orderable": false },
-                    { "data": "rate",         "name":'clients.rate', "orderable": false },
-                    { "data": "mortgage_amount", "name":'clients.mortgage_amount', "orderable": false },
-                    { "data": "current_mortgage", "name":'clients.current_mortgage', "orderable": false },
-                    { "data": "id", "name":'edit', "orderable": false, "sClass": "content-middel",
+                    { "data": "renewal_date",       "name":'clients.renewal_date', "orderable": true,},
+                    { "data": "closing_date",       "name":'clients.closing_date', "orderable": true },
+                    { "data": "ida",                "name":'clients.ida', "orderable": false },
+                    { "data": "client_name",        "name":'agents.name', "orderable": false },
+                    { "data": "phone",              "name":'clients.phone', "orderable": false },
+                    { "data": "email",              "name":'clients.email', "orderable": false },
+                    { "data": "rate",               "name":'clients.rate', "orderable": false },
+                    { "data": "mortgage_amount",    "name":'clients.mortgage_amount', "orderable": false },
+                    { "data": "current_mortgage",   "name":'clients.current_mortgage', "orderable": false },
+                    { "data": "amortization_period",    "render": function ( data, type, row, meta ) {
+                        let params = {
+                            'amount' : row.mortgage_amount? row.mortgage_amount.replace('$', ''):null,
+                            'rate' : row.rate? row.rate.replace('%',''): null,
+                            'amortization_period' : row.amortization_period,
+                        };
+                            return monthlyPayment(params);
+                        } },
+                    { "data": "id",                 "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {
                         let url = "{{ route('show-client',':id') }}",
                             deleteClient = "{{ route('client-destroy') }}",
