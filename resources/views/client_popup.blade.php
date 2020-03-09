@@ -218,6 +218,13 @@
                                type="date" id="example-date-input">
                     </div>
                     <div class="form-group">
+                        <label for="start_date" class="col-form-label">Start date</label>
+
+                        <input type="date" class="form-control" min="0" name="start_date"
+                               value='{{ $client ? $client->start_date : "" }}'
+                               id="start_date" placeholder="Start Date">
+                    </div>
+                    <div class="form-group">
                         <label for="amount" class="col-form-label">Loan Amount</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -278,7 +285,8 @@
                         <div class="form-group col">
                             <label for="mortgage_fee" class="col-form-label">iMortgage</label>
                             <input class="form-control" type="number" name="mortgage_fee" min="0"
-                                   value="{{ $fees ? $fees['mortgage']['fee']: '' }}" id="mortgage_fee" placeholder="mortgage fee">
+                                   value="{{ $fees ? $fees['mortgage']['fee']: '' }}" id="mortgage_fee"
+                                   placeholder="mortgage fee">
                         </div>
                     </div>
                     <div class="row">

@@ -224,14 +224,25 @@
                     { "data": "email",              "name":'clients.email', "orderable": false },
                     { "data": "rate",               "name":'clients.rate', "orderable": false },
                     { "data": "mortgage_amount",    "name":'clients.mortgage_amount', "orderable": false },
-                    { "data": "current_mortgage",   "name":'clients.current_mortgage', "orderable": false },
+                    { "data": "current_mortgage",    "render": function ( data, type, row, meta ) {
+                            let params = {
+                                'amount' : row.mortgage_amount? row.mortgage_amount.replace('$', ''):null,
+                                'rate' : row.rate? row.rate.replace('%',''): null,
+                                'amortization_period' : row.amortization_period,
+                                'start_date' : row.start_date,
+                                'payment_type' : row.payment_type,
+                                'term' : row.term,
+                            };
+                            return monthlyPayment(params,false);
+                    } },
                     { "data": "amortization_period",    "render": function ( data, type, row, meta ) {
                         let params = {
                             'amount' : row.mortgage_amount? row.mortgage_amount.replace('$', ''):null,
                             'rate' : row.rate? row.rate.replace('%',''): null,
                             'amortization_period' : row.amortization_period,
+                            'start_date' : row.start_date,
                         };
-                            return monthlyPayment(params);
+                            return monthlyPayment(params,true);
                         } },
                     { "data": "id",                 "name":'edit', "orderable": false, "sClass": "content-middel",
                         render: function ( data, type, row, meta) {

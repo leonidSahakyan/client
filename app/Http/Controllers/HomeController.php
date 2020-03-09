@@ -188,6 +188,7 @@ class HomeController extends Controller
         $client->property_security = serialize($data['property_security']);
 
         $client->amount = str_replace(' ', '', $data['amount']);
+        $client->start_date = $data['start_date'];
         $client->term = $data['term'];
         $client->rate = $data['rate'];
         $client->amortization_period = $data['amortization_period'];
