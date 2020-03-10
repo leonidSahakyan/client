@@ -244,54 +244,58 @@
 })(window);
 
 
-
 // Example Monthly Payment
 let amount = 20000,
     rate = (0.00625),
     term = 60;
-    result = amount * ((rate * (Math.pow(1 + rate, term))) / ((Math.pow(1 + rate, term)) - 1));
+result = amount * ((rate * (Math.pow(1 + rate, term))) / ((Math.pow(1 + rate, term)) - 1));
 
 function openCalculatorModal() {
     const amortize = 1,
-        anuity = 2,
-        amount = document.getElementById('amount'),
-        amortizationPeriod = document.getElementById('amortization_period'),
-        interestPeriod = document.getElementById('term'),
-        interestOnly = document.getElementById('interestOnly'),
-        calculatorTable = document.getElementById('table');
-
+          amount = document.getElementById('amount'),
+          amortizationPeriod = document.getElementById('amortization_period'),
+          interestPeriod = document.getElementById('term'),
+          interestOnly = document.getElementById('interestOnly'),
+          currentRate = document.getElementById('rate')
+          calculatorTable = document.getElementById('table');
     let values = {};
 
     calculatorTable.innerHTML = '';
 
-    let previousBalance = Number(amount.value.replace(/ /g, ''));
-    let currentRate = document.getElementById('rate').value;
-    let currentTerm = document.getElementById('term').value;
-
-    values.jthAmount = parseInt(previousBalance);
-    values.jthPercent = parseFloat(currentRate);
+    values.jthAmount = parseInt(Number(amount.value.replace(/ /g, '')));
+    values.jthPercent = parseFloat(currentRate.value);
     values.jthTerms = parseInt(amortizationPeriod.value);
     values.jthType = amortize;
     values.interestPeriond = parseInt(interestPeriod.value);
 
     if (values.jthType === 1) {
-        let previousBalance = values.jthAmount;
-        let paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), values.jthTerms))));
+        let term =  values.jthTerms;
+
+        if (interestOnly.checked && values.interestPeriond){
+            term = values.jthTerms - values.interestPeriond
+        }
+
+        let previousBalance = values.jthAmount,
+            paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), term))));
 
         for (let i = 1; i <= values.jthTerms; i++) {
 
-            let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12);
-            let paymentBalance = (paymentTotal - paymentPercent);
-            let currentPreviousBalance  = null,
+            let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12),
+                paymentBalance = (paymentTotal - paymentPercent),
+                currentPreviousBalance = null,
                 currentPaymentPercent   = null,
                 currentPaymentBalance   = null,
                 currentPaymentTotal     = null;
+
             if (interestOnly.checked && i <= values.interestPeriond) {
+
                 currentPreviousBalance = numberFormat(previousBalance);
                 currentPaymentPercent = numberFormat(paymentPercent);
                 currentPaymentBalance = 0;
                 currentPaymentTotal = currentPaymentPercent;
+
             } else {
+
                 previousBalance = (previousBalance - paymentBalance);
                 if (previousBalance < 0) {
                     previousBalance = 0;
@@ -300,6 +304,7 @@ function openCalculatorModal() {
                 currentPaymentPercent = numberFormat(paymentPercent);
                 currentPaymentBalance = numberFormat(paymentBalance);
                 currentPaymentTotal = numberFormat(paymentTotal);
+
             }
 
             let appendRow = "<tr>" +
@@ -311,80 +316,75 @@ function openCalculatorModal() {
                 "</tr>";
             calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
         }
-    } else {
-        if (values.jthType === 2) {
-
-            let previousBalance = values.jthAmount;
-            let paymentBalance = values.jthAmount / values.jthTerms;
-
-            for (let i = 1; i <= values.jthTerms; i++) {
-                let paymentPercent = previousBalance * ((values.jthPercent / 100) / 12);
-                let paymentTotal = paymentPercent + paymentBalance;
-                previousBalance = previousBalance - paymentBalance;
-                let currentPreviousBalance = numberFormat(previousBalance),
-                    currentPaymentPercent = numberFormat(paymentPercent),
-                    currentPaymentBalance = numberFormat(paymentBalance),
-                    currentPaymentTotal = numberFormat(paymentTotal);
-
-                let appendRow = "<tr>" +
-                    "<td>" + i + "</td>" +
-                    "<td>" + currentPaymentPercent + "</td>" +
-                    "<td>" + currentPaymentBalance + "</td>" +
-                    "<td>" + currentPaymentTotal + "</td>" +
-                    "<td>" + currentPreviousBalance + "</td>" +
-                    "</tr>";
-                calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
-            }
-        }
     }
     document.getElementById('main-modal-content').style.display = 'block';
 }
 
 function monthlyPayment(params, $cond = true) {
-    let startDate    = new Date(params.start_date),
-        currentDate  = new Date(),
-        startYear   = Number(startDate.getFullYear()),
-        currentYear   = Number(currentDate.getFullYear()),
-        startMonth   = Number(startDate.getUTCMonth()+ 1),
-        currentMonth = Number(currentDate.getUTCMonth()+ 1);
 
-    let totalYear = currentYear - startYear;
-    let totalDifferent = startMonth - currentMonth;
-
-    if (totalYear > 0 && totalDifferent === 0){
-        totalDifferent += (totalYear * 12);
-    }else if(totalYear > 0 && totalDifferent !== 0){
-        totalDifferent = ((12 - startMonth) + currentMonth);
-    }else{
-        if (totalYear === 0 && totalDifferent === 0){
-            totalDifferent ++;
-        }
-    }
+    let totalDifferent = differentDate(params.start_date);
 
     for (let [key, value] of Object.entries(params)) {
-        if (value === null){
-            return  ''
+        if (value === null) {
+            return ''
         }
+    }
+    let term = params.amortization_period;
+    if (params.payment_type === 1 && params.term) {
+        term  =  (params.amortization_period - params.term);
     }
 
     let previousBalance = params.amount;
-    let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), params.amortization_period))));
+    let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), term))));
+
     for (let i = 1; i <= params.amortization_period; i++) {
-        if (params.payment_type === 1 && i <= params.term) {
+
+        if (params.payment_type === 1 && i <= params.term && $cond) {
             return numberFormat(paymentTotal);
         }
+
         let paymentPercent = ((previousBalance * (params.rate / 100)) / 12);
         let paymentBalance = (paymentTotal - paymentPercent);
             previousBalance = (previousBalance - paymentBalance);
 
-            if (previousBalance < 0) {
-                previousBalance = 0;
-            }
+        if (previousBalance < 0) {
+            previousBalance = 0;
+        }
 
-            if (totalDifferent === i){
-                return $cond ? numberFormat(paymentTotal): numberFormat(previousBalance);
-            }
+        if (totalDifferent === i) {
+            return $cond ? numberFormat(paymentTotal) : numberFormat(previousBalance);
+        }
     }
+}
+
+function differentDate($date) {
+    let startDate = new Date($date),
+        currentDate = new Date(),
+        startYear = Number(startDate.getFullYear()),
+        currentYear = Number(currentDate.getFullYear()),
+        startMonth = Number(startDate.getUTCMonth() + 1),
+        currentMonth = Number(currentDate.getUTCMonth() + 1);
+
+    let totalYear = (currentYear - startYear);
+    let totalDifferent = (startMonth - currentMonth);
+
+    if (totalYear > 0 && totalDifferent === 0) {
+
+        totalDifferent += (totalYear * 12);
+
+    } else if (totalYear > 0 && totalDifferent !== 0) {
+
+        totalDifferent = ((12 - startMonth) + currentMonth);
+
+    } else {
+
+        if (totalYear === 0 && totalDifferent === 0) {
+            totalDifferent++;
+        }
+
+    }
+
+    return totalDifferent;
 }
 
 function formatNumber(num) {

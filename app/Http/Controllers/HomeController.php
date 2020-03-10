@@ -118,15 +118,16 @@ class HomeController extends Controller
 
         $client->name = $data['name'];
         $client->email = $data['email'];
-        $client->closing_date = $data['closing_date'];
+//        $client->closing_date = $data['closing_date'];
         $client->dob = $data['dob'];
         $client->phone = $data['phone'];
         $client->address = $data['address'];
         $client->status = $data['status'];
+        $client->iad = $data['iad'];
 
-        if ($data['closing_date']) {
-            $client->renewal_date = $this->getRenewalDate($client->closing_date, $data['term']);
-            $client->iad = $this->getRenewalDate($client->closing_date);
+        if ($data['iad']) {
+            $client->renewal_date = $this->getRenewalDate($client->iad, $data['term']);
+//            $client->iad = $this->getRenewalDate($client->iad);
         }
 
         $agentId  = $data['agent_id']  ?? null;
@@ -137,7 +138,7 @@ class HomeController extends Controller
             $newAgent = Agents::create(['name' => $data['agent_name'],
                 'phone' => $data['agent_phone'],
                 'email' => $data['agent_email'],
-                'type' => $this->AGENT_TYPE
+                'type'  => $this->AGENT_TYPE
             ]);
 
             $client->agent_id = $newAgent->id;
@@ -150,7 +151,7 @@ class HomeController extends Controller
             $newAgent = Agents::create(['name' => $data['lender_name'],
                 'phone' => $data['lender_phone'],
                 'email' => $data['lender_email'],
-                'type' => $this->LENDER_TYPE]);
+                'type'  => $this->LENDER_TYPE]);
 
             $client->lender_id = $newAgent->id;
         } else {
@@ -162,7 +163,7 @@ class HomeController extends Controller
             $newAgent = Agents::create(['name' => $data['lawyer_name'],
                 'phone' => $data['lawyer_phone'],
                 'email' => $data['lawyer_email'],
-                'type' => $this->LAWYER_TYPE,
+                'type'  => $this->LAWYER_TYPE,
             ]);
 
             $client->lawyer_id = $newAgent->id;
@@ -179,8 +180,6 @@ class HomeController extends Controller
 
         $settings = serialize($settings);
         $client->settings = $settings;
-
-
 
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];

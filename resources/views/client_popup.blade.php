@@ -212,10 +212,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="example-date-input" class="col-form-label">Closing date</label>
-                        <input class="form-control" name="closing_date"
-                               value="{{ $client ? $client->closing_date : "" }}"
-                               type="date" id="example-date-input">
+                        <label for="iad" class="col-form-label">IAD</label>
+                        <input type="date" name="iad" id="iad" class="form-control"
+                               value="{{ $client ? $client->iad : "" }}">
                     </div>
                     <div class="form-group">
                         <label for="start_date" class="col-form-label">Start date</label>

@@ -145,8 +145,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Closing date</th>
-                                            <td>{{ $client->closing_date }}</td>
+                                            <th scope="row">Start date</th>
+                                            <td>{{ $client->start_date }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">IAD</th>
