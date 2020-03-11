@@ -87,7 +87,6 @@
                                     <thead class="text-capitalize">
                                     <tr role="row">
                                         <th>Renewal Date</th>
-{{--                                        <th>Closing Date</th>--}}
                                         <th>IAD</th>
                                         <th>Name</th>
                                         <th>Phone</th>
@@ -230,9 +229,8 @@
                     {"data": "email", "name": 'clients.email', "orderable": false},
                     {"data": "rate", "name": 'clients.rate', "orderable": false},
                     {"data": "mortgage_amount", "name": 'clients.mortgage_amount', "orderable": false},
-                    {
+                    { data: "mortgage_balance",
                         render: function (data, type, row, meta) {
-
                             let params = {
                                 'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
                                 'rate': row.rate ? row.rate.replace('%', '') : null,
@@ -244,21 +242,20 @@
                             if (type === 'display') {
                                 data = monthlyPayment(params, false);
                             }
-
                             return data
-
                         }
                     },
                     {
+                        data: "monthly_payment",
                         render: function (data, type, row, meta) {
-                            let params = {
-                                'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
-                                'rate': row.rate ? row.rate.replace('%', '') : null,
-                                'amortization_period': row.amortization_period,
-                                'start_date': row.start_date,
-                            };
                             if (type === 'display') {
-                                data = monthlyPayment(params, true);
+                                let params = {
+                                    'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
+                                    'rate': row.rate ? row.rate.replace('%', '') : null,
+                                    'amortization_period': row.amortization_period,
+                                    'start_date': row.start_date,
+                                };
+                                return monthlyPayment(params, true);
                             }
                             return data;
                         }
