@@ -11,7 +11,7 @@ class Clients extends Model
 
     public $timestamps  = false;
 
-    public function getAll($start,$length,$filter,$sort_field,$sort_dir){//,
+    public function getAll($start,$length,$filter,$sort_field,$sort_dir){
     	$query = DB::table('clients');
 		$query->select(array(DB::raw('SQL_CALC_FOUND_ROWS clients.id'),
                                     'clients.id as DT_RowId',
