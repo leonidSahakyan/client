@@ -321,7 +321,7 @@ function openCalculatorModal() {
 }
 
 function monthlyPayment(params, $cond = true) {
-
+        console.log(params);
     let totalDifferent = differentDate(params.start_date);
 
     for (let [key, value] of Object.entries(params)) {

@@ -230,7 +230,7 @@
                     {"data": "rate", "name": 'clients.rate', "orderable": false},
                     {"data": "mortgage_amount", "name": 'clients.mortgage_amount', "orderable": false},
                     { "data": "mortgage_amount",
-                        render: function (data, type, row, meta) {
+                        render: function (data, type, row) {
                             let params = {
                                 'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
                                 'rate': row.rate ? row.rate.replace('%', '') : null,
@@ -247,13 +247,15 @@
                     },
                     {
                         "data": "mortgage_amount",
-                        render: function (data, type, row, meta) {
+                        render: function (data, type, row) {
                             if (type === 'display') {
                                 let params = {
                                     'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
                                     'rate': row.rate ? row.rate.replace('%', '') : null,
                                     'amortization_period': row.amortization_period,
                                     'start_date': row.start_date,
+                                    'payment_type': row.payment_type,
+                                    'term': row.term,
                                 };
                                 return monthlyPayment(params, true);
                             }
