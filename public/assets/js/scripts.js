@@ -245,10 +245,11 @@
 
 
 // Example Monthly Payment
-let amount = 20000,
-    rate = (0.00625),
-    term = 60;
+let amount = 100000,
+    rate = ((6/100)/12),
+    term = 180;
 result = amount * ((rate * (Math.pow(1 + rate, term))) / ((Math.pow(1 + rate, term)) - 1));
+console.log(result)
 
 function openCalculatorModal() {
     const amortize = 1,
@@ -256,7 +257,7 @@ function openCalculatorModal() {
           amortizationPeriod = document.getElementById('amortization_period'),
           interestPeriod = document.getElementById('term'),
           interestOnly = document.getElementById('interestOnly'),
-          currentRate = document.getElementById('rate')
+          currentRate = document.getElementById('rate'),
           calculatorTable = document.getElementById('table');
     let values = {};
 
@@ -272,17 +273,17 @@ function openCalculatorModal() {
         let term =  values.jthTerms;
 
         if (interestOnly.checked && values.interestPeriond){
-            term = values.jthTerms - values.interestPeriond
+            term = values.interestPeriond
         }
 
         let previousBalance = values.jthAmount,
-            paymentTotal = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), term))));
+            paymentTotal    = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), term))));
 
-        for (let i = 1; i <= values.jthTerms; i++) {
+        for (let i = 1; i <= term; i++) {
 
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12),
                 paymentBalance = (paymentTotal - paymentPercent),
-                currentPreviousBalance = null,
+                currentPreviousBalance  = null,
                 currentPaymentPercent   = null,
                 currentPaymentBalance   = null,
                 currentPaymentTotal     = null;
@@ -320,8 +321,13 @@ function openCalculatorModal() {
     document.getElementById('main-modal-content').style.display = 'block';
 }
 
+function paymentTotal(amount,term,percent)
+{
+    return (amount * (percent / 100) / 12) / (1 - (1 / (Math.pow((1 + (percent / 100) / 12), term))));
+}
+
 function monthlyPayment(params, $cond = true) {
-        console.log(params);
+
     let totalDifferent = differentDate(params.start_date);
 
     for (let [key, value] of Object.entries(params)) {
