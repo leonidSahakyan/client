@@ -258,6 +258,7 @@ function openCalculatorModal() {
           interestPeriod = document.getElementById('term'),
           interestOnly = document.getElementById('interestOnly'),
           currentRate = document.getElementById('rate'),
+          startDate = document.getElementById('start_date'),
           calculatorTable = document.getElementById('table');
     let values = {};
 
@@ -268,18 +269,16 @@ function openCalculatorModal() {
     values.jthTerms = parseInt(amortizationPeriod.value);
     values.jthType = amortize;
     values.interestPeriond = parseInt(interestPeriod.value);
+    values.startDate = startDate.value;
 
     if (values.jthType === 1) {
         let term =  values.jthTerms;
-
-        if (interestOnly.checked && values.interestPeriond){
-            term = values.interestPeriond
-        }
 
         let previousBalance = values.jthAmount,
             paymentTotal    = (values.jthAmount * (values.jthPercent / 100) / 12) / (1 - (1 / (Math.pow((1 + (values.jthPercent / 100) / 12), term))));
 
         for (let i = 1; i <= term; i++) {
+
 
             let paymentPercent = ((previousBalance * (values.jthPercent / 100)) / 12),
                 paymentBalance = (paymentTotal - paymentPercent),
@@ -288,28 +287,22 @@ function openCalculatorModal() {
                 currentPaymentBalance   = null,
                 currentPaymentTotal     = null;
 
-            if (interestOnly.checked && i <= values.interestPeriond) {
-
-                currentPreviousBalance = numberFormat(previousBalance);
-                currentPaymentPercent = numberFormat(paymentPercent);
-                currentPaymentBalance = 0;
-                currentPaymentTotal = currentPaymentPercent;
-
-            } else {
-
-                previousBalance = (previousBalance - paymentBalance);
-                if (previousBalance < 0) {
-                    previousBalance = 0;
-                }
-                currentPreviousBalance = numberFormat(previousBalance);
-                currentPaymentPercent = numberFormat(paymentPercent);
-                currentPaymentBalance = numberFormat(paymentBalance);
-                currentPaymentTotal = numberFormat(paymentTotal);
-
+            if (interestOnly.checked  && i-1 === values.interestPeriond) {
+                    break;
             }
+
+            previousBalance = (previousBalance - paymentBalance);
+            if (previousBalance < 0) {
+                previousBalance = 0;
+            }
+            currentPreviousBalance = numberFormat(previousBalance);
+            currentPaymentPercent = numberFormat(paymentPercent);
+            currentPaymentBalance = numberFormat(paymentBalance);
+            currentPaymentTotal = numberFormat(paymentTotal);
 
             let appendRow = "<tr>" +
                 "<td>" + i + "</td>" +
+                "<td>" +  formatter(values.startDate,i) +"</td>" +
                 "<td>" + currentPaymentPercent + "</td>" +
                 "<td>" + currentPaymentBalance + "</td>" +
                 "<td>" + currentPaymentTotal + "</td>" +
@@ -321,9 +314,10 @@ function openCalculatorModal() {
     document.getElementById('main-modal-content').style.display = 'block';
 }
 
-function paymentTotal(amount,term,percent)
-{
-    return (amount * (percent / 100) / 12) / (1 - (1 / (Math.pow((1 + (percent / 100) / 12), term))));
+function formatter(starDate,month) {
+    let options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formatter = new Intl.DateTimeFormat('en', options);
+    return formatter.format(new Date(new Date(starDate).setMonth(new Date(starDate).getUTCMonth()+month)));
 }
 
 function monthlyPayment(params, $cond = true) {
@@ -336,9 +330,9 @@ function monthlyPayment(params, $cond = true) {
         }
     }
     let term = params.amortization_period;
-    if (params.payment_type === 1 && params.term) {
-        term  =  (params.amortization_period - params.term);
-    }
+    // if (params.payment_type === 1 && params.term) {
+    //     term  =  (params.amortization_period - params.term);
+    // }
 
     let previousBalance = params.amount;
     let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), term))));

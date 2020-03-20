@@ -146,7 +146,8 @@
                         <table>
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>#</th>
+                                <th>Date</th>
                                 <th>Interest</th>
                                 <th>Principal</th>
                                 <th>Payment</th>
