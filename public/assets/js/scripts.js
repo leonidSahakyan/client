@@ -358,7 +358,24 @@ function monthlyPayment(params, $cond = true) {
     }
 }
 
-function differentDate($date) {
+function differentDate($date){
+    let date1 = new Date($date),
+        date2 = new Date(),
+        startYear    = date1.getFullYear(),
+        startMonth   = date1.getUTCMonth(),
+        currentYear  = date2.getFullYear(),
+        currentMonth = date2.getUTCMonth();
+
+    if ((currentYear <= startYear) && (startMonth > currentMonth)){
+        return -1
+    }
+
+    let  dateDiff = Math.abs(currentYear - startYear) * 12;
+    let monthDiff = (Math.abs(currentMonth - startMonth));
+    return dateDiff+monthDiff;
+}
+
+/*function differentDate($date) {
     let startDate = new Date($date),
         currentDate = new Date(),
         startYear = Number(startDate.getFullYear()),
@@ -384,10 +401,9 @@ function differentDate($date) {
         }
 
     }
-    console.log(totalDifferent+' totalDifferent')
 
     return Math.abs(totalDifferent);
-}
+}*/
 
 function formatNumber(num) {
     let number = num.replace(/ /g, '');
