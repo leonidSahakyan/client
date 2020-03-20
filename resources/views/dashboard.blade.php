@@ -241,7 +241,7 @@
                                 'term': row.term,
                             };
                             if (type === 'display') {
-                                data = monthlyPayment(params, false);
+                                    data = monthlyPayment(params, false);
                             }
                             return data
                         }
