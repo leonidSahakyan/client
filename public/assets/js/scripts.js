@@ -273,10 +273,6 @@ function openCalculatorModal() {
 
     let currentTerm = params.amortizePeriod;
 
-    if (params.interestOnly){
-        currentTerm = params.term
-    }
-
     let previousBalance = params.amount;
     let paymentTotal = (params.amount * (params.percent / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.percent / 100) / 12), currentTerm))));
 
@@ -293,6 +289,11 @@ function openCalculatorModal() {
         if (previousBalance < 0) {
             previousBalance = 0;
         }
+
+        if (params.interestOnly && i - 1 === params.term) {
+            break;
+        }
+
         currentPreviousBalance = numberFormat(previousBalance);
         currentPaymentPercent = numberFormat(paymentPercent);
         currentPaymentBalance = numberFormat(paymentBalance);
