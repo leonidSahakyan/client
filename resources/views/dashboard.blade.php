@@ -230,7 +230,7 @@
                     {"data": "email", "name": 'clients.email', "orderable": false},
                     {"data": "rate", "name": 'clients.rate', "orderable": false},
                     {"data": "mortgage_amount", "name": 'clients.mortgage_amount', "orderable": false},
-                    { "data": "mortgage_amount",
+                    { "data": "mortgage_amount", "orderable": false,
                         render: function (data, type, row) {
                             let params = {
                                 'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
@@ -247,7 +247,7 @@
                         }
                     },
                     {
-                        "data": "mortgage_amount",
+                        "data": "mortgage_amount", "orderable": false,
                         render: function (data, type, row) {
                             if (type === 'display') {
                                 let params = {
