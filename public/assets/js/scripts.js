@@ -414,8 +414,8 @@ function numberFormat(_number) {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-        minimumFractionDigits: 0
-    }).format(parseInt(_number))
+        minimumFractionDigits: 2
+    }).format(_number)
 }
 
 function closeModal() {
