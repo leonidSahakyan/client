@@ -284,7 +284,7 @@ function openCalculatorModal() {
 
 function interestOnlyLoanPayment(params,calculatorTable) {
 
-    for (let i = 1; i < params.term; i++) {
+    for (let i = 1; i <= params.term; i++) {
         let paymentPercent = ((params.amount * (params.percent / 100)) / 12);
         let currentPaymentPercent = numberFormat(paymentPercent);
 
@@ -302,11 +302,17 @@ function interestOnlyLoanPayment(params,calculatorTable) {
 }
 
 function amortizedLoanPayment(params,calculatorTable) {
-
+    console.log(params)
     let previousBalance = params.amount;
     let paymentTotal = (params.amount * (params.percent / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.percent / 100) / 12), params.amortizePeriod))));
 
     for (let i = 1; i <= params.amortizePeriod; i++) {
+
+        if (params.term){
+            if (i-1 === params.term){
+                return true;
+            }
+        }
 
         let paymentPercent = ((previousBalance * (params.percent / 100)) / 12),
             paymentBalance = (paymentTotal - paymentPercent),
@@ -314,7 +320,7 @@ function amortizedLoanPayment(params,calculatorTable) {
             currentPaymentPercent = null,
             currentPaymentBalance = null,
             currentPaymentTotal = null;
-            console.log(paymentPercent)
+
         previousBalance = (previousBalance - paymentBalance);
         if (previousBalance < 0) {
             previousBalance = 0;
@@ -347,29 +353,23 @@ function monthlyPayment(params, $cond = true) {
 
     let totalDifferent = differentDate(params.start_date);
 
-    for (let [key, value] of Object.entries(params)) {
-        if (value === null) {
-            return ''
-        }
-    }
+    if (params.payment_type===1) {
 
-    let term = params.amortization_period;
-
-    let previousBalance = params.amount;
-    let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), term))));
-
-    if (params.payment_type) {
         let percent = ((params.amount * (params.rate / 100)) / 12);
 
-        for (let i = 0; i < params.term; i++) {
+        for (let i = 1; i <= params.term; i++) {
 
-            if (totalDifferent === i || totalDifferent === -1) {
+            if (totalDifferent === i || totalDifferent <1) {
                 return $cond ? numberFormat(percent) : numberFormat(params.amount);
             }
 
         }
 
     } else {
+        let term = params.amortization_period;
+
+        let previousBalance = params.amount;
+        let paymentTotal = (params.amount * (params.rate / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.rate / 100) / 12), term))));
 
         for (let i = 1; i <= params.amortization_period; i++) {
 
@@ -381,7 +381,7 @@ function monthlyPayment(params, $cond = true) {
                 previousBalance = 0;
             }
 
-            if (totalDifferent === i || totalDifferent === -1) {
+            if (totalDifferent === i || totalDifferent < 1) {
                 return $cond ? numberFormat(paymentTotal) : numberFormat(previousBalance);
             }
         }
