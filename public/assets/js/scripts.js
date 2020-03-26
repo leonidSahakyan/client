@@ -258,7 +258,7 @@ function openCalculatorModal() {
     const term = document.getElementById('term');
     const interestOnly = document.getElementById('interestOnly');
     const percent = document.getElementById('rate');
-    const startDate = document.getElementById('start_date');
+    const startDate = document.getElementById('iad');
     const calculatorTable = document.getElementById('table');
     calculatorTable.innerHTML = '';
 

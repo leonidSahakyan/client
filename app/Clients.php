@@ -20,7 +20,7 @@ class Clients extends Model
                                     'clients.start_date',
                                     'clients.closing_date',
                                     'clients.payment_type',
-                                    'clients.iad as ida',
+                                    'clients.iad as iad',
                                     'clients.name as client_name',
                                     'clients.address as address',
                                     'clients.dob',

@@ -224,7 +224,7 @@
                 columns: [
                     {"data": "renewal_date", "name": 'clients.renewal_date', "orderable": true,},
                     // {"data": "closing_date", "name": 'clients.closing_date', "orderable": true},
-                    {"data": "ida", "name": 'clients.ida', "orderable": false},
+                    {"data": "iad", "name": 'clients.ida', "orderable": false},
                     {"data": "client_name", "name": 'agents.name', "orderable": false},
                     {"data": "phone", "name": 'clients.phone', "orderable": false},
                     {"data": "email", "name": 'clients.email', "orderable": false},
@@ -234,7 +234,7 @@
                         "data": "mortgage_amount", "orderable": false,
                         render: function (data, type, row) {
 
-                            if (!row.mortgage_amount || (!row.term  && row.payment_type === 1) || !row.amortization_period){
+                            if (!row.mortgage_amount || (!row.term  && row.payment_type === 1) || (!row.amortization_period && row.payment_type === 2)){
                                 return '';
                             }
 
@@ -242,7 +242,7 @@
                                 'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
                                 'rate': row.rate ? row.rate.replace('%', '') : null,
                                 'amortization_period': row.amortization_period,
-                                'start_date': row.start_date,
+                                'start_date': row.iad,
                                 'payment_type': row.payment_type,
                                 'term': row.term,
                             };
@@ -252,14 +252,14 @@
                     {
                         "data": "mortgage_amount", "orderable": false,
                         render: function (data, type, row) {
-                            if (!row.mortgage_amount || (!row.term  && row.payment_type === 1) || !row.amortization_period){
+                            if (!row.mortgage_amount || (!row.term  && row.payment_type === 1) || (!row.amortization_period && row.payment_type === 2)){
                                 return '';
                             }
                             let params = {
                                 'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
                                 'rate': row.rate ? row.rate.replace('%', '') : null,
                                 'amortization_period': row.amortization_period,
-                                'start_date': row.start_date,
+                                'start_date': row.iad,
                                 'payment_type': row.payment_type,
                                 'term': row.term,
                             };
