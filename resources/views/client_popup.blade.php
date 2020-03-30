@@ -257,8 +257,8 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
-                            <input class="form-control" min="0" value="{{ $client ? $client->rate : "" }}" type="number"
-                                   name="rate" id="rate" placeholder="Rate">
+                            <input type="number" step="0.01" min="0" name="rate" id="rate"  class="form-control" value="{{ $client ? $client->rate : "" }}"
+                                   placeholder="Rate">
                         </div>
                     </div>
                     <div class="form-group">

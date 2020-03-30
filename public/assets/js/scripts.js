@@ -263,10 +263,10 @@ function openCalculatorModal() {
     calculatorTable.innerHTML = '';
 
     let params = {
-        amount: parseInt(amount.value.replace(/ /g, '')),
+        amount: Number(amount.value.replace(/ /g, '')),
         term: term.value * 1,
-        percent: parseInt(percent.value),
-        amortizePeriod: parseInt(amortizationPeriod.value),
+        percent: parseFloat(percent.value),
+        amortizePeriod: Number(amortizationPeriod.value),
         startDate: startDate.value,
         interestOnly: interestOnly.checked
     };
@@ -302,7 +302,6 @@ function interestOnlyLoanPayment(params,calculatorTable) {
 }
 
 function amortizedLoanPayment(params,calculatorTable) {
-    console.log(params)
     let previousBalance = params.amount;
     let paymentTotal = (params.amount * (params.percent / 100) / 12) / (1 - (1 / (Math.pow((1 + (params.percent / 100) / 12), params.amortizePeriod))));
 
@@ -350,7 +349,6 @@ function formatter(starDate, month) {
 }
 
 function monthlyPayment(params, $cond = true) {
-
     let totalDifferent = differentDate(params.start_date);
 
     if (params.payment_type===1) {

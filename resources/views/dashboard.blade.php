@@ -239,8 +239,8 @@
                             }
 
                             let params = {
-                                'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
-                                'rate': row.rate ? row.rate.replace('%', '') : null,
+                                'amount': row.mortgage_amount ? Number(row.mortgage_amount.replace('$', '')) : null,
+                                'rate': row.rate ? parseFloat(row.rate.replace('%', '')) : null,
                                 'amortization_period': row.amortization_period,
                                 'start_date': row.iad,
                                 'payment_type': row.payment_type,
@@ -256,8 +256,8 @@
                                 return '';
                             }
                             let params = {
-                                'amount': row.mortgage_amount ? row.mortgage_amount.replace('$', '') : null,
-                                'rate': row.rate ? row.rate.replace('%', '') : null,
+                                'amount': row.mortgage_amount ? Number(row.mortgage_amount.replace('$', '')) : null,
+                                'rate': row.rate ? parseFloat(row.rate.replace('%', '')) : null,
                                 'amortization_period': row.amortization_period,
                                 'start_date': row.iad,
                                 'payment_type': row.payment_type,
