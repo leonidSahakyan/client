@@ -83,8 +83,7 @@
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
-        <td><strong>{{ $client->term }}</strong> months</td>
-{{--        <td><strong>{{ ($client->payment_type==2)?$client->amortization_term:$client->credit_time }}</strong> months</td>--}}
+        <td><strong>{{ ($client->payment_type===1)?$client->term:$client->amortization_period }}</strong> months</td>
         <td><strong>Lender Fee:</strong></td>
         <td>$ <strong>{{ number_format((int)$settings['lender']['fee']) }}</strong></td>
     </tr>
@@ -193,10 +192,10 @@
         <td style="width: 20%;">
             <span> </span><br/>
             <span style="color: black;">+ $ {{ $settings['appraisal']['fee'] }}</span>   <br/>
-            <span style="color: black;">+ $ @if ($client->payment_type == 2){{ (int)$client->amortization_term * (int)$monthlyPayment }}@else{{ (int)$client->credit_time * (int)$monthlyPayment }}@endif</span> <br/>
+            <span style="color: black;">+ $ {{ number_format($totalMonthly) }}</span> <br/>
             <span style="color: black;">+ $ {{ number_format((int)$client->amount) }}</span> <br/>
-            <span style="color: black;">= $ 164,800</span> <br/>
-            <span style="color: black;">$ 24,695</span>  <br/>
+            <span style="color: black;">= $ {{ number_format($totalMonthly+(int)$client->amount +(int)$settings['appraisal']['fee']) }}</span> <br/>
+            <span style="color: black;">$ {{ number_format((($totalMonthly+(int)$client->amount +(int)$settings['appraisal']['fee'])-((int)$client->amount) - ( (int)$settings['admin']['fee'] + (int)$settings['lender']['fee'] + (int)$settings['broker']['fee'] + (int)$settings['mortgage']['fee']))) }}</span>  <br/>
             <span style="color: black; text-decoration: underline">16.46 %</span>
         </td>
     </tr>

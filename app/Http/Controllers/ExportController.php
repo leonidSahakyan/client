@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Clients;
+use App\Services\Calculator;
 use PDF;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\Exception\Exception;
@@ -12,25 +13,7 @@ use PhpOffice\PhpWord\Shared\Html;
 
 class ExportController extends Controller
 {
-    public static function calculator($amount,$rate,$term){
-//        if ($type === 1){
-        if ($amount && $rate && $term){
-            return round( ($amount * ($rate / 100) / 12) / (1 - (1 / (pow((1 + ($rate / 100) / 12), $term)))),-2);
-        }
-        return 0;
-//        }else{
-//            $previousBalance = $amount;
-//            $paymentBalance = $amount / $term;
-//
-//            for ($i = 1; $i <= $term; $i++) {
-//                $paymentPercent = ($previousBalance * ($rate / 100) / 12);
-//                return round($paymentPercent + $paymentBalance,-2);
-//            }
-//        }
-    }
-
-
-    public function exportWord(int $id)
+    public function exportWord(int $id, Calculator $calculator)
     {
         $phpWord = new PhpWord();
 
@@ -48,12 +31,29 @@ class ExportController extends Controller
         $client = Clients::find($id);
         $settings = unserialize($client->settings);
 
-        $calculator = self::calculator($client->amount, $client->rate, $client->term);
+        $params = array(
+            'amount' => (int)$client->amount,
+            'term'   => (int)$client->term,
+            'rate'   => (float)$client->rate,
+            'amortization_period'   => (int)$client->amortization_period,
+            'iad'   => $client->iad,
+            'start_date'   => $client->start_date,
+            'payment_type'   => (int)$client->payment_type,
+        );
+
+        $calc = $calculator->calculate($params);
+
+        if ($client->payment_type === 1){
+            $totalMonthly = (int)$client->term * (int)$calc;
+        }   else{
+            $totalMonthly=  (int)$client->amortization_period * (int)$calc;
+        }
 
         $html =  view('export.word',[
             'client' => $client,
             'settings' => $settings,
-            'monthlyPayment' => (int)$calculator,
+            'monthlyPayment' => $calc,
+            'totalMonthly' => $totalMonthly,
         ])->render();
 
             Html::addHtml($section, $html, false, false,
@@ -63,7 +63,7 @@ class ExportController extends Controller
                 )
             );
 
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        IOFactory::createWriter($phpWord, 'Word2007');
         $fileName = storage_path('/app/public/').sha1('') . '.docx';
         $phpWord->save($fileName);
         return response()->download($fileName);
