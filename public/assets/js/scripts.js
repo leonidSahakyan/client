@@ -287,7 +287,6 @@ function interestOnlyLoanPayment(params,calculatorTable) {
     for (let i = 1; i <= params.term; i++) {
         let paymentPercent = ((params.amount * (params.percent / 100)) / 12);
         let currentPaymentPercent = numberFormat(paymentPercent);
-
         let appendRow = "<tr>" +
             "<td>" + i + "</td>" +
             "<td>" + formatter(params.startDate, i) + "</td>" +
@@ -343,9 +342,10 @@ function amortizedLoanPayment(params,calculatorTable) {
 }
 
 function formatter(starDate, month) {
+    let date = new Date(new Date(starDate).setMonth(new Date(starDate).getUTCMonth()+(month-1)));
     let options = {year: 'numeric', month: 'short', day: 'numeric'};
     const formatter = new Intl.DateTimeFormat('en', options);
-    return formatter.format(new Date(new Date(starDate).setMonth(new Date(starDate).getUTCMonth() + month)));
+    return formatter.format(date);
 }
 
 function monthlyPayment(params, $cond = true) {
