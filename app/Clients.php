@@ -81,4 +81,8 @@ class Clients extends Model
 		$return['count'] = $count->recordsTotal;
     	return $return;
     }
+
+    public function getAmountAttribute($value){
+        return intval($value);
+    }
 }

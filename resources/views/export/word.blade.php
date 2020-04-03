@@ -29,7 +29,7 @@
 </p>
 <table border="0" style="width: 100%; margin: 0in 0in 0in 0in" cellspacing="0" cellpadding="0">
     <tr>
-        <td colspan="1">Borrower(s): A {{ $client->name }}</td>
+        <td colspan="1">Borrower(s): {{ $client->name }}</td>
         <td colspan="4">
             @if($client->co_signor)
                 @foreach(json_decode($client->co_signor) as $item)
@@ -79,23 +79,23 @@
             <span>$ <strong>{{ $monthlyPayment }}</strong></span>
         </td>
         <td><strong>Estimated Funding Date:</strong></td>
-        <td><strong>{{ date('F j, Y', strtotime($client->closing_date)) }} </strong></td>
+        <td><strong>{{ date('F j, Y', strtotime($client->start_date)) }} </strong></td>
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
         <td><strong>{{ ($client->payment_type===1)?$client->term:$client->amortization_period }}</strong> months</td>
         <td><strong>Lender Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['lender']['fee']) }}</strong></td>
+        <td>$ <strong>{{ $settings['lender'] }}</strong></td>
     </tr>
     <tr>
         <td><strong>Administration Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['admin']['fee']) }}</strong></td>
+        <td>$ <strong>{{ $settings['admin'] }}</strong></td>
         <td><strong>iMortgage Canada Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['mortgage']['fee']) }}</strong></td>
+        <td>$ <strong>{{ $settings['mortgage'] }}</strong></td>
     </tr>
     <tr>
         <td><strong>Broker Fee:</strong></td>
-        <td>$ <strong>{{ number_format((int)$settings['broker']['fee']) }}</strong></td>
+        <td>$ <strong>{{ $settings['broker'] }}</strong></td>
     </tr>
 </table>
 <p><span style="font-size:12pt"><span style="font-family:Calibri,sans-serif">Conditions:</span></span></p>
@@ -171,12 +171,12 @@
 <span style="color: black">Total Net Advanced to {{ $client->name }}:</span> <br/>
         </td>
         <td style="width: 20%;">
-            <span style="color: black;">$ {{ number_format((int)$settings['admin']['fee']) }}</span>   <br/>
-            <span style="color: black;">$ {{ number_format((int)$settings['lender']['fee']) }}</span> <br/>
-            <span style="color: black;">$ {{ number_format((int)$settings['broker']['fee']) }}</span> <br/>
-            <span style="color: black;">$ {{ number_format((int)$settings['mortgage']['fee']) }}</span> <br/><br/>
-            <span style="color: black; text-decoration: underline; font-weight: bold">$ {{ number_format(((int)$client->amount) - ( (int)$settings['admin']['fee'] + (int)$settings['lender']['fee'] + (int)$settings['broker']['fee'] + (int)$settings['mortgage']['fee'])
-) }}</span> <br/>
+            <span style="color: black;">$ {{ $settings['admin'] }}</span>   <br/>
+            <span style="color: black;">$ {{ $settings['lender'] }}</span> <br/>
+            <span style="color: black;">$ {{ $settings['broker'] }}</span> <br/>
+            <span style="color: black;">$ {{ $settings['mortgage'] }}</span> <br/><br/>
+            <span style="color: black; text-decoration: underline; font-weight: bold">$ {{ number_format(((int)$client->amount) - ($settings['totalSum'] - $settings['appraisal']))
+ }}</span> <br/>
         </td>
     </tr>
     <tr>
@@ -191,12 +191,12 @@
         </td>
         <td style="width: 20%;">
             <span> </span><br/>
-            <span style="color: black;">+ $ {{ $settings['appraisal']['fee'] }}</span>   <br/>
+            <span style="color: black;">+ $ {{ $settings['appraisal'] }}</span>   <br/>
             <span style="color: black;">+ $ {{ number_format($totalMonthly) }}</span> <br/>
             <span style="color: black;">+ $ {{ number_format((int)$client->amount) }}</span> <br/>
-            <span style="color: black;">= $ {{ number_format($totalMonthly+(int)$client->amount +(int)$settings['appraisal']['fee']) }}</span> <br/>
-            <span style="color: black;">$ {{ number_format((($totalMonthly+(int)$client->amount +(int)$settings['appraisal']['fee'])-((int)$client->amount) - ( (int)$settings['admin']['fee'] + (int)$settings['lender']['fee'] + (int)$settings['broker']['fee'] + (int)$settings['mortgage']['fee']))) }}</span>  <br/>
-            <span style="color: black; text-decoration: underline">16.46 %</span>
+            <span style="color: black;">= $ {{ number_format($totalPayment) }}</span> <br/>
+            <span style="color: black;">$ {{ number_format($tcc) }}</span>  <br/>
+            <span style="color: black; text-decoration: underline">{{ number_format($apr,2) }} %</span>
         </td>
     </tr>
     </tbody>

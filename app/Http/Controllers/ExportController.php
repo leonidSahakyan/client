@@ -44,16 +44,27 @@ class ExportController extends Controller
         $calc = $calculator->calculate($params);
 
         if ($client->payment_type === 1){
+            $term = $client->term;
             $totalMonthly = (int)$client->term * (int)$calc;
         }   else{
             $totalMonthly=  (int)$client->amortization_period * (int)$calc;
+            $term = $client->amortization_period;
         }
+
+
+        $settings = self::clientSettings($client);
+        $totalPayment = ($settings['appraisal'] + $client->amount + $totalMonthly);
+        $tcc = $totalPayment - ($client->amount- ($settings['totalSum'] - $settings['appraisal']));
+        $apr = ($tcc/$client->amount/($term/12*365)*365*100 );
 
         $html =  view('export.word',[
             'client' => $client,
             'settings' => $settings,
             'monthlyPayment' => $calc,
             'totalMonthly' => $totalMonthly,
+            'totalPayment' => $totalPayment,
+            'tcc' => $tcc,
+            'apr' => $apr,
         ])->render();
 
             Html::addHtml($section, $html, false, false,
@@ -68,6 +79,19 @@ class ExportController extends Controller
         $phpWord->save($fileName);
         return response()->download($fileName);
     }
+
+
+    public static function clientSettings($client){
+        $settings = unserialize($client->settings);
+        $fees = [];
+        foreach ($settings as $key => $val) {
+            $fees[$key] = intval($val['fee']);
+        }
+        $fees['totalSum'] = array_sum($fees);
+
+       return $fees;
+    }
+
 
     public function calculatorPDF(Request $request)
     {
