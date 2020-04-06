@@ -67,35 +67,38 @@
             <strong>Amortization Period:</strong>
         </td>
         <td>
-            <strong>Amortization</strong>
-{{--            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>--}}
+            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>
         </td>
+
     </tr>
-    <tr>
+    <tr rowspan="3">
         <td>
             <strong>Monthly Payment:</strong>
         </td>
         <td>
             <span>$ <strong>{{ $monthlyPayment }}</strong></span>
         </td>
-        <td><strong>Estimated Funding Date:</strong></td>
-        <td><strong>{{ date('F j, Y', strtotime($client->start_date)) }} </strong></td>
+        <td>{{ ($client->payment_type===1)?$client->term:$client->amortization_period }} post dated cheques</td>
+
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
         <td><strong>{{ ($client->payment_type===1)?$client->term:$client->amortization_period }}</strong> months</td>
-        <td><strong>Lender Fee:</strong></td>
-        <td>$ <strong>{{ $settings['lender'] }}</strong></td>
+        <td><strong>Estimated Funding Date:</strong></td>
+        <td><strong>{{ date('F j, Y', strtotime($client->start_date)) }} </strong></td>
+
     </tr>
     <tr>
         <td><strong>Administration Fee:</strong></td>
         <td>$ <strong>{{ $settings['admin'] }}</strong></td>
-        <td><strong>iMortgage Canada Fee:</strong></td>
-        <td>$ <strong>{{ $settings['mortgage'] }}</strong></td>
+        <td><strong>Lender Fee:</strong></td>
+        <td>$ <strong>{{ $settings['lender'] }}</strong></td>
     </tr>
     <tr>
         <td><strong>Broker Fee:</strong></td>
         <td>$ <strong>{{ $settings['broker'] }}</strong></td>
+        <td><strong>iMortgage Canada Fee:</strong></td>
+        <td>$ <strong>{{ $settings['mortgage'] }}</strong></td>
     </tr>
 </table>
 <p><span style="font-size:12pt"><span style="font-family:Calibri,sans-serif">Conditions:</span></span></p>
