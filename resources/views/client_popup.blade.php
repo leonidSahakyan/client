@@ -52,7 +52,7 @@
                             <input type="text" class="form-control" id="property_security_{{$i+1}}"
                                    name="property_security[]"
                                    @if($client && isset(unserialize($client->property_security)[$i]))
-                                   value="{{ unserialize($client->property_security)[$i]['property_security'] }}"
+                                   value="{{ isset(unserialize($client->property_security)[$i]['property_security'])?unserialize($client->property_security)[$i]['property_security']:'' }}"
                                     @endif
                             />
                         </div>

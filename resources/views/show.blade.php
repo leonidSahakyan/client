@@ -55,10 +55,6 @@
                                             <th scope="row">Phone</th>
                                             <td>{{ $client->phone }}</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">Mailing address</th>
-                                            <td>{{ $client->mailing_address }}</td>
-                                        </tr>
                                         @foreach(unserialize($client->property_security) as $key => $val)
                                             @if(isset($val['property_security']))
                                                 <tr>
