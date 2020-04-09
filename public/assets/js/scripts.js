@@ -342,8 +342,10 @@ function amortizedLoanPayment(params,calculatorTable) {
 }
 
 function formatter(starDate, month) {
-    let date = new Date(new Date(starDate).setMonth(new Date(starDate).getUTCMonth()+(month-1)));
+    const starDateMonth = new Date(starDate).getUTCMonth() + Number(month);
+    let date = new Date(new Date(starDate).setMonth(starDateMonth,0));
     let options = {year: 'numeric', month: 'short', day: 'numeric'};
+
     const formatter = new Intl.DateTimeFormat('en', options);
     return formatter.format(date);
 }

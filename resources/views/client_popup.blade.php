@@ -46,26 +46,29 @@
                             <label class="form-check-label" for="sameMailingAddress">Same a Mailing Address</label>
                         </div>
                     </div>
-                    @for($i=0; $i <=1; $i++)
+                    @for($i=0; $i <=2; $i++)
                         <div class="form-group">
-                            <label for="property_security_{{$i+1}}" class="col-form-label">Property Security</label>
+                            <label for="property_security_{{$i+1}}" class="col-form-label">Property Security {{$i+1}}</label>
                             <input type="text" class="form-control" id="property_security_{{$i+1}}"
                                    name="property_security[]"
-                                   @if($client && $val = unserialize($client->property_security)[$i])
-                                   value="{{ $val }}">
-                            @endif
+                                   @if($client && isset(unserialize($client->property_security)[$i]))
+                                   value="{{ unserialize($client->property_security)[$i]['property_security'] }}"
+                                    @endif
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="legal_pid_{{$i+1}}">Legal PID {{$i+1}}</label>
+                            <input type="text" class="form-control" id="legal_pid_{{$i+1}}" name="legal_pid[]"
+                                   @if($client && isset(unserialize($client->property_security)[$i]))
+                                   value="{{ unserialize($client->property_security)[$i]['legal_pid'] }}"
+                                @endif
+                            >
                         </div>
                     @endfor
                     <div class="form-group">
-                        <label for="example-address-input" class="col-form-label">Address</label>
-                        <input class="form-control" type="text" name="address"
-                               value="{{ $client ? $client->address : "" }}"
-                               id="example-address-input" placeholder="Address">
-                    </div>
-                    <div class="form-group">
-                        <label for="example-date-input1" class="col-form-label">DOB</label>
+                        <label for="dob" class="col-form-label">DOB</label>
                         <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date"
-                               id="example-date-input2">
+                               id="dob">
                     </div>
                     <div class="form-group">
                         <label for="co_signor" class="col-form-label">Add co-signor</label>
@@ -79,11 +82,6 @@
                                 @endif
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="legal_pid">Legal PID</label>
-                        <input type="text" class="form-control" id="legal_pid" name="legal_pid"
-                               value="{{ $client ? $client->legal_pid:'' }}">
                     </div>
                 </fieldset>
             </div>
@@ -326,12 +324,29 @@
                         </div>
                     </div>
                     <div class="row">
+                        <!-- Lawyer -->
+                        <div class="form-group col">
+                            <label for="estimated_fee" class="col-form-label">Estimated Legal Fee</label>
+                            <input class="form-control" type="number" name="estimated_fee"
+                                   value="{{ $fees && isset($fees['estimated'])? $fees['estimated']['fee'] : '' }}" min="0"
+                                   id="estimated_fee" placeholder="Estimated Legal Fee">
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- Appraisal -->
                         <div class="form-group col">
                             <label for="appraisal_fee" class="col-form-label">Appraisal</label>
                             <input class="form-control" type="number" name="appraisal_fee" min="0"
                                    value="{{ $fees ? $fees['appraisal']['fee'] : '' }}" id="appraisal_fee"
                                    placeholder="appraisal fee">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Appraisal -->
+                        <div class="form-group col">
+                            <label for="payment_method" class="col-form-label">Payment method</label>
+                            <input class="form-control" type="number" name="payment_method" min="0"
+                                   value="{{ $client? $client->payment_method:'12' }}" id="payment_method">
                         </div>
                     </div>
                     <!------ ------>

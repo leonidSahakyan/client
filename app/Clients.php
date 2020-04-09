@@ -22,15 +22,11 @@ class Clients extends Model
                                     'clients.payment_type',
                                     'clients.iad as iad',
                                     'clients.name as client_name',
-                                    'clients.address as address',
                                     'clients.dob',
                                     'clients.phone as phone',
                                     'clients.email as email',
                                     'clients.rate',
-                                    'clients.fee',
-                                    'clients.admin_fee',
                                     'clients.amount as mortgage_amount',
-                                    'clients.current_mortgage',
                                     'clients.status',
                                     'clients.term',
                                     'clients.amortization_period',
@@ -47,8 +43,8 @@ class Clients extends Model
                 $searchQ = $filter['search'];
 
                 $query->where(function ($query) use ($searchQ) {
-                    $query->where('clients.address','LIKE',"%".$searchQ."%")
-                        ->orWhere('clients.phone','LIKE',"%_".$searchQ."")
+                    $query
+                        ->where('clients.phone','LIKE',"%_".$searchQ."")
                         ->orWhere('clients.email','LIKE',"%".$searchQ."%")
                         ->orWhere('clients.name','LIKE',"%".$searchQ."%");
                 });
@@ -71,9 +67,6 @@ class Clients extends Model
 		foreach ($data as $d) {
             $d->DT_RowId = "row_".$d->DT_RowId;
             $d->rate = ($d->rate)?$d->rate." %":'';
-            $d->fee = ($d->fee)?$d->fee." $":'';
-            $d->admin_fee = ($d->admin_fee)?$d->admin_fee." $":'';
-            $d->current_mortgage = ($d->current_mortgage)? "$ ".$d->current_mortgage:'';
             $d->mortgage_amount = ($d->mortgage_amount)?"$ ".$d->mortgage_amount:'';
 		}
 		$count  = DB::select( DB::raw("SELECT FOUND_ROWS() AS recordsTotal;"))[0];

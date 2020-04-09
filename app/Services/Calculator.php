@@ -36,7 +36,7 @@ class Calculator
         else
             $res =  $this->amortizedLoanPayment();
 
-        return $res;
+        return (float)($res);
     }
 
     private function interestOnlyLoanPayment()
@@ -47,7 +47,7 @@ class Calculator
         for ($i = 1; $i <= $this->term; $i ++)
         {
             if ($this->differentDate === $i || $this->differentDate < 1) {
-                return  number_format($percent,2);
+                return  $percent;
             }
         }
 
@@ -69,7 +69,7 @@ class Calculator
             }
 
             if ($this->differentDate === $i || $this->differentDate < 1) {
-                return number_format($paymentTotal,2);
+                return $paymentTotal;
             }
         }
 

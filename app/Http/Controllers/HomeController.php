@@ -117,10 +117,8 @@ class HomeController extends Controller
 
         $client->name = $data['name'];
         $client->email = $data['email'];
-//        $client->closing_date = $data['closing_date'];
         $client->dob = $data['dob'];
         $client->phone = $data['phone'];
-        $client->address = $data['address'];
         $client->status = $data['status'];
         $client->iad = $data['iad'];
 
@@ -175,6 +173,7 @@ class HomeController extends Controller
         $settings['lender']     = array('fee' => $data['lender_fee']);
         $settings['admin']      = array('fee' => $data['admin_fee']);
         $settings['lawyer']     = array('fee' => $data['lawyer_fee']);
+        $settings['estimated']  = array('fee' => $data['estimated_fee']);
         $settings['appraisal']  = array('fee' => $data['appraisal_fee']);
 
         $settings = serialize($settings);
@@ -183,7 +182,14 @@ class HomeController extends Controller
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
         $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
-        $client->property_security = serialize($data['property_security']);
+
+        $securityArr = [];
+        foreach ($data['property_security'] as $key =>$val) {
+            $securityArr[$key]['property_security'] = $val;
+            $securityArr[$key]['legal_pid'] = $data['legal_pid'][$key];
+        }
+
+        $client->property_security = serialize($securityArr);
 
         $client->amount = str_replace(' ', '', $data['amount']);
         $client->start_date = $data['start_date'];
@@ -191,6 +197,7 @@ class HomeController extends Controller
         $client->rate = $data['rate'];
         $client->amortization_period = $data['amortization_period'];
         $client->payment_type = isset($data['payment_type']) ? 1 : 2;
+        $client->payment_method = $data['payment_method'];
 
         $client->save();
 

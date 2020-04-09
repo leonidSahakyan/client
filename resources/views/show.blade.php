@@ -59,14 +59,22 @@
                                             <th scope="row">Mailing address</th>
                                             <td>{{ $client->mailing_address }}</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">Property Security</th>
-                                            <td>
-                                                @foreach(unserialize($client->property_security) as $val)
-                                                    {{ $val.'<br>'?$val:'' }}
-                                                @endforeach
-                                            </td>
-                                        </tr>
+                                        @foreach(unserialize($client->property_security) as $key => $val)
+                                            @if(isset($val['property_security']))
+                                                <tr>
+                                                    <th scope="row">Property Security {{$key+1}}</th>
+                                                    <td>
+
+                                                        {{ $val['property_security'] }}
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Legal PID {{$key+1}}</th>
+                                                    <td>{{ $val['legal_pid'] }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         <tr>
                                             <th scope="row">Address</th>
                                             <td>{{ $client->address }}</td>
@@ -78,17 +86,14 @@
                                         <tr>
                                             <th scope="row">Add co-signor</th>
                                             <td>
-                                                @if($client->co_signor){
+                                                @if($client->co_signor)
                                                     @foreach(json_decode($client->co_signor) as $item)
                                                         {{ $item }}<br>
                                                     @endforeach
                                                 @endif
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">Legal PID</th>
-                                            <td>{{ $client->legal_pid }}</td>
-                                        </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -196,27 +201,35 @@
                                             <tbody>
                                             <tr>
                                                 <th scope="row">iMortgage</th>
-                                                <td>${{ $fee['mortgage']['fee'] }}</td>
+                                                <td>$ {{ $fee['mortgage']['fee'] }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Broker</th>
-                                                <td>${{ $fee['broker']['fee'] }}</td>
+                                                <td>$ {{ $fee['broker']['fee'] }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lender</th>
-                                                <td>${{ $fee['lender']['fee'] }}</td>
+                                                <td>$ {{ $fee['lender']['fee'] }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Admin</th>
-                                                <td>${{ $fee['admin']['fee'] }}</td>
+                                                <td>$ {{ $fee['admin']['fee'] }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Lawyer</th>
-                                                <td>${{ $fee['lawyer']['fee'] }}</td>
+                                                <td>$ {{ $fee['lawyer']['fee'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Estimated Legal Fee</th>
+                                                <td>$ {{ isset($fee['estimated'])?$fee['estimated']['fee']:'' }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Appraisal</th>
-                                                <td>${{ $fee['appraisal']['fee'] }}</td>
+                                                <td>$ {{ $fee['appraisal']['fee'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Payment method</th>
+                                                <td>$ {{ $client->payment_method }}</td>
                                             </tr>
                                             </tbody>
                                         </table>

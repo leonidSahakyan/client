@@ -275,13 +275,13 @@
                             url = url.replace(':id', row.id);
                             exportWord = exportWord.replace(':id', row.id);
 
-                            return '<a href="javascript:;" class="btn getClient" data-toggle="modal" data-target="#exampleModalLong" data-client_id="' + row.id + '"><i class="fa fa-pencil"></i></a>'
+                            return '<a href="javascript:;" class="btn getClient" title="Edit" data-toggle="modal" data-target="#exampleModalLong" data-client_id="' + row.id + '"><i class="fa fa-pencil"></i></a>'
                                 +
-                                '<a href="' + url + '" class="btn ml-3"><i class="fa fa-eye" aria-hidden="true"></i></a>'
+                                '<a href="' + url + '" class="btn ml-3" title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>'
                                 +
-                                '<a href="' + exportWord + '" class="btn ml-3"><i class="fa fa-print" aria-hidden="true"></i></a>'
+                                '<a href="' + exportWord + '" class="btn ml-3" title="Print"><i class="fa fa-print" aria-hidden="true"></i></a>'
                                 +
-                                '<a href="' + deleteClient + "/" + row.id + '" class="btn ml-3"><i class="fa fa-trash-o" aria-hidden="true"></i></i></a>'
+                                '<a href="' + deleteClient + "/" + row.id + '" class="btn ml-3" title="Remove"><i class="fa fa-trash-o" aria-hidden="true"></i></i></a>'
                                 ;
                         }
                     },
