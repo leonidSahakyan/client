@@ -60,7 +60,7 @@
                             <label for="legal_pid_{{$i+1}}">Legal PID {{$i+1}}</label>
                             <input type="text" class="form-control" id="legal_pid_{{$i+1}}" name="legal_pid[]"
                                    @if($client && isset(unserialize($client->property_security)[$i]))
-                                   value="{{ unserialize($client->property_security)[$i]['legal_pid'] }}"
+                                   value="{{ isset(unserialize($client->property_security)[$i]['legal_pid'])?unserialize($client->property_security)[$i]['legal_pid']:'' }}"
                                 @endif
                             >
                         </div>
