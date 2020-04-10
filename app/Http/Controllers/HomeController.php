@@ -180,7 +180,6 @@ class HomeController extends Controller
         $client->settings = $settings;
 
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
-        $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
 
         $securityArr = [];
@@ -198,6 +197,8 @@ class HomeController extends Controller
         $client->amortization_period = $data['amortization_period'];
         $client->payment_type = isset($data['payment_type']) ? 1 : 2;
         $client->payment_method = $data['payment_method'];
+
+        $client->eod = $data['eod'];
 
         $client->save();
 

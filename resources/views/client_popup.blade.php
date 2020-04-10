@@ -342,11 +342,22 @@
                         </div>
                     </div>
                     <div class="row">
-                        <!-- Appraisal -->
                         <div class="form-group col">
                             <label for="payment_method" class="col-form-label">Payment method</label>
                             <input class="form-control" type="number" name="payment_method" min="0"
                                    value="{{ $client? $client->payment_method:'12' }}" id="payment_method">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="eod" class="col-form-label">Estimated Other Deductions</label>
+                            <input
+                                type="number"
+                                name="eod"
+                                id="eod"
+                                class="form-control"
+{{--                                value="{{ $client? $client->payment_method:'12' }}" --}}
+                            >
                         </div>
                     </div>
                     <!------ ------>

@@ -65,7 +65,7 @@
         <td>
             <p>Estimated Other Deductions (mortgage payouts, loan payouts etc):</p>
         </td>
-        <td><p>$ -100,000</p></td>
+        <td><p>$ {{ number_format($client->eod) }}</p></td>
     </tr>
     <tr>
         <td>
