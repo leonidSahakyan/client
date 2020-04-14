@@ -294,11 +294,14 @@
                         render: function (data, type, row, meta) {
 
                             if (row.status === 1){
-                                return 'Active';
+                                data =  'Active';
+                            }else if (row.status === 2){
+                                data =  'Completed';
                             }
-                            if (row.status === 2){
-                                return 'Completed';
+                            else{
+                                data =   'Cancelled'
                             }
+                            return data;
 
                         }
                     },
