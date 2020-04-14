@@ -66,8 +66,8 @@
             <strong>Amortization Period:</strong>
         </td>
         <td>
-            <strong>{{ ($client->payment_type === 2)?'Amortization':'Interest only' }}</strong>
-        </td>
+            <strong>{{ ($client->payment_type === 2)?$client->amortization_period:'Interest only' }}</strong>
+        </td>`
     </tr>
     <tr rowspan="3">
         <td>

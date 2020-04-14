@@ -223,7 +223,6 @@
                 processing: false,
                 columns: [
                     {"data": "renewal_date", "name": 'clients.renewal_date', "orderable": true,},
-                    // {"data": "closing_date", "name": 'clients.closing_date', "orderable": true},
                     {"data": "iad", "name": 'clients.ida', "orderable": false},
                     {"data": "client_name", "name": 'agents.name', "orderable": false},
                     {"data": "phone", "name": 'clients.phone', "orderable": false},
@@ -234,7 +233,11 @@
                         "data": "mortgage_amount", "orderable": false,
                         render: function (data, type, row) {
 
-                            if (!row.mortgage_amount || (!row.term  && row.payment_type === 1) || (!row.amortization_period && row.payment_type === 2)){
+                            if (!row.mortgage_amount
+                                ||
+                                (!row.term  && row.payment_type === 1)
+                                ||
+                                (!row.amortization_period && row.payment_type === 2)){
                                 return '';
                             }
 
@@ -246,7 +249,8 @@
                                 'payment_type': row.payment_type,
                                 'term': row.term,
                             };
-                            return monthlyPayment(params, false);
+
+                            return monthlyPayment(params, false)?monthlyPayment(params, false):''
                         }
                     },
                     {
@@ -263,7 +267,7 @@
                                 'payment_type': row.payment_type,
                                 'term': row.term,
                             };
-                            return monthlyPayment(params, true);
+                            return monthlyPayment(params, true)?monthlyPayment(params, true):'';
                         }
                     },
                     {
@@ -288,20 +292,14 @@
                     {
                         "data": "status", "name": 'clients.status', "orderable": false,
                         render: function (data, type, row, meta) {
-                            var html = '<select data-id="' + row.id + '" class="custom-select change-status">';
 
-                            var active = '';
+                            if (row.status === 1){
+                                return 'Active';
+                            }
+                            if (row.status === 2){
+                                return 'Completed';
+                            }
 
-                            if (row.status == 1) active = "selected='selected'";
-                            html += "<option value='1' " + active + " >Active</option>";
-
-                            active = '';
-                            if (row.status == 2) active = "selected='selected'";
-                            html += "<option value='2' " + active + " >Completed</option>";
-
-                            html += '</select>';
-
-                            return html;
                         }
                     },
                 ],

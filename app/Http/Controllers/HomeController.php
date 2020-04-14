@@ -172,7 +172,6 @@ class HomeController extends Controller
         $settings['broker']     = array('fee' => $data['broker_fee']);
         $settings['lender']     = array('fee' => $data['lender_fee']);
         $settings['admin']      = array('fee' => $data['admin_fee']);
-        $settings['lawyer']     = array('fee' => $data['lawyer_fee']);
         $settings['estimated']  = array('fee' => $data['estimated_fee']);
         $settings['appraisal']  = array('fee' => $data['appraisal_fee']);
 
@@ -180,7 +179,6 @@ class HomeController extends Controller
         $client->settings = $settings;
 
         $client->co_signor = (isset($data['co_signor']) && count($data['co_signor']) > 0) ? json_encode($data['co_signor'], JSON_FORCE_OBJECT) : null;
-        $client->legal_pid = $data['legal_pid'];
         $client->mailing_address = $data['mailing_address'];
 
         $securityArr = [];

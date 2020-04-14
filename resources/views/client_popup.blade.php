@@ -249,14 +249,33 @@
                                    value="{{ $client ? $client->amortization_period :'' }}">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="payment_method" class="col-form-label">Payment method</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="payment_method"
+                                   name="payment_method"
+                                   min="0"
+                                   value="{{ $client? $client->payment_method:'12' }}"
+                            >
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="rate" class="col-form-label">Interest Rate</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
-                            <input type="number" step="0.01" min="0" name="rate" id="rate"  class="form-control" value="{{ $client ? $client->rate : "" }}"
-                                   placeholder="Rate">
+                            <input type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="rate"
+                                   id="rate"
+                                   class="form-control"
+                                   value="{{ $client ? $client->rate : "" }}"
+                                   placeholder="Rate"
+                            >
                         </div>
                     </div>
                     <div class="form-group">
@@ -314,15 +333,15 @@
                                    id="admin_fee" placeholder="admin fee">
                         </div>
                     </div>
-                    <div class="row">
-                        <!-- Lawyer -->
-                        <div class="form-group col">
-                            <label for="lawyer_fee" class="col-form-label">Lawyer</label>
-                            <input class="form-control" type="number" name="lawyer_fee"
-                                   value="{{ $fees ? $fees['lawyer']['fee'] : '' }}" min="0"
-                                   id="lawyer_fee" placeholder="lawyer fee">
-                        </div>
-                    </div>
+{{--                    <div class="row">--}}
+{{--                        <!-- Lawyer -->--}}
+{{--                        <div class="form-group col">--}}
+{{--                            <label for="lawyer_fee" class="col-form-label">Lawyer</label>--}}
+{{--                            <input class="form-control" type="number" name="lawyer_fee"--}}
+{{--                                   value="{{ $fees ? $fees['lawyer']['fee'] : '' }}" min="0"--}}
+{{--                                   id="lawyer_fee" placeholder="lawyer fee">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="row">
                         <!-- Lawyer -->
                         <div class="form-group col">
@@ -339,14 +358,6 @@
                             <input class="form-control" type="number" name="appraisal_fee" min="0"
                                    value="{{ $fees ? $fees['appraisal']['fee'] : '' }}" id="appraisal_fee"
                                    placeholder="appraisal fee">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Appraisal -->
-                        <div class="form-group col">
-                            <label for="payment_method" class="col-form-label">Payment method</label>
-                            <input class="form-control" type="number" name="payment_method" min="0"
-                                   value="{{ $client? $client->payment_method:'12' }}" id="payment_method">
                         </div>
                     </div>
                     <!------ ------>
