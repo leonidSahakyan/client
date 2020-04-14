@@ -47,33 +47,36 @@ class ExportController extends Controller
             'start_date'   => $client->start_date,
             'payment_type'   => (int)$client->payment_type,
         );
-        $balanceMaturityDate = 0;
-        $calc = $calculator->calculate($params);
 
+        $calc = $calculator->calculate($params);
+        $totalMonthly = intval($client->term) * $calc;
         if ($client->payment_type === 1){
             $term = $client->term;
-            $totalMonthly = floatval($client->term) * $calc;
+//            $totalMonthly = intval($client->term) * $calc;
             $balanceMaturityDate = $client->amount;
         }   else{
-            $totalMonthly=  (int)$client->amortization_period * $calc;
+//            $totalMonthly=  (int)$client->amortization_period * $calc;
             $term = $client->amortization_period;
             $balanceMaturityDate = ($client->amount - ($client->term * $calc));
         }
+
         $totalMonthly = round($totalMonthly,-1,PHP_ROUND_HALF_EVEN);
         $property_security = unserialize($client->property_security);
 
         $settings = self::clientSettings($client);
+
         $totalPayment = ($settings['appraisal'] + $balanceMaturityDate + $totalMonthly);
+
         $tcc = $totalPayment - ($balanceMaturityDate - ($settings['totalSum'] - $settings['appraisal']));
+
         $apr = ($tcc/$client->amount/($term/12*365)*365*100 );
 
         $htmlFirst =  view('export.word',[
             'client' => $client,
             'settings' => $settings,
-            'monthlyPayment' => number_format($calc,0),
+            'monthlyPayment' => number_format($calc,2),
             'totalMonthly' => $totalMonthly,
             'property_security' => $property_security,
-
         ])->render();
 
         $htmlSecond =  view('export.wordSecond',[
@@ -102,8 +105,12 @@ class ExportController extends Controller
         $settings = unserialize($client->settings);
         $fees = [];
         foreach ($settings as $key => $val) {
+            if ($key==='lawyer'){
+                continue;
+            }
             $fees[$key] = intval($val['fee']);
         }
+
         $fees['totalSum'] = array_sum($fees);
 
        return $fees;

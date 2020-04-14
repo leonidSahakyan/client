@@ -31,12 +31,16 @@ class Calculator
 
         $this->differentDate = $this->differentDate($this->iad);
 
-        if ($this->payment_type === 1)
-          $res = $this->interestOnlyLoanPayment();
-        else
-            $res =  $this->amortizedLoanPayment();
+        if ($this->payment_type === 1){
 
-        return (float)($res);
+          $res = $this->interestOnlyLoanPayment();
+        }
+        else{
+
+            $res =  $this->amortizedLoanPayment();
+        }
+        return $res;
+        return floatval(number_format($res,2));
     }
 
     private function interestOnlyLoanPayment()

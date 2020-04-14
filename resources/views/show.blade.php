@@ -169,7 +169,7 @@
                                         @endif
                                         <tr>
                                             <th scope="row">Amount</th>
-                                            <td>{{ $client->amount }}</td>
+                                            <td>$ {{ $client->amount }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Term</th>
@@ -178,6 +178,10 @@
                                         <tr>
                                             <th scope="row">Rate</th>
                                             <td>{{ $client->rate }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Payment method</th>
+                                            <td>{{ $client->payment_method }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -212,20 +216,12 @@
                                                 <td>$ {{ $fee['admin']['fee'] }}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">Lawyer</th>
-                                                <td>$ {{ $fee['lawyer']['fee'] }}</td>
-                                            </tr>
-                                            <tr>
                                                 <th scope="row">Estimated Legal Fee</th>
                                                 <td>$ {{ isset($fee['estimated'])?$fee['estimated']['fee']:'' }}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Appraisal</th>
                                                 <td>$ {{ $fee['appraisal']['fee'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Payment method</th>
-                                                <td>$ {{ $client->payment_method }}</td>
                                             </tr>
                                             </tbody>
                                         </table>

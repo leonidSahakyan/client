@@ -172,7 +172,6 @@ class HomeController extends Controller
         $settings['broker']     = array('fee' => $data['broker_fee']);
         $settings['lender']     = array('fee' => $data['lender_fee']);
         $settings['admin']      = array('fee' => $data['admin_fee']);
-        $settings['lawyer']     = array('fee' => $data['lawyer_fee']);
         $settings['estimated']  = array('fee' => $data['estimated_fee']);
         $settings['appraisal']  = array('fee' => $data['appraisal_fee']);
 
