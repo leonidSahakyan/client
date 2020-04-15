@@ -76,7 +76,7 @@
         <td>
             <span>$ <strong>{{ $monthlyPayment }}</strong></span>
         </td>
-        <td><strong>Pre-paid {{ $client->payment_method }} months</strong></td>
+        <td><strong>{{ $client->payment_method }}</strong></td>
     </tr>
     <tr>
         <td><strong>Mortgage Term:</strong></td>
@@ -100,7 +100,7 @@
 <p style="margin-top: 1in; margin-bottom: 2in"><span style="font-size:12pt"><span style="font-family:Calibri,sans-serif">Conditions:</span></span></p>
 
 <ol style="font-size: 11pt; font-family:Calibri,sans-serif; margin-top: 0in; margin-bottom: 0in">
-    <li><p>Pre-paid {{ $client->payment_method }} months, $18,900 hold back. </p></li>
+    <li><p>Pre-paid 12 months, $18,900 hold back. </p></li>
     <li><p>Removal of interalia charge on title from Nov 2019 </p></li>
     <li><p><strong>Prepayment Penalty: 1.5%</strong> month interest penalty, fully closed for 6 months. </p></li>
     <li><p>Subject to satisfactory report of title, prior charges not to exceed $1,320,000 and in good standing National Bank </p></li>

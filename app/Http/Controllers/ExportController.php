@@ -49,15 +49,20 @@ class ExportController extends Controller
         );
 
         $calc = $calculator->calculate($params);
+        $balanceMaturityDate = $calc['previousBalance'];
+        $calc = $calc['monthly'];
+//        dump($calc);
+//        die;
         $totalMonthly = intval($client->term) * $calc;
+
         if ($client->payment_type === 1){
             $term = $client->term;
 //            $totalMonthly = intval($client->term) * $calc;
-            $balanceMaturityDate = $client->amount;
+//            $balanceMaturityDate = $client->amount;
         }   else{
 //            $totalMonthly=  (int)$client->amortization_period * $calc;
             $term = $client->amortization_period;
-            $balanceMaturityDate = ($client->amount - ($client->term * $calc));
+//            $balanceMaturityDate = ($client->amount - ($client->term * $calc));
         }
 
         $totalMonthly = round($totalMonthly,-1,PHP_ROUND_HALF_EVEN);

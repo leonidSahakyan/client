@@ -40,14 +40,15 @@ class Calculator
             $res =  $this->amortizedLoanPayment();
         }
         return $res;
-        return floatval(number_format($res,2));
     }
 
     private function interestOnlyLoanPayment()
     {
-
+        $res = [];
         $percent = (($this->amount * ($this->rate / 100)) / 12);
-
+        $res['monthly'] = $percent;
+        $res['previousBalance'] = $this->amount;
+        return $res;
         for ($i = 1; $i <= $this->term; $i ++)
         {
             if ($this->differentDate === $i || $this->differentDate < 1) {
@@ -59,9 +60,10 @@ class Calculator
 
     private function amortizedLoanPayment()
     {
+        $res = [];
         $previousBalance = $this->amount;
         $paymentTotal = ($this->amount * ($this->rate / 100) / 12) / (1 - (1 / (pow((1 + ($this->rate / 100) / 12), $this->amortization_period))));
-
+        $res['monthly'] = $paymentTotal;
         for ($i = 1; $i <= $this->amortization_period; $i++) {
 
             $paymentPercent  = (($previousBalance * ($this->rate / 100)) / 12);
@@ -72,10 +74,15 @@ class Calculator
                 $previousBalance = 0;
             }
 
-            if ($this->differentDate === $i || $this->differentDate < 1) {
-                return $paymentTotal;
+            if ($this->term === $i){
+                $res['previousBalance'] = $previousBalance;
+                return $res;
             }
+//            if ($this->differentDate === $i || $this->differentDate < 1) {
+//                return $paymentTotal;
+//            }
         }
+
 
     }
 

@@ -35,6 +35,24 @@
                                id="example-tel-input" placeholder="123-456-789">
                     </div>
                     <div class="form-group">
+                        <label for="dob" class="col-form-label">DOB</label>
+                        <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date"
+                               id="dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="co_signor" class="col-form-label">Add co-signor</label>
+                        <div class="select-2-content">
+                            <select class="js-co_signor form-control" id="co_signor" multiple="multiple"
+                                    name="co_signor[]">
+                                @if( $client &&  $client->co_signor)
+                                    @foreach(json_decode($client->co_signor,true) as $key => $val)
+                                        <option value="{{ $val }}" selected="selected">{{ $val }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="mailing_address">Mailing address</label>
                         <input type="text" id="mailing_address" class="form-control" name="mailing_address"
                                value="{{ $client? $client->mailing_address:"" }}">
@@ -65,24 +83,6 @@
                             >
                         </div>
                     @endfor
-                    <div class="form-group">
-                        <label for="dob" class="col-form-label">DOB</label>
-                        <input class="form-control" name="dob" value="{{ $client ? $client->dob : "" }}" type="date"
-                               id="dob">
-                    </div>
-                    <div class="form-group">
-                        <label for="co_signor" class="col-form-label">Add co-signor</label>
-                        <div class="select-2-content">
-                            <select class="js-co_signor form-control" id="co_signor" multiple="multiple"
-                                    name="co_signor[]">
-                                @if( $client &&  $client->co_signor)
-                                    @foreach(json_decode($client->co_signor,true) as $key => $val)
-                                        <option value="{{ $val }}" selected="selected">{{ $val }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                    </div>
                 </fieldset>
             </div>
 
@@ -252,12 +252,12 @@
                     <div class="row">
                         <div class="form-group col">
                             <label for="payment_method" class="col-form-label">Payment method</label>
-                            <input type="number"
+                            <input type="text"
                                    class="form-control"
                                    id="payment_method"
                                    name="payment_method"
                                    min="0"
-                                   value="{{ $client? $client->payment_method:'12' }}"
+                                   value="{{ $client? $client->payment_method:'' }}"
                             >
                         </div>
                     </div>

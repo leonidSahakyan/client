@@ -313,21 +313,18 @@ function amortizedLoanPayment(params,calculatorTable) {
         }
 
         let paymentPercent = ((previousBalance * (params.percent / 100)) / 12),
-            paymentBalance = (paymentTotal - paymentPercent),
-            currentPreviousBalance = null,
-            currentPaymentPercent = null,
-            currentPaymentBalance = null,
-            currentPaymentTotal = null;
+            paymentBalance = (paymentTotal - paymentPercent);
 
         previousBalance = (previousBalance - paymentBalance);
+
         if (previousBalance < 0) {
             previousBalance = 0;
         }
 
-        currentPreviousBalance = numberFormat(previousBalance);
-        currentPaymentPercent = numberFormat(paymentPercent);
-        currentPaymentBalance = numberFormat(paymentBalance);
-        currentPaymentTotal = numberFormat(paymentTotal);
+        const currentPreviousBalance = numberFormat(previousBalance);
+        const currentPaymentPercent = numberFormat(paymentPercent);
+        const currentPaymentBalance = numberFormat(paymentBalance);
+        const currentPaymentTotal = numberFormat(paymentTotal);
 
         let appendRow = "<tr>" +
             "<td>" + i + "</td>" +
@@ -352,7 +349,7 @@ function formatter(starDate, month) {
 function monthlyPayment(params, $cond = true) {
     let totalDifferent = differentDate(params.start_date);
 
-    if (params.payment_type===1) {
+     if (params.payment_type===1) {
 
         let percent = ((params.amount * (params.rate / 100)) / 12);
 
