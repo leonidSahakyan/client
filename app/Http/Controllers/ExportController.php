@@ -72,7 +72,8 @@ class ExportController extends Controller
 
         $totalPayment = ($settings['appraisal'] + $balanceMaturityDate + $totalMonthly);
 
-        $tcc = $totalPayment - ($balanceMaturityDate - ($settings['totalSum'] - $settings['appraisal']));
+//        $tcc = $totalPayment - ($balanceMaturityDate - ($settings['totalSum'] - $settings['appraisal']));
+        $tcc = $totalPayment - (($client->amount) - ($settings['totalSum'] - $settings['appraisal']));
 
         $apr = ($tcc/$client->amount/($term/12*365)*365*100 );
 
