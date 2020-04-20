@@ -292,7 +292,7 @@ function interestOnlyLoanPayment(params,calculatorTable) {
             "<td>" + formatter(params.startDate, i) + "</td>" +
             "<td>" + currentPaymentPercent + "</td>" +
             "<td>" + 0 + "</td>" +
-            "<td>" + 0 + "</td>" +
+            "<td>" + currentPaymentPercent + "</td>" +
             "<td>" + params.amount + "</td>" +
             "</tr>";
         calculatorTable.insertAdjacentHTML('beforeend', '' + appendRow + '');
